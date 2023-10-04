@@ -26,15 +26,15 @@ RDL_DIR = $(LIB_DIR)readline/
 CC			= gcc
 #SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
-#RDLFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
+MUTE		=	&> /dev/null
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
-HDRS		= $(INC_DIR)minishell.h
+HDRS		+= $(INC_DIR)minishell.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 SRCS		:= minishell.c
@@ -42,24 +42,24 @@ SRCS		:= minishell.c
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-DEP			+= $(addsuffix .d, $(basename $(OBJS)))
+DEPS			+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-
-all: make_libs $(NAME)
-
-make_libs:
-	@make -sC $(RDL_DIR)
-
-$(NAME):: $(OBJS)
-	@echo "$(USER)";
+$(NAME):: $(LIBS) $(OBJS)
 	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
-	@echo "$(GREEN)🗣 MINISHELL COMPILED🗣$(RESET)"
+	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
 
 $(NAME)::
 	@echo "$(BLUE)Nothing to be done for $@$(RESET)";
-	
+
+$(LIBS):
+	@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
+	@make -sC $(RDL_DIR) $(MUTE)
+
+
+all: $(NAME)
+
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 	@$(MKDIR) $(dir $@)
 	@echo "$(MAGENTA)Compiling: $<$(RESET)"
@@ -76,6 +76,6 @@ fclean:	clean
 
 re: fclean all
 
--include $(DEP)
+-include $(DEPS)
 
 .PHONY:	all clean fclean re make_libs

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/04 19:44:01 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/04 20:33:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(void)
 	if (!line)
 	{
 		printf("Error! Null returned\n");
-		exit(255);
+		exit(1);
 	}
 	printf("%s", line);
 	return (0);

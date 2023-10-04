@@ -76,7 +76,7 @@ CTAGS = ctags -w
 
 CFLAGS = -g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare
 LOCAL_CFLAGS =  -DRL_LIBRARY_VERSION='"$(RL_LIBRARY_VERSION)"' -DBRACKETED_PASTE_DEFAULT=1
-CPPFLAGS = -I/Users/jenavarr/.brew/opt/readline/include
+CPPFLAGS = 
 
 DEFS = -DHAVE_CONFIG_H 
 LOCAL_DEFS = 
