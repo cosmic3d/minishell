@@ -24,6 +24,7 @@ INC_DIR	= hdrs/
 CC			= gcc
 #SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
+LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p
@@ -31,6 +32,7 @@ CP			= cp -f
 MAKE		= make -s
 # -=-=-=-=-	HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 HDRS		= $(INC_DIR)minishell.h
+INCLUDE	=	 -I/Users/$(USER)/.brew/opt/readline/include
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 SRCS		:= minishell.c
@@ -45,15 +47,16 @@ DEP			+= $(addsuffix .d, $(basename $(OBJS)))
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 	@$(MKDIR) $(dir $@)
 	@echo "$(MAGENTA)Compiling: $<$(RESET)"
-	@$(CC) -MT $@ -MMD -MP $(CFLAGS) $(SANS) -c $< -o $@
+	@$(CC) -MT $@ -MMD -MP $(CFLAGS) $(LDFLAGS) $(INCLUDE) $(SANS) -c $< -o $@
 
 .PHONY:	all clean fclean re
 
-all: $(NAME)
+all: $(NAME) @echo "$(USER)";
 
 
 $(NAME):: $(OBJS)
-	@$(CC) $(CFLAGS) $(SANS) $(OBJS) -o $(NAME)
+	@echo "$(USER)";
+	@$(CC) $(CFLAGS) $(LDFLAGS) $(SANS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)🗣 MINISHELL COMPILED🗣$(RESET)"
 
 $(NAME)::
