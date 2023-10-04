@@ -19,20 +19,22 @@ WHITE		:= \033[0;97m
 SRC_DIR	= src/
 OBJ_DIR	= obj/
 INC_DIR	= hdrs/
+LIB_DIR = libs/
+RDL_DIR = $(LIB_DIR)readline/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
 #SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
-LDFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
+#RDLFLAGS		= -L/Users/$(USER)/.brew/opt/readline/lib -lreadline
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
-# -=-=-=-=-	HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+# -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		= $(INC_DIR)minishell.h
-INCLUDE	=	 -I/Users/$(USER)/.brew/opt/readline/include
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 SRCS		:= minishell.c
@@ -44,28 +46,28 @@ DEP			+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
-	@$(MKDIR) $(dir $@)
-	@echo "$(MAGENTA)Compiling: $<$(RESET)"
-	@$(CC) -MT $@ -MMD -MP $(CFLAGS) $(LDFLAGS) $(INCLUDE) $(SANS) -c $< -o $@
 
-.PHONY:	all clean fclean re
+all: make_libs $(NAME)
 
-all: $(NAME) @echo "$(USER)";
-
+make_libs:
+	@make -sC $(RDL_DIR)
 
 $(NAME):: $(OBJS)
 	@echo "$(USER)";
-	@$(CC) $(CFLAGS) $(LDFLAGS) $(SANS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)🗣 MINISHELL COMPILED🗣$(RESET)"
 
 $(NAME)::
-	@if [ -z "$?" ]; then \
-		echo "$(BLUE)Nothing to be done for $@$(RESET)"; \
-	fi
+	@echo "$(BLUE)Nothing to be done for $@$(RESET)";
 	
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
+	@$(MKDIR) $(dir $@)
+	@echo "$(MAGENTA)Compiling: $<$(RESET)"
+	@$(CC) -MT $@ -MMD -MP -I $(INC_DIR) $(CFLAGS) $(SANS) -c $< -o $@
+
 clean:
 	@$(RM) -r $(OBJ_DIR)
+	@make clean -sC $(RDL_DIR)
 	@echo "$(CYAN)Dependencies and objects removed$(RESET)"
 
 fclean:	clean
@@ -76,3 +78,4 @@ re: fclean all
 
 -include $(DEP)
 
+.PHONY:	all clean fclean re make_libs

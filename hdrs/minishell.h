@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/04 17:39:09 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/04 19:16:44 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 /* --------------------------------- HEADERS -------------------------------- */
+# define READLINE_LIBRARY 
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -23,8 +24,8 @@
 # include <termios.h>
 # include <sys/stat.h>
 # include <curses.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include "../libs/readline/readline.h"
+# include "../libs/readline/history.h"
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
