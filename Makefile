@@ -46,6 +46,8 @@ DEPS			+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
+all: $(NAME)
+
 $(NAME):: $(LIBS) $(OBJS)
 	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
@@ -58,7 +60,6 @@ $(LIBS):
 	@make -sC $(RDL_DIR) $(MUTE)
 
 
-all: $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 	@$(MKDIR) $(dir $@)
