@@ -21,6 +21,7 @@ OBJ_DIR	= obj/
 INC_DIR	= hdrs/
 LIB_DIR = libs/
 RDL_DIR = $(LIB_DIR)readline/
+LFT_DIR = $(LIB_DIR)ft_libft/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
@@ -33,7 +34,7 @@ CP			= cp -f
 MAKE		= make -s
 MUTE		=	&> /dev/null
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
+LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a $(LFT_DIR)libft.a
 HDRS		+= $(INC_DIR)minishell.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -46,11 +47,12 @@ DEPS			+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-all: $(NAME)
-
 $(NAME):: $(LIBS) $(OBJS)
 	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
+
+all: $(NAME)
+
 
 $(NAME)::
 	@echo "$(BLUE)Nothing to be done for $@$(RESET)";
@@ -58,6 +60,7 @@ $(NAME)::
 $(LIBS):
 	@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
 	@make -sC $(RDL_DIR) $(MUTE)
+	@make -sC $(LFT_DIR) $(MUTE)
 
 
 
@@ -69,10 +72,12 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 clean:
 	@$(RM) -r $(OBJ_DIR)
 	@make clean -sC $(RDL_DIR)
+	@make clean -sC $(LFT_DIR)
 	@echo "$(CYAN)Dependencies and objects removed$(RESET)"
 
 fclean:	clean
 	@$(RM) $(NAME)
+	@make fclean -sC $(LFT_DIR)
 	@echo "$(RED)$(NAME) succesfully removed$(RESET)"
 
 re: fclean all
