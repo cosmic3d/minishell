@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 18:52:22 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:44:06 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*terminal_entry(void)
 	if (!buffer)
 	{
 		if (rl_eof_found == 1)
-			printf("EOF FOUND\n");
+			printf("exit\n");
 		else
 			printf("Misco\n");
 		// ms_error(READLINE_ERR);

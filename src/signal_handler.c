@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 18:52:06 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/09 21:50:27 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-// provisional
 static void	signal_tal(int signum)
 {
 	if (signum == CTRL_C)
@@ -26,12 +23,6 @@ static void	signal_tal(int signum)
 	}
 	else if (signum == CTRL_BACKSLASH)
 		return ;
-	// else if (signum == CTRL_D)
-	// {
-	// 	// }
-	// Aparentemente Ctrl-D no funciona igual que los demás
-	// Quizá hay que modificar el comportamiento del readline_loop para
-	// gestionarlo
 }
 
 // provisional
