@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 18:21:31 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:50:45 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,18 @@ int	readline_loop(void)
 // Prototipo provisional // Nombre provisional
 char	*terminal_entry(void)
 {
-	char	*cwd;
-	char	*prompt;
 	char	*buffer;
 
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (ms_error_ptr(GETCWD_ERR));
-	prompt = set_prompt(cwd);
-	if (!prompt)
-		return (NULL);
-	buffer = readline(prompt);
-	free(prompt);
+	buffer = readline(CMDPROMPT);
 	if (!buffer)
-		return (ms_error_ptr(READLINE_ERR));
+	{
+		if (rl_eof_found == 1)
+			printf("EOF FOUND\n");
+		else
+			printf("Misco\n");
+		// ms_error(READLINE_ERR);
+		return (NULL);
+	}
 	if (buffer[0] != '\0')
 		add_history(buffer);
 	return (buffer);

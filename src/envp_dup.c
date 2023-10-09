@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:27:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 18:04:58 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/09 18:48:07 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,3 @@ char	**ms_envp_dup(char **og_envp)
 	envp[i] = NULL;
 	return (envp);
 }
-
-t_env	*ms_get_env()
