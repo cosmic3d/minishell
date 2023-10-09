@@ -38,7 +38,7 @@ LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a $(LFT_DIR)libft.a
 HDRS		+= $(INC_DIR)minishell.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= minishell.c
+SRCS		:= minishell.c envp_dup.c error.c prompt.c readline_loop.c utils.c signal_handler.c
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
