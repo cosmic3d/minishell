@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/10 14:42:00 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:27:37 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@
 # define ARGC_ERR "Minishell does not accept arguments.\n"
 # define GETCWD_ERR "The function getcwd() failed unexpectedly.\n"
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"
-
+# define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
+ resetting to 1\n"
 /* --------------------------------- STRUCTS -------------------------------- */
 
-typedef struct s_environment
+typedef struct s_env
 {
-	t_env	*next;
-	t_env	*prev;
-	char	*name;
-	char	*content;
+	struct s_env	*next;
+	struct s_env	*prev;
+	char			*name;
+	char			*content;
 }				t_env;
 
 // typedef struct s_memory
@@ -61,15 +62,26 @@ typedef struct s_environment
 
 typedef struct s_minishell
 {
-	// t_env	*env;
+	t_env	*env;
 	char	**envp;
 	char	*prev_wd; // Previous working directory
+	int		shlvl;
 }				t_ms;
 
 /* --------------------------------- FUNCS ---------------------------------- */
 
-// envp_dup.c
-char	**ms_envp_dup(char **og_envp);
+// env_list.c
+t_env	*env_list(char **og_envp);
+t_env	*env_new_node(void);
+void	env_add_node(t_env **tail, t_env *new);
+
+// env_shlvl.c
+
+// env.c
+t_env	*env_init(char **envp);
+int		env_shlvl(t_env *head);
+int		env_update_shlvl(t_env *env);
+
 
 // error.c
 int		ms_error(char *error_message);
