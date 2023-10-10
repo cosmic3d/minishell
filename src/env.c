@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:08:12 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/10 18:49:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:54:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	env_shlvl(t_env *head)
 
 	node = head;
 	flag = 0;
+	if (node->next == NULL)
+	{
+		node->name = ft_strdup("SHLVL");
+		node->content = ft_strdup("1");
+	}
 	while (node->next)
 	{
 		if (!ft_strcmp(node->name, "SHLVL"))
