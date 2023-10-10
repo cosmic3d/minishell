@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/09 18:48:28 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:42:00 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
-// typedef struct s_environment
-// {
-// 	char	*line;
-// 	char	*var;
-// 	char	*content;
-// 	t_env	*next;
-// 	t_env	*prev;
-// }				t_env;
+typedef struct s_environment
+{
+	t_env	*next;
+	t_env	*prev;
+	char	*name;
+	char	*content;
+}				t_env;
 
 // typedef struct s_memory
 // {

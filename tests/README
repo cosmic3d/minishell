@@ -27,3 +27,46 @@ Lo que creo que sucede en este caso es que el propio bash sabe que hay una redir
 Si no existe nada despues de esa redireccion, simplemente creara el archivo y ya.
 
 De lo contrario, si existe un comando despues, asumira que el output de ese comando sera el que utilizara la redireccion.
+
+SOBRE ECHO:
+
+Echo hace cosas raras con su gestión de las flags. Echo aceptará varias veces la misma flag, tanto separadas como unidas. Por ello, los siguientes ejemplos de echo tendrán el mismo output:
+
+'echo -n hola'
+'echo -nnn hola'
+'echo -n -n hola'
+'echo -nnnnn -nnnnnnnnnnnn -n -n -n -n -n -n -n -n -nnn hola'
+
+Sin embargo, si en alguna de las flags hay un carácter que no reconoce como flag válida, dejará de interpretarlo como flag y lo pasará a interpretar como parte del input.
+
+En nuestro caso, echo solo tiene que aceptar la flag -n, por lo tanto si en una flag hay cualquier caracter que no sea 'n' dejará de interpretarse como flag.
+
+Por ejemplo 'echo -n -nnnnn -nxnnn hola' verá que -nxnnn tiene un caracter que no es flag, por lo tanto, toda ese token dejará de considerarse flag y pasará a ser input.
+
+Así que 'echo -n -nnnnn -nxnnn hola' printeará '-nxnnn hola'. Esto no constará como ningún tipo de error. No hay que printear ningún mensaje de invalid flag por que echo simplemente entiende que si no es una flag, es que es el input.
+
+SOBRE CD:
+
+Dejando de lado si el subject pide o no que consideremos el caso 'cd -', resulta ser que cd cambiará las variables del entorno de minishel.
+
+cd cambia dos variables del entorno: PWD y OLDPWD.
+
+Cuando hacemos 'cd ..' (por poner un ejemplo), OLDPWD pasará a tener el contenido de PWD y PWD pasará a tener como contenido el directorio al que nos desplacemos.
+
+Esto es parte del comportamiento de cd.
+
+SOBRE EXPORT:
+
+Export sirve para añadir variables del entorno al proceso actual que se aplicarán a los childs del mismo.
+
+'export' sin argumentos, printeará todas las variables del entorno pero con el siguiente formato:
+
+declare -x NOMBRE="contenido"
+
+A parte de printear 'declare -x ' antes de la variable, en el caso de usar 'export' el contenido de cada variable irá entre comillas dobles a diferencia de 'env' que no tiene comillas.
+
+También, export printeará todas las variables del entorno aunque todavía no tengan valor. Por ejemplo, en una nueva instancia de bash, OLDPWD no tiene valor. Si usamos 'env' no lo printeará, pero si usamos 'export' sí lo mostrará así:
+
+declare -x OLDPWD
+
+Si hacemos algo como 'export NUEVA_VARIABLE' (sin darle contenido) Esto creará la variable del entorno sin contenido. Por lo tanto, 'export' la mosrará pero 'env' no.

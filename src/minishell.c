@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/09 18:47:08 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/10 14:39:57 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,37 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (ms_error(ARGC_ERR));
 
+	// Gestionamos envp
+
+	// debug
+	char	*name;
+	char	*content;
+
+	int		eq_i;
+	eq_i = ft_strchr_i(envp[14], '=');
+	name = ft_substr(envp[14], 0, eq_i);
+	content = ft_substr(envp[14], eq_i + 1, ft_strlen(envp[14]) - eq_i);
+	printf("Name = %s\n", name);
+	printf("Content = %s\n", content);
+	printf("len of name = %ld\n", ft_strlen(name));
+	printf("len of content = %ld\n", ft_strlen(content));
+	return (1);
+	//
+
 	// Clonamos envp
 	// Esto va a ser MUCHO más complejo de lo que parecía por lo que he visto, pero POR AHORA
 	// ms.env = ms_get_env(envp);
 	ms.envp = ms_envp_dup(envp);
 	if (!ms.envp)
 		return (1);
+
+	int	i = 0;
+	while (envp[i])
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
+	return 1;
 
 	// Para Ctrl- 'D' 'C' '\'
 	signal_handler();
