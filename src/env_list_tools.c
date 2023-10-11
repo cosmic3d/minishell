@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:27:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/11 17:39:12 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:47:46 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 /* Añade un nodo en nuestra lista de variables de entorno y le da los valores 
 para ->name y ->content que recibe por sus argumentos. */
-int	env_new_environment_variable(char *name, char *content, t_env *env)
+int	env_new_variable(char *name, char *content, t_env *env)
 {
 	t_env	*new;
 
-	new = env_new_node();
+	new = env_init_node();
 	if (!new)
 		return (1);
 	if (env_add_content(name, content, new))
@@ -26,7 +26,7 @@ int	env_new_environment_variable(char *name, char *content, t_env *env)
 		free(new);
 		return (1);
 	}
-	env_append(head(env), new); // por si acaso lo paso con head()
+	env_append(head(env), new); // por si acaso, lo paso con head()
 	return (0);
 }
 
@@ -70,6 +70,20 @@ t_env	*env_init_node(void)
 	return (new);
 }
 
+/* Conecta un nuevo nodo al final de la lista de variables de entorno */
+// Es posible que esta variable se pueda convertir a void* casteando t_list
+void	env_append(t_env *head, t_env *new)
+{
+	t_env	*last;
+
+	if (head == new)
+		return ;
+	last = tail(head);
+	last->next = new;
+	new->prev = last;
+	return ;
+}
+
 /* Añade un nodo a la lista de variables de entorno */
 void	env_add_node(t_env **tail, t_env *new)
 {
@@ -90,6 +104,9 @@ t_env	*env_find(char *name, t_env *head)
 {
 	while (head)
 	{
+		printf("%s\n", head->name);
+		// AQUI PASA ALGO
+		// PROBLEMA PARA EL YO DE MAÑANA
 		if (!ft_strcmp(head->name, name))
 		{
 			return (head);

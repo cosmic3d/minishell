@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 11:52:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:30:18 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (ms_error(ARGC_ERR));
 
+	
 	// Gestionamos envp
 	env_init(&ms, envp);
-	ms.env = env_init(envp);
+	// ms.env = env_init(envp);
 	// ms.env = env_list(envp);
 	// ms.env = env_shlvl(ms.env);
-
 	t_env	*print = ms.env;
 	int		i = 0;
 	while (print != NULL)

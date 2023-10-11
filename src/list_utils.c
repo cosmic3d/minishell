@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:35:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/11 14:15:29 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:16:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 /* Retorna el último elemento de cualquier lista */
 void	*tail(void *node)
 {
-	t_list	*list;
+	t_lst	*list;
 
-	list = (t_list *)node;
+	list = (t_lst *)node;
 	while (list->next)
 	{
 		list = list->next;
@@ -30,9 +30,9 @@ void	*tail(void *node)
 /* Retorna el primer elemento de cualquier lista */
 void	*head(void *node)
 {
-	t_list	*list;
+	t_lst	*list;
 
-	list = (t_list *)node;
+	list = (t_lst *)node;
 	while (list->prev)
 	{
 		list = list->prev;

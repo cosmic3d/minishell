@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 14:15:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:19:51 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <curses.h>
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
-# include "../libs/ft_libft/libft.h"
+# include "../libs/libft/libft.h"
 # include <errno.h>
 
 /* --------------------------------- MACROS --------------------------------- */
@@ -60,7 +60,7 @@ typedef struct s_generic_list
 {
 	struct s_generic_list	*prev;
 	struct s_generic_list	*next;
-}				t_list;
+}				t_lst;
 
 // typedef struct s_memory
 // {
@@ -78,17 +78,18 @@ typedef struct s_minishell
 
 /* --------------------------------- FUNCS ---------------------------------- */
 
-// env_list.c
+// todo lo env por ahora
+void	env_init(t_ms *ms, char **envp);
+int		env_new_variable(char *name, char *content, t_env *env);
+t_env	*env_find(char *name, t_env *head);
 t_env	*env_list(char **og_envp);
-t_env	*env_new_node(void);
 void	env_add_node(t_env **tail, t_env *new);
+t_env	*env_init_node(void);
+void	env_append(t_env *head, t_env *new);
+int		env_add_content(char *name, char *content, t_env *env);
 
-// env_shlvl.c
-
-// env.c
-t_env	*env_init(char **envp);
-int		env_shlvl(t_env *head);
-int		env_update_shlvl(t_env *env);
+void	*tail(void *node);
+void	*head(void *node);
 
 
 // error.c
