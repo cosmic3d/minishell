@@ -1,6 +1,0 @@
-[submodule "Libft"]
-	path = Libft
-	url = git@github.com:cosmic3d/Libft.git
-[submodule "libs/ft_libft"]
-	path = libs/ft_libft
-	url = git@github.com:cosmic3d/ft_libft.git

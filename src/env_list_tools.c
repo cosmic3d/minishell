@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:27:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/11 17:34:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:36:24 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	env_new_environment_variable(char *name, char *content, t_env *env)
 		free(new);
 		return (1);
 	}
-	env_append()
+	env_append(head(env), env);
 	return (0);
 }
 
