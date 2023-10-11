@@ -21,7 +21,7 @@ OBJ_DIR	= obj/
 INC_DIR	= hdrs/
 LIB_DIR = libs/
 RDL_DIR = $(LIB_DIR)readline/
-LFT_DIR = $(LIB_DIR)ft_libft/
+LFT_DIR = $(LIB_DIR)libft/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc

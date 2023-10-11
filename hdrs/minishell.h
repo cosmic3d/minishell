@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 14:15:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:56:36 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <curses.h>
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
-# include "../libs/ft_libft/libft.h"
+# include "../libs/libft/libft.h"
 # include <errno.h>
 
 /* --------------------------------- MACROS --------------------------------- */
@@ -60,7 +60,7 @@ typedef struct s_generic_list
 {
 	struct s_generic_list	*prev;
 	struct s_generic_list	*next;
-}				t_list;
+}				t_lista;
 
 // typedef struct s_memory
 // {
@@ -107,5 +107,8 @@ int		signal_handler(void);
 
 // utils.c
 int		ms_arraylen(char **array);
+
+//cmd_parse.c
+char	**ft_split_ms(char const *s, char c);
 
 #endif

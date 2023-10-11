@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 11:52:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 20:55:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@ int	main(int argc, char **argv, char **envp)
 {
 	// Declaramos struct general aquí?
 	t_ms	ms;
+	int		i;
+	char	*test;
 
 	// Check para argc
 	argv = NULL;
 	if (argc != 1)
 		return (ms_error(ARGC_ERR));
-
+	test = ft_split_ms("Hola como estas", ' ');
+	i = -1;
+	while (test[++i])
+		printf("%s", test[i]);
+	exit(1);
 	// Gestionamos envp
 	env_init(&ms, envp);
 	ms.env = env_init(envp);
