@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/10 18:27:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:15:34 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define CTRL_BACKSLASH SIGQUIT
 
 # define CMDPROMPT "minishell $ "
+# define ENV 0
+# define EXPORT 1
 
 // Errors
 # define MALLOC_ERR "Memory allocation failed.\n"
@@ -53,6 +55,12 @@ typedef struct s_env
 	char			*name;
 	char			*content;
 }				t_env;
+
+typedef struct s_generic_list
+{
+	struct s_generic_list	*prev;
+	struct s_generic_list	*next;
+}				t_list;
 
 // typedef struct s_memory
 // {
