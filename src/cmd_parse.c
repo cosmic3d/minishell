@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:06:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 16:27:24 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:11:10 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,45 @@ static char	**ft_free(char **array, int k)
 
 int	valid_brackets(char *str)
 {
-	int	i;
-	int	two_simple;
-	int	two_double;
+	int		i;
+	char	bracks;
 
 	i = -1;
-	two_double = 1;
-	two_simple = 1;
 	while (str[++i])
 	{
-		if (str[i] == '\'')
-			two_simple *= -1;
-		else if (str[i] == '\"')
-			two_double *= -1;
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			bracks = str[i++];
+			while (42)
+			{
+				if (!str[i])
+					return (0);
+				if (str[i] == bracks)
+					break ;
+				i++;
+			}
+		}
 	}
-	if (two_double == -1 || two_simple == -1)
-		return (0);
 	return (1);
+}
+
+t_token	tokenize(char *cmd_line)
+{
+	t_token	tokens;
+	int		i;
+	int		new_token;
+	char	in_bracks;
+
+	i = -1;
+	new_token = -1;
+	while (cmd_line[++i])
+	{
+		if (cmd_line[i] != ' ' && new_token == -1)
+			new_token = i;
+		if (cmd_line[i] == '"' || cmd_line[i] == '\'')
+		{
+			in_bracks = cmd_line[i++];
+			while ()
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 20:56:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:40:08 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ typedef struct s_env
 	char			*name;
 	char			*content;
 }				t_env;
+
+typedef struct s_token
+{
+	struct s_token	*next;
+	struct s_token	*prev;
+	char			*content;
+	int				type;
+}				t_token;
 
 typedef struct s_generic_list
 {
