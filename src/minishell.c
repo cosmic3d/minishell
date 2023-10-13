@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 18:30:18 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:59:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,25 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (ms_error(ARGC_ERR));
 
-	
-	// Gestionamos envp
+	// print_envp(envp); // debug
+	// envp = NULL; // debug
 	env_init(&ms, envp);
+	// print_env_and_export_output(&ms);
+	
+	exit (0);
 	// ms.env = env_init(envp);
 	// ms.env = env_list(envp);
 	// ms.env = env_shlvl(ms.env);
-	t_env	*print = ms.env;
-	int		i = 0;
-	while (print != NULL)
-	{
-		printf("%s=%s\n", print->name, print->content);
-		printf("%s\n", envp[i]);
-		i++;
-		print = print->next;
-	}
-	exit(1);
+	// t_env	*print = ms.env;
+	// int		i = 0;
+	// while (print != NULL)
+	// {
+	// 	printf("%s=%s\n", print->name, print->content);
+	// 	printf("%s\n", envp[i]);
+	// 	i++;
+	// 	print = print->next;
+	// }
+	// exit(1);
 
 	// // debug
 	// char	*name;

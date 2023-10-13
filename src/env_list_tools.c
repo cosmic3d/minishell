@@ -6,96 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:27:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/11 18:47:46 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:59:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Añade un nodo en nuestra lista de variables de entorno y le da los valores 
-para ->name y ->content que recibe por sus argumentos. */
-int	env_new_variable(char *name, char *content, t_env *env)
-{
-	t_env	*new;
-
-	new = env_init_node();
-	if (!new)
-		return (1);
-	if (env_add_content(name, content, new))
-	{
-		free(new);
-		return (1);
-	}
-	env_append(head(env), new); // por si acaso, lo paso con head()
-	return (0);
-}
-
-/* Mete en la variable de entorno de la lista los valores de name y content */
-int	env_add_content(char *name, char *content, t_env *env)
-{
-	env->name = ft_strdup(name);
-	if (!env->name)
-	{
-		ms_error(MALLOC_ERR);
-		free(env);
-		return (1);
-	}
-	env->content = ft_strdup(content);
-	if (!env->content)
-	{
-		ms_error(MALLOC_ERR);
-		free(env->name);
-		free(env);
-		return (1);
-	}
-	return (0);
-}
-
-/* Crea un nuevo nodo de la lista de variables de entorno e inicializa sus
-valores a NULL */
-t_env	*env_init_node(void)
-{
-	t_env	*new;
-
-	new = malloc(sizeof(t_env));
-	if (!new)
-	{
-		ms_error(MALLOC_ERR);
-		return (NULL);
-	}
-	new->name = NULL;
-	new->content = NULL;
-	new->next = NULL;
-	new->prev = NULL;
-	return (new);
-}
-
-/* Conecta un nuevo nodo al final de la lista de variables de entorno */
-// Es posible que esta variable se pueda convertir a void* casteando t_list
-void	env_append(t_env *head, t_env *new)
-{
-	t_env	*last;
-
-	if (head == new)
-		return ;
-	last = tail(head);
-	last->next = new;
-	new->prev = last;
-	return ;
-}
-
-/* Añade un nodo a la lista de variables de entorno */
-void	env_add_node(t_env **tail, t_env *new)
-{
-	if (*tail == NULL)
-		*tail = new;
-	else
-	{
-		new->prev = *tail;
-		(*tail)->next = new;
-		*tail = new;
-	}
-}
 
 /* Recorre la lista de variable de entorno y busca una en particular por 
 el valor de su ->name, cuando la encuentra, devuelve el puntero a ese nodo.
@@ -104,9 +19,6 @@ t_env	*env_find(char *name, t_env *head)
 {
 	while (head)
 	{
-		printf("%s\n", head->name);
-		// AQUI PASA ALGO
-		// PROBLEMA PARA EL YO DE MAÑANA
 		if (!ft_strcmp(head->name, name))
 		{
 			return (head);
@@ -189,6 +101,23 @@ int	env_print(t_env *env, int function)
 	return (0);
 }
 
-/* TO-DO:
+// int	env_export_output(t_env *env)
+// {
+// 	return (0);
+// }
 
+// int	env_env_output(t_env *env)
+// {
+// 	return (0);
+// }
+
+/* INFORMACIÓN
+
+1. Bash, reciba el envp que reciba, siempre tendrá las siguientes variables de entorno:
+
+OLDPWD
+PWD=<el directorio actual>
+SHLVL=<el nivel de shell actual>
+
+2. env en realidad NO ES UN BUILTIN
 */
