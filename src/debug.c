@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:32:23 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 17:59:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:57:35 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,17 @@ void	check(void)
 	write(1, "CHECKPOINT ", 12);
 	ft_putnbr(check_number);
 	write(1, "\n", 1);
+}
+
+void	print_tokens(t_token *token)
+{
+	t_token	*current;
+
+	current = token;
+	while (current)
+	{
+		//printf("name: %s\n", current->type);
+		printf("content: %s\n", current->content);
+		current = current->next;
+	}
 }

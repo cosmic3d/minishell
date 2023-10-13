@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:04 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:46:32 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_generic_list
 typedef struct s_minishell
 {
 	t_env	*env;
+	t_token	*token;
 	char	**envp;
 	char	*prev_wd; // Previous working directory
 	int		shlvl;
@@ -99,6 +100,7 @@ void	print_envp(char **envp);
 void	print_env_and_export_output(t_ms *ms);
 void	print_env(t_env *env);
 void	check(void);
+void	print_tokens(t_token *token);
 //////////////
 
 // env_list_init.c
@@ -124,7 +126,7 @@ int		append(t_lst **head, size_t size); // ?????
 // char	*set_prompt(char *cwd);
 
 // readline_loop.c
-int		readline_loop(void);
+int		readline_loop(t_ms *ms);
 char	*terminal_entry(void);
 
 // signal_handler.c
@@ -134,6 +136,10 @@ int		signal_handler(void);
 int		ms_arraylen(char **array);
 
 //cmd_parse.c
-char	**ft_split_ms(char const *s, char c);
+void	free_tokens(t_token *token);
+int		valid_brackets(char *str);
+void	tokenize(char *cmd_line, t_ms *ms);
+int		token_append(t_token *head);
+t_token	*token_tail(t_token *token);
 
 #endif
