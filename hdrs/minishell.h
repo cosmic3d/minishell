@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:33:08 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:45:04 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
+# define CMD_ERROR "minishell: %s: command not found\n"
 
 // Return status
 # define SUCCESS 0
@@ -62,6 +63,14 @@ typedef struct s_env
 	char			*name;
 	char			*content;
 }				t_env;
+
+typedef struct s_token
+{
+	struct s_token	*prev;
+	struct s_token	*next;
+	char			*content;
+	int				type;
+}				t_token;
 
 typedef struct s_generic_list
 {
@@ -123,5 +132,8 @@ int		signal_handler(void);
 
 // utils.c
 int		ms_arraylen(char **array);
+
+//cmd_parse.c
+char	**ft_split_ms(char const *s, char c);
 
 #endif
