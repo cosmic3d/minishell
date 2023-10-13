@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/11 20:55:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:29:55 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,26 @@ int	main(int argc, char **argv, char **envp)
 	argv = NULL;
 	if (argc != 1)
 		return (ms_error(ARGC_ERR));
-	test = ft_split_ms("Hola como estas", ' ');
-	i = -1;
-	while (test[++i])
-		printf("%s", test[i]);
-	exit(1);
-	// Gestionamos envp
+
+	// print_envp(envp); // debug
+	// envp = NULL; // debug
 	env_init(&ms, envp);
-	ms.env = env_init(envp);
+	// print_env_and_export_output(&ms);
+
+	exit (0);
+	// ms.env = env_init(envp);
 	// ms.env = env_list(envp);
 	// ms.env = env_shlvl(ms.env);
-
-	t_env	*print = ms.env;
-	int		i = 0;
-	while (print != NULL)
-	{
-		printf("%s=%s\n", print->name, print->content);
-		printf("%s\n", envp[i]);
-		i++;
-		print = print->next;
-	}
-	exit(1);
+	// t_env	*print = ms.env;
+	// int		i = 0;
+	// while (print != NULL)
+	// {
+	// 	printf("%s=%s\n", print->name, print->content);
+	// 	printf("%s\n", envp[i]);
+	// 	i++;
+	// 	print = print->next;
+	// }
+	// exit(1);
 
 	// // debug
 	// char	*name;

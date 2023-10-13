@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 16:40:08 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:19:10 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,27 @@
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
+
+// Return status
+# define SUCCESS 0
+# define FAILURE 1
+# define TRUE 1
+# define FALSE 0
+
 /* --------------------------------- STRUCTS -------------------------------- */
 
 typedef struct s_env
 {
-	struct s_env	*next;
 	struct s_env	*prev;
+	struct s_env	*next;
 	char			*name;
 	char			*content;
 }				t_env;
 
 typedef struct s_token
 {
-	struct s_token	*next;
 	struct s_token	*prev;
+	struct s_token	*next;
 	char			*content;
 	int				type;
 }				t_token;
@@ -68,7 +75,7 @@ typedef struct s_generic_list
 {
 	struct s_generic_list	*prev;
 	struct s_generic_list	*next;
-}				t_lista;
+}				t_lst;
 
 // typedef struct s_memory
 // {
@@ -86,18 +93,34 @@ typedef struct s_minishell
 
 /* --------------------------------- FUNCS ---------------------------------- */
 
-// env_list.c
+//////// DEBUG
+void	print_envp(char **envp);
+void	print_env_and_export_output(t_ms *ms);
+void	print_env(t_env *env);
+void	check(void);
+////////
+
+// env god
+int		env_add(char *name, char *content, t_env **head);
+int		env_add_content(char *name, char *content, t_env *new);
+
+
+// todo lo env por ahora
+void	env_init(t_ms *ms, char **envp);
+
+int		env_new_variable(char *name, char *content, t_env *env);
+t_env	*env_find(char *name, t_env *head);
 t_env	*env_list(char **og_envp);
-t_env	*env_new_node(void);
 void	env_add_node(t_env **tail, t_env *new);
-
-// env_shlvl.c
-
-// env.c
-t_env	*env_init(char **envp);
-int		env_shlvl(t_env *head);
-int		env_update_shlvl(t_env *env);
-
+t_env	*env_init_node(void);
+void	env_append(t_env **head, t_env *new);
+// t_env	*env_add_content(char *name, char *content);
+int		env_print(t_env *env, int function);
+int		env_add(char *name, char *content, t_env **head);
+void	*tail(void *node);
+// void	*tail(t_lst *node);
+// t_env	*tail(t_env *node);
+void	*head(void *node);
 
 // error.c
 int		ms_error(char *error_message);
