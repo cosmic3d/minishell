@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:19:10 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:35:41 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
+# define CMD_ERROR "minishell: %s: command not found\n"
 
 // Return status
 # define SUCCESS 0
