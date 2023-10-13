@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_init.c                                         :+:      :+:    :+:   */
+/*   env_list_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 18:08:12 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:05:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:15:10 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,14 @@ static int	get_envp_values(char **name, char **content, char *envp_line)
 	return (SUCCESS);
 }
 
+/* Esta función actualiza SHLVL 
+Quizá hago que actualize PWD también más adelante. */
 static t_env	*env_update_list(t_env *env)
 {
 	t_env	*aux;
 	int		shlvl;
 
 	aux = env_find("SHLVL", env);
-	printf("aux->name = %s\naux->content = %s\n", aux->name, aux->content);
 	shlvl = ft_atoi(aux->content) + 1;
 	free(aux->content);
 	if (shlvl >= 1000)
@@ -118,14 +119,6 @@ static t_env	*env_update_list(t_env *env)
 		shlvl = 1;
 	}
 	aux->content = ft_itoa(shlvl);
-	if (!aux->content)
-	{
-		ms_error(MALLOC_ERR);
-		exit(EXIT_FAILURE);
-	}
-	aux = env_find("PWD", env);
-	printf("name = %s\n", aux->name);
-	aux->content = getcwd(NULL, 0);
 	if (!aux->content)
 	{
 		ms_error(MALLOC_ERR);

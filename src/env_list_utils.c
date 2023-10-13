@@ -1,16 +1,73 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list_tools.c                                   :+:      :+:    :+:   */
+/*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 15:27:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:59:17 by apresas-         ###   ########.fr       */
+/*   Created: 2023/10/13 14:29:59 by apresas-          #+#    #+#             */
+/*   Updated: 2023/10/13 18:15:21 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Añade una nueva variable de entorno a la lista t_env */
+int	env_add(char *name, char *content, t_env **head)
+{
+	t_env	*new;
+	t_env	*last;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+	{
+		ms_error(MALLOC_ERR);
+		return (FAILURE);
+	}
+	new->prev = NULL;
+	new->next = NULL;
+	new->name = NULL;
+	new->content = NULL;
+	if (env_add_content(name, content, new))
+		return (FAILURE);
+	if (*head == NULL)
+		*head = new;
+	else
+	{
+		last = tail(*head);
+		last->next = new;
+		new->prev = last;
+	}
+	return (SUCCESS);
+}
+
+/* Añade los valores para ->name y ->content en un elemento de la lista de 
+variables de entorno. */
+int	env_add_content(char *name, char *content, t_env *new)
+{
+	if (name)
+	{
+		new->name = ft_strdup(name);
+		if (!new->name)
+		{
+			ms_error(MALLOC_ERR);
+			free(new);
+			return (FAILURE);
+		}
+	}
+	if (content)
+	{
+		new->content = ft_strdup(content);
+		if (!new->content)
+		{
+			ms_error(MALLOC_ERR);
+			free(new->name);
+			free(new);
+			return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
 
 /* Recorre la lista de variable de entorno y busca una en particular por 
 el valor de su ->name, cuando la encuentra, devuelve el puntero a ese nodo.
@@ -100,24 +157,3 @@ int	env_print(t_env *env, int function)
 	}
 	return (0);
 }
-
-// int	env_export_output(t_env *env)
-// {
-// 	return (0);
-// }
-
-// int	env_env_output(t_env *env)
-// {
-// 	return (0);
-// }
-
-/* INFORMACIÓN
-
-1. Bash, reciba el envp que reciba, siempre tendrá las siguientes variables de entorno:
-
-OLDPWD
-PWD=<el directorio actual>
-SHLVL=<el nivel de shell actual>
-
-2. env en realidad NO ES UN BUILTIN
-*/

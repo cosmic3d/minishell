@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 21:44:06 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:34:56 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ char	*terminal_entry(void)
 	buffer = readline(CMDPROMPT);
 	if (!buffer)
 	{
-		if (rl_eof_found == 1)
-			printf("exit\n");
-		else
-			printf("Misco\n");
-		// ms_error(READLINE_ERR);
+		// Una de dos:
+		// Error de readline
+		// NULL enviado a readline
 		return (NULL);
 	}
 	if (buffer[0] != '\0')
