@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:41:21 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:09:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	readline_loop(t_ms *ms)
 			return (1);
 		tokenize(buffer, ms);
 		print_tokens(ms->token);
-		free_tokens(ms->token);
+		free_tokens(&ms->token);
 		free(buffer);
 	}
 	rl_clear_history();

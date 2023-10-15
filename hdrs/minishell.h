@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 20:46:32 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:08:01 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,10 +136,10 @@ int		signal_handler(void);
 int		ms_arraylen(char **array);
 
 //cmd_parse.c
-void	free_tokens(t_token *token);
+void	free_tokens(t_token **token);
 int		valid_brackets(char *str);
 void	tokenize(char *cmd_line, t_ms *ms);
-int		token_append(t_token *head);
+int		token_append(t_token **token);
 t_token	*token_tail(t_token *token);
 
 #endif
