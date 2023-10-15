@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/15 17:22:29 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:06:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,15 @@ void	free_tokens(t_token **token)
 	}
 	*token = NULL;
 	token = NULL;
+}
+
+int	in_x(char *str, char c)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			return (TRUE);
+	return (FALSE);
 }

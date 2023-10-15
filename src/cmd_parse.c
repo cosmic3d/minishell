@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:06:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/15 17:08:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/15 20:55:14 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	valid_brackets(char *str)
 			while (42)
 			{
 				if (!str[i])
-					return (FAILURE);
+					return (FALSE);
 				if (str[i] == bracks)
 					break ;
 				i++;
 			}
 		}
 	}
-	return (SUCCESS);
+	return (TRUE);
 }
 
 //Crea los tokens y los va añadiendo a una linked list
@@ -42,45 +42,61 @@ void	tokenize(char *cmd_line, t_ms *ms)
 {
 	t_token	*last;
 	int		i;
-	int		new_token;
-	//char	in_bracks;
+	int		nt; //El primer caracter del new token (puta norminette)
 
 	i = -1;
-	new_token = -1;
+	nt = -1;
 	while (cmd_line[++i])
 	{
-		if (new_token == -1)
+		if (nt == -1)
 		{
 			if (cmd_line[i] == ' ')
 				continue ;
 			else
-				new_token = i;
+				nt = i;
 		}
-		else
+		if (nt != -1) //METER TODO ESTO EN OTRA FUNCIÓN
 		{
-			if (cmd_line[i] == ' ' || (!cmd_line[i + 1] && i++ != -1)) //Creamos nuevo token si encontramos un espacio u otros símbolos que ya definiremos después
+			if (get_token(&i, cmd_line))
 			{
 				if (token_append(&ms->token) == FAILURE)
 					exit(1);
 				last = token_tail(ms->token);
-				last->content = ft_substr(cmd_line, new_token, i - new_token);
+				last->content = ft_substr(cmd_line, nt, i - nt + 1);
 				if (!last->content)
 				{
 					ms_error(MALLOC_ERR);
 					exit(1);
 				}
 				//last->type =  get_token_type() //EN EL FUTURO
-				new_token = -1;
+				nt = -1;
 			}
-			// continue ;
 		}
-
-		// if (cmd_line[i] == '"' || cmd_line[i] == '\'')
-		// {
-		// 	in_bracks = cmd_line[i++];
-		// 	while (cmd_line[i] != in_bracks)
-		// 		i++;
-
-		// }
 	}
+}
+
+//Aquí se definen los limitadores entre token y token
+int	get_token(int *i, char *cmd_line)
+{
+	char	tmp;
+
+	if (!in_x("<>|\'\"", cmd_line[*i]) && \
+	(in_x(" <>|\'\"", cmd_line[*i + 1]) || !cmd_line[*i + 1]))
+		return (TRUE);
+	if (in_x("\'\"", cmd_line[*i]))
+	{
+		tmp = cmd_line[*i];
+		*i = *i + 1;
+		while (cmd_line[*i] && cmd_line[*i] != tmp)
+			*i = *i + 1;
+	}
+	else if (in_x("<>", cmd_line[*i]))
+	{
+		tmp = cmd_line[*i];
+		if (cmd_line[*i + 1] == tmp)
+			*i = *i + 1;
+	}
+	else if (cmd_line[*i] != '|')
+		return (FALSE);
+	return (TRUE);
 }
