@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:06:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/15 20:55:14 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 21:58:48 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int	valid_brackets(char *str)
 //Crea los tokens y los va añadiendo a una linked list
 void	tokenize(char *cmd_line, t_ms *ms)
 {
-	t_token	*last;
 	int		i;
 	int		nt; //El primer caracter del new token (puta norminette)
 
 	i = -1;
 	nt = -1;
+	ms->token = NULL;
 	while (cmd_line[++i])
 	{
 		if (nt == -1)
@@ -55,23 +55,8 @@ void	tokenize(char *cmd_line, t_ms *ms)
 			else
 				nt = i;
 		}
-		if (nt != -1) //METER TODO ESTO EN OTRA FUNCIÓN
-		{
-			if (get_token(&i, cmd_line))
-			{
-				if (token_append(&ms->token) == FAILURE)
-					exit(1);
-				last = token_tail(ms->token);
-				last->content = ft_substr(cmd_line, nt, i - nt + 1);
-				if (!last->content)
-				{
-					ms_error(MALLOC_ERR);
-					exit(1);
-				}
-				//last->type =  get_token_type() //EN EL FUTURO
-				nt = -1;
-			}
-		}
+		if (nt != -1)
+			add_token(cmd_line, &i, &nt, ms);
 	}
 }
 
@@ -80,6 +65,8 @@ int	get_token(int *i, char *cmd_line)
 {
 	char	tmp;
 
+	if (!in_x("<>|", cmd_line[*i]) && in_x("\"\'", cmd_line[*i + 1]))
+		return (FALSE);
 	if (!in_x("<>|\'\"", cmd_line[*i]) && \
 	(in_x(" <>|\'\"", cmd_line[*i + 1]) || !cmd_line[*i + 1]))
 		return (TRUE);
@@ -89,6 +76,8 @@ int	get_token(int *i, char *cmd_line)
 		*i = *i + 1;
 		while (cmd_line[*i] && cmd_line[*i] != tmp)
 			*i = *i + 1;
+		if (in_x("\'\"", cmd_line[*i + 1]))
+			return (FALSE);
 	}
 	else if (in_x("<>", cmd_line[*i]))
 	{
@@ -99,4 +88,29 @@ int	get_token(int *i, char *cmd_line)
 	else if (cmd_line[*i] != '|')
 		return (FALSE);
 	return (TRUE);
+}
+
+/*Una vez se sabe cuál es el token se añade a la lista,
+además de hacer el substr y de asignarle el tipo*/
+void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
+{
+	t_token	*last;
+
+	if (get_token(i, cmd_line))
+	{
+		if (token_append(&ms->token) == FAILURE)
+		{
+			ms_error(MALLOC_ERR);
+			exit(1);
+		}
+		last = token_tail(ms->token);
+		last->content = ft_substr(cmd_line, *nt, *i - *nt + 1);
+		if (!last->content)
+		{
+			ms_error(MALLOC_ERR);
+			exit(1);
+		}
+		//last->type =  get_token_type() //EN EL FUTURO
+		*nt = -1;
+	}
 }

@@ -32,9 +32,9 @@ RM			= rm -f
 MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
-MUTE		=	&> /dev/null
+MUTE		= &> /dev/null
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-LIBS		+= $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a $(LFT_DIR)libft.a
+LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		+= $(INC_DIR)minishell.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
@@ -46,13 +46,13 @@ OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-
-$(NAME):: $(LIBS) $(OBJS)
-	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
-	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
+INCLUDE 	= -Ihdrs
 
 all: $(NAME)
 
+$(NAME):: $(LIBS) $(OBJS)
+	$(CC) $(CFLAGS) $(SANS) -ltermcap libs/libft/libft.a $(OBJS) -o $(NAME) -Llibs/libft -l:libft.a -lreadline
+	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
 
 $(NAME)::
 	@echo "$(BLUE)Nothing to be done for $@$(RESET)";
@@ -62,12 +62,10 @@ $(LIBS):
 	@make -sC $(RDL_DIR) $(MUTE)
 	@make -sC $(LFT_DIR) $(MUTE)
 
-
-
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 	@$(MKDIR) $(dir $@)
 	@echo "$(MAGENTA)Compiling: $<$(RESET)"
-	@$(CC) -MT $@ -MMD -MP -I $(INC_DIR) $(CFLAGS) $(SANS) -c $< -o $@
+	$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/15 20:35:18 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/17 21:47:49 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,6 @@ t_token	*token_tail(t_token *token);
 void	free_tokens(t_token **token);
 int		token_append(t_token **token);
 int		in_x(char *str, char c);
+void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms);
 
 #endif
