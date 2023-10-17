@@ -1,0 +1,63 @@
+# NAME #
+NAME	= libft.a
+
+# DIRECTORIES #
+ROOT		= ./
+SRC_DIR		= src/
+OBJ_DIR		= obj/
+DEP_DIR		= dep/
+INC_DIR		= include/
+CODE_DIRS	= $(ROOT) $(SRC_DIR) $(INC_DIR)
+
+# DEPENDENCY FLAGS #
+DEP_FLAGS	= -MP -MMD
+
+# FLAGS #
+INC_FLAGS	= $(foreach D,$(INC_DIR), -I$(D))
+# Por cada elemento de INC_DIR haz -I de ese elemento.
+SRCS_B		= $(foreach D,$(CODE_DIRS),$(wildcard $(D)*.c))
+# Por cada elemento de CODE_DIRS, o sea, cada directorio de CODE_DIRS,
+# haz un wildcard que encuentre todos los .c en ese directorio.
+# En definitiva, SRCS_B tendrá todos los .c
+OBJS_B		= $(patsubst %.c, %.o, $(SRCS_B))
+DEPS_B		= $(patsubst %.c, %.d, $(SRCS_B))
+
+# COMMANDS WITH THEIR FLAGS #
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror
+OPT			= -O0 # maybe
+AR			= ar
+AR_FLAGS	= rcs
+MKDIR		= mkdir -p
+RM			= rm -f
+
+# FILES #
+SRCS	= $(notdir $(wildcard $(SRC_DIR)*.c))
+OBJS	= $(addprefix $(OBJ_DIR), $(SRC:%.c=%.o))
+DEPS	= $(addsuffix .d, $(basename $(OBJS)))
+HDRS	= $(INC_DIR)libft.h
+MK		= Makefile
+
+# RULES #
+all: $(NAME)
+
+$(NAME): $(OBJS) $(MK) $(HDRS)
+	@$(AR) $(NAME) $(OBJECTS)
+	@echo "'$(NAME)' created/updated succesfully"
+
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HDRS)
+	$(CC) $(CCFLAGS) -c $< -o $@
+
+objects: $(OBJECTS)
+
+clean:
+	$(RM) $(OBJECTS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re:	fclean all
+
+-include $(DEPS)
+
+.PHONY: all objects clean fclean re

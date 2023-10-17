@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:04 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:16:28 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # include <termios.h>
 # include <sys/stat.h>
 # include <curses.h>
+# include "../libs/libft/libft.h"
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
-# include "../libs/libft/libft.h"
 # include <errno.h>
 
 /* --------------------------------- MACROS --------------------------------- */
@@ -101,6 +101,9 @@ void	print_env(t_env *env);
 void	check(void);
 //////////////
 
+// env_builtin.c
+int		env_print(t_env *env);
+
 // env_list_init.c
 void	env_init(t_ms *ms, char **envp);
 
@@ -110,15 +113,18 @@ int		env_add_content(char *name, char *content, t_env *new);
 t_env	*env_find(char *name, t_env *head);
 int		env_remove(char *name, t_env *env);
 int		env_update(char *name, char *content, t_env *env);
-int		env_print(t_env *env, int function); // provisionalmente
 
 // error.c
 int		ms_error(char *error_message);
+
+// export_testing.c
+int		export_print(t_env *env, t_env *current, t_env *abc_min, char *prev);
 
 // generic list tools
 void	*tail(void *node);
 void	*head(void *node);
 int		append(t_lst **head, size_t size); // ?????
+void	swap(void *ptr_a, void *ptr_b); // TESTING
 
 // prompt.c
 // char	*set_prompt(char *cwd);

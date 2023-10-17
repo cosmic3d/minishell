@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:29:59 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:15:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:13:24 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,35 +125,6 @@ int	env_update(char *name, char *content, t_env *env)
 	{
 		ms_error(MALLOC_ERR);
 		return (1);
-	}
-	return (0);
-}
-
-/* Printea la lista de variables del entorno.
-La variable function puede ser ENV o EXPORT que son las dos funciiones que 
-pueden printear la lista de variables de entorno.
-En base al valor de function, este programa imprimirá en un formato u otro. */
-int	env_print(t_env *env, int function)
-{
-	if (function == ENV)
-	{
-		while (env)
-		{
-			if (env->content)
-				printf("%s=%s\n", env->name, env->content);
-			env = env->next;
-		}
-	}
-	else if (function == EXPORT)
-	{
-		while (env)
-		{
-			printf("declare -x %s", env->name);
-			if (env->content)
-				printf("=\"%s\"", env->content);
-			printf("\n");
-			env = env->next;
-		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:35:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:04 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/17 12:15:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,3 +64,30 @@ int	append(t_lst **head, size_t size)
 	}
 	return (SUCCESS);
 }
+
+// Swapea dos elementos de una lista
+void	swap(void *ptr_a, void *ptr_b)
+{
+	t_lst	*a;
+	t_lst	*b;
+	t_lst	*temp;
+
+	if (!ptr_a | !ptr_b)
+		return ;
+	a = (t_lst *)ptr_a;
+	b = (t_lst *)ptr_b;
+	if (a->prev)
+		a->prev->next = b;
+	if (b->prev)
+		b->prev->next = a;
+	if (a->next != b)
+	{
+		temp = a->next;
+		a->next = b->next;
+		b->next = temp;
+	}
+	else
+		b->next = a;
+	return ;
+}
+
