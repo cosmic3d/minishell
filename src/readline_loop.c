@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/17 18:32:20 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 20:35:42 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	readline_loop(t_ms *ms)
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);
+		buffer = erase_brackets(buffer);
+		printf("Content: %s\n", buffer);
+		continue ; //PROVISIONAL
 		tokenize(buffer, ms);
-		//exit(1);
 		print_tokens(ms->token);
 		free_tokens(&ms->token);
 		free(buffer);

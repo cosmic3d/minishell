@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/17 21:47:49 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 20:41:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
 # define CMD_ERROR "minishell: %s: command not found\n"
+# define BRACKS_ERROR "minishell: unexpected EOF while looking for matching `%s\'\n"
 
 // Return status
 # define SUCCESS 0
@@ -136,15 +137,19 @@ int		signal_handler(void);
 int		ms_arraylen(char **array);
 
 //cmd_parse.c
-int		valid_brackets(char *str);
 void	tokenize(char *cmd_line, t_ms *ms);
 int		get_token(int *i, char *cmd_line);
+void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms);
+
+//cmd_parse_brackets.c
+int		valid_brackets(char *str);
+char	*erase_brackets(char *str);
+char	*erase_brackets2(char *str, int bracks_count);
 
 //token_list_utils.c
 t_token	*token_tail(t_token *token);
 void	free_tokens(t_token **token);
 int		token_append(t_token **token);
 int		in_x(char *str, char c);
-void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms);
 
 #endif

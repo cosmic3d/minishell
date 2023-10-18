@@ -6,36 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:06:58 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/17 21:58:48 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:10:52 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//Si existen comillas comprueba si son válidas
-int	valid_brackets(char *str)
-{
-	int		i;
-	char	bracks;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-		{
-			bracks = str[i++];
-			while (42)
-			{
-				if (!str[i])
-					return (FALSE);
-				if (str[i] == bracks)
-					break ;
-				i++;
-			}
-		}
-	}
-	return (TRUE);
-}
 
 //Crea los tokens y los va añadiendo a una linked list
 void	tokenize(char *cmd_line, t_ms *ms)
