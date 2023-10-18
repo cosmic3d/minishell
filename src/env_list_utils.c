@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:29:59 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/17 17:13:24 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/18 16:35:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,34 @@ int	env_update(char *name, char *content, t_env *env)
 		return (1);
 	}
 	return (0);
+}
+
+// OLD
+// char	*get_env_content(char *name, t_env *env)
+// {
+// 	t_env	*variable;
+// 	char	*content;
+
+// 	variable = env_find(name, env);
+// 	if (!variable)
+// 		return (NULL);
+// 	free(name);
+// 	content = ft_strdup(variable->content);
+// 	if (!content)
+// 	{
+// 		ms_error(MALLOC_ERR);
+// 		return (NULL);
+// 	}
+// 	return (content);	
+// }
+
+char	*get_env_content(char *name, t_env *env)
+{
+	t_env	*variable;
+
+	variable = env_find(name, env);
+	free(name);
+	if (!variable)
+		return (NULL);
+	return (variable->content);
 }

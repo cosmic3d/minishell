@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/17 17:16:28 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/18 16:33:24 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@
 # define FAILURE 1
 # define TRUE 1
 # define FALSE 0
+
+// Export valid character pattern
+#define EXPORT_NAME_PATTERN "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu\
+vwxyz0123456789_"
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
@@ -113,6 +117,7 @@ int		env_add_content(char *name, char *content, t_env *new);
 t_env	*env_find(char *name, t_env *head);
 int		env_remove(char *name, t_env *env);
 int		env_update(char *name, char *content, t_env *env);
+char	*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
 // error.c
 int		ms_error(char *error_message);

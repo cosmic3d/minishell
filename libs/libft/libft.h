@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 17:01:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/17 16:57:31 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:20:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ int		ft_isalnum(int c);
 int		ft_isascii(int c);
 int		ft_isprint(int c);
 int		ft_isspace(int c);
+int		ft_isiter(const char *s, int (*f)(int));
+int		ft_match_ch(int c, const char *pattern);
+int		ft_match_str(char *str, const char *pattern);
 size_t	ft_strlen(const char *s);
 size_t	ft_low_strlen(const char *s1, const char *s2);
 int		ft_intlen(int number);
