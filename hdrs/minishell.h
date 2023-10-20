@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/19 20:15:22 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:25:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	print_envp(char **envp);
 void	print_env_and_export_output(t_ms *ms);
 void	print_env(t_env *env);
 void	check(void);
+void	test_export(t_ms *ms);
 //////////////
 
 // env_builtin.c
@@ -139,9 +140,11 @@ char	*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo 
 
 // error.c
 int		ms_error(char *error_message);
+void	export_perror(char *argument);
 
 // export_init.c
 void	export_init(t_export *data, char *arg);
+int		export_name_syntax(t_export *data, char *arg);
 
 // export_testing.c
 int		ms_export(t_ms *ms, char **argv);

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 11:33:07 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/19 20:19:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:43:18 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	export_process_argument(t_export *data, char *arg, t_env *env);
 static int	export_split_arg(t_export *data, char *arg);
 static int	export_new_content(t_export *data, t_env *node);
 static int	export_add_content(t_export *data, t_env *node);
+void	export_print_errors(t_export *data, char **argv);
 
 /* Funcionamiento de export:
 Export retornará 1 si una de las variables que intente crear no es válida.
@@ -28,10 +29,8 @@ correctamente.
 
 /* TO DO!!
 
-	Si la variable de entorno YA EXISTE y export recibe un comando sin
-	operador, entonces no hay que actualizar el contenido de la variable.
-		Ahora mismo el programa actualiza el contenido de la variable
-	independientemente de si no le pones operador.
+	- Decidir si export tiene que hacer una excepción con $_ o no.
+	- 
 
 */
 
@@ -41,20 +40,23 @@ int	ms_export(t_ms *ms, char **argv)
 	t_export	data;
 	int 		i;
 	
-	i = 0;
-	if (!argv[1])
+	i = 1;
+	data.exit_status = EXIT_SUCCESS;
+	if (!argv[i])
 		return (export_print(ms->env, ms->env, NULL, NULL)); // maybe
 	while (argv[i])
 	{
 		export_init(&data, argv[i]);
+		if (!data.valid_name)
+			export_perror(argv[i]);
 		if (export_process_argument(&data, argv[i], ms->env))
 		{
-			// ms->internal_error = 1;
+// Este error es por malloc, como tenemos t_ms *ms, podriamos usar exit(1) y fuera?
 			return (FAILURE);
 		}
+		
 		i++;
 	}
-	// export_print_errors(argv); // ?
 	return (data.exit_status);
 }
 
@@ -82,9 +84,9 @@ static int	export_print(t_env *env, t_env *node, t_env *abc_min, char *prev)
 		export_print(env, env, NULL, abc_min->name);
 		if (!ft_strcmp(abc_min->name, "_"))
 			return (SUCCESS);
-		printf("declare -x %s=", abc_min->name);
+		printf("declare -x %s", abc_min->name);
 		if (abc_min->content)
-			printf("\"%s\"", abc_min->content);
+			printf("=\"%s\"", abc_min->content);
 		printf("\n");
 	}
 	return (SUCCESS);

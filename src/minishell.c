@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/19 20:19:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:43:36 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	// envp = NULL; // debug
 	env_init(&ms, envp);
 
-	// print_envp(envp);
-	// print_env(ms.env);
-
-	char *argexport[] = { "export", NULL };
-	ms_export(&ms, argexport);
-
-	write(1, "\n\n\n", 3);
-
-	char *argexportB[] = { "export", "ZHOOLA=miscojones", NULL };
-	ms_export(&ms, argexportB);
-
-	ms_export(&ms, argexport);
-
-	exit(0);
+	// test_export(&ms);
 
 	signal_handler();
 

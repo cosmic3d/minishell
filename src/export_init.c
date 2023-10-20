@@ -6,43 +6,50 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:57:50 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/19 20:14:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:14:52 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	export_get_op(char *arg);
-static int	export_name_syntax(t_export *data, char *arg);
+static void	export_arg_syntax(t_export *data, char *arg);
 
 void	export_init(t_export *data, char *arg)
 {
-	data->valid_name = -export_name_syntax(data, arg);
-	data->eq_i = ft_strchr_i(arg, '=');
-	data->op = export_get_op(arg);
-	data->valid_content = 1;
-	if (data->op == EXPORT_NO_OP)
-		data->valid_content = 0;
+	data->valid_name = 1;
+	data->op = EXPORT_NO_OP;
+	export_arg_syntax(data, arg);
+	data->valid_content = data->op;
 	data->name = NULL;
 	data->content = NULL;
-	return ;
+	if (!data->valid_name)
+		data->exit_status = EXIT_FAILURE;
 }
 
-static int	export_get_op(char *arg)
+static void	export_arg_syntax(t_export *data, char *arg)
 {
 	int	i;
 
 	i = 0;
+	if (ft_isdigit(arg[i]))
+		data->valid_name = 0;
 	while (arg[i] && arg[i] != '+' && arg[i] != '=')
+	{
+		if (!ft_isdigit(arg[i]) && !ft_isalpha(arg[i]) && arg[i] != '_')
+			data->valid_name = 0;
 		i++;
+	}
+	if ((arg[i] == '+' && arg[i + 1] != '=') || i == 0)
+		data->valid_name = 0;
 	if (!ft_strncmp(arg + i, "+=", 2))
-		return (EXPORT_ADD);
+		data->op = EXPORT_ADD;
 	else if (!ft_strncmp(arg + i, "=", 1))
-		return (EXPORT_EQ);
-	return (EXPORT_NO_OP);
+		data->op = EXPORT_EQ;
+	data->eq_i = ft_strchr_i(arg, '=');
+	data->name_len = i;
 }
 
-static int	export_name_syntax(t_export *data, char *arg)
+int	export_name_syntax(t_export *data, char *arg)
 {
 	int	return_status;
 	int	i;
