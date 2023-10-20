@@ -27,7 +27,10 @@ int	valid_brackets(char *str)
 			while (42)
 			{
 				if (!str[i])
+				{
+					printf(BRACKS_ERROR, bracks);
 					return (FALSE);
+				}
 				if (str[i] == bracks)
 					break ;
 				i++;
@@ -53,7 +56,6 @@ char	*erase_brackets(char *str)
 	bracks_count = 0;
 	if (!valid_brackets(str))
 	{
-		printf(BRACKS_ERROR, "\'"); //PROVISIONAL
 		free(str);
 		return (NULL);
 	}

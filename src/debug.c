@@ -113,9 +113,9 @@ int test_export_juntos(t_ms *ms, int argc)
 	args = malloc(sizeof(char *) * (argc + 2));
 	args[0] = ft_strdup("export");
 	while (i < argc + 1)
-	{	
+	{
 		args[i] = readline("arg: ");
-		
+
 		i++;
 	}
 	args[i] = NULL;
@@ -193,8 +193,8 @@ void	print_tokens(t_token *token)
 	current = token;
 	while (current)
 	{
-		//printf("name: %s\n", current->type);
-		printf("content: %s\n", current->content);
+		printf("Content: %s\n", current->content);
+		printf("Type: %i\n", current->type);
 		current = current->next;
 	}
 }

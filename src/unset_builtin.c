@@ -9,7 +9,7 @@
 /*   Updated: 2023/10/20 18:09:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/*
 #include "minishell.h"
 
 int	ms_unset(t_ms *ms, char **argv)
@@ -21,3 +21,4 @@ int	ms_unset(t_ms *ms, char **argv)
 		return (EXIT_SUCCESS);
 	}
 }
+ */

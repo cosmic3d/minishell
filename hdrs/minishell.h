@@ -47,7 +47,15 @@
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
 # define CMD_ERROR "minishell: %s: command not found\n"
-# define BRACKS_ERROR "minishell: unexpected EOF while looking for matching `%s\'\n"
+# define BRACKS_ERROR "minishell: unexpected EOF while looking for matching `%c\'\n"
+
+//Token types
+# define TEXT 0
+# define PIPE 1
+# define REDIRECT_OUT 2
+# define REDIRECT_APPEND 3
+# define REDIRECT_IN 4
+# define REDIRECT_HEARDOC 5
 
 // Return status
 # define SUCCESS 0
@@ -173,9 +181,11 @@ int		signal_handler(void);
 int		ms_arraylen(char **array);
 
 //cmd_parse.c
-void	tokenize(char *cmd_line, t_ms *ms);
+int		tokenize(char *cmd_line, t_ms *ms);
 int		get_token(int *i, char *cmd_line);
+int		get_token_type(char *str);
 void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms);
+int		check_tokens(t_ms *ms);
 
 //cmd_parse_brackets.c
 int		valid_brackets(char *str);

@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 //Crea los tokens y los va añadiendo a una linked list
-void	tokenize(char *cmd_line, t_ms *ms)
+int	tokenize(char *cmd_line, t_ms *ms)
 {
 	int		i;
 	int		nt; //El primer caracter del new token (puta norminette)
@@ -33,6 +33,12 @@ void	tokenize(char *cmd_line, t_ms *ms)
 		if (nt != -1)
 			add_token(cmd_line, &i, &nt, ms);
 	}
+	free(cmd_line);
+	/* if (check_tokens(ms) == SUCCESS)
+		return (SUCCESS);
+	free_tokens(&ms->token);
+	return (FAILURE); */ //DE MOMENTO ASÍ
+	return (SUCCESS);
 }
 
 //Aquí se definen los limitadores entre token y token
@@ -65,6 +71,22 @@ int	get_token(int *i, char *cmd_line)
 	return (TRUE);
 }
 
+//Devuelve el tipo de token
+int	get_token_type(char *str)
+{
+	if (!ft_strncmp(str, "|", 2))
+		return (PIPE);
+	else if (!ft_strncmp(str, ">", 2))
+		return (REDIRECT_OUT);
+	else if (!ft_strncmp(str, ">>", 3))
+		return (REDIRECT_APPEND);
+	else if (!ft_strncmp(str, "<", 2))
+		return (REDIRECT_IN);
+	else if (!ft_strncmp(str, "<<", 3))
+		return (REDIRECT_HEARDOC);
+	return (TEXT);
+}
+
 /*Una vez se sabe cuál es el token se añade a la lista,
 además de hacer el substr y de asignarle el tipo*/
 void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
@@ -85,7 +107,25 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 			ms_error(MALLOC_ERR);
 			exit(1);
 		}
-		//last->type =  get_token_type() //EN EL FUTURO
+		last->type = get_token_type(last->content);
 		*nt = -1;
 	}
 }
+
+/*Esta función se encargará de comprobar que no existan erorres de sintaxis,
+parejas de comillas incompletas... Entre otras cosas feas.
+
+Si devuelve FAILURE quiere decir que ha habido
+algún error de ese tipo en algún token.
+
+Si se da el caso, esta función NO liberará nada. Lo único de lo que se encarga
+esta función aparte de comprobar errores es de eliminar las comillas del anterior
+string y de igualar este nuevo string alojado al puntero de content del token.*/
+//int	check_tokens(t_ms *ms)//COMENTALA SI TE DA PROBLEMAS
+//{
+	/*1. Se comprueba el token_type
+	  2. En función del token_type se comprueba si el siguiente es adecuado
+	  3. Si el token es de tipo texto se intentan eliminar las comillas.
+	  4. Se devuelve FAILURE si algo falla*/
+	//return (SUCCESS);
+//}
