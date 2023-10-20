@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtin.c                                      :+:      :+:    :+:   */
+/*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/20 18:04:59 by apresas-         ###   ########.fr       */
+/*   Created: 2023/10/20 17:54:04 by apresas-          #+#    #+#             */
+/*   Updated: 2023/10/20 17:56:36 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* TO-DO:
-*/
-
-/* Printea el output del BUILTIN 'env' */
-int	ms_env(t_env *env)
+int	ms_pwd(void)
 {
-	t_env	*current;
+	char	*cwd;
 
-	current = env;
-	while (current)
-	{
-		if (current->content && !ft_strlcmp(current->name, "?"))
-			printf("%s=%s\n", current->name, current->content);
-		current = current->next;
-	}
-	return (SUCCESS);
+	cwd = getcwd(NULL, 0);
+	// malloc check?
+	write(1, &cwd, ft_strlen(cwd));
+	free(cwd);
+	return (EXIT_SUCCESS);
 }

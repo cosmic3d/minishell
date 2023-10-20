@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtin.c                                      :+:      :+:    :+:   */
+/*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/20 18:04:59 by apresas-         ###   ########.fr       */
+/*   Created: 2023/10/20 17:57:02 by apresas-          #+#    #+#             */
+/*   Updated: 2023/10/20 18:05:10 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* TO-DO:
-*/
-
-/* Printea el output del BUILTIN 'env' */
-int	ms_env(t_env *env)
+int	ms_unset(t_ms *ms, char **argv)
 {
-	t_env	*current;
-
-	current = env;
-	while (current)
+	// estoy en ello
+	if (!argv[1])
 	{
-		if (current->content && !ft_strlcmp(current->name, "?"))
-			printf("%s=%s\n", current->name, current->content);
-		current = current->next;
+		write(1, "\n", 1);
+		return (EXIT_SUCCESS);
 	}
-	return (SUCCESS);
 }
