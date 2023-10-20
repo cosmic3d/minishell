@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/18 16:33:24 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/19 20:15:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,13 @@
 # define FALSE 0
 
 // Export valid character pattern
-#define EXPORT_NAME_PATTERN "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu\
+# define EXPORT_NAME_PATTERN "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu\
 vwxyz0123456789_"
+
+// EXPORT OPERATORS
+# define EXPORT_NO_OP 0
+# define EXPORT_ADD 1
+# define EXPORT_EQ 2
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
@@ -96,6 +101,19 @@ typedef struct s_minishell
 	int		shlvl;
 }				t_ms;
 
+typedef struct s_export
+{
+	char	*name;
+	char	*content;
+	int		eq_i;
+	int		name_len;
+	int		op;
+	int		valid_name;
+	int		valid_content;
+	int		exit_status;
+}				t_export;
+
+
 /* --------------------------------- FUNCS ---------------------------------- */
 
 //////// DEBUG
@@ -122,8 +140,12 @@ char	*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo 
 // error.c
 int		ms_error(char *error_message);
 
+// export_init.c
+void	export_init(t_export *data, char *arg);
+
 // export_testing.c
-int		export_print(t_env *env, t_env *current, t_env *abc_min, char *prev);
+int		ms_export(t_ms *ms, char **argv);
+// int		export_print(t_env *env, t_env *current, t_env *abc_min, char *prev);
 
 // generic list tools
 void	*tail(void *node);
