@@ -39,7 +39,7 @@ int	valid_brackets(char *str)
 
 /*Elimina las parejas de brackets de un string, liberando del anterior y
 devolviendo el nuevo sin brackets
-En el caso de que no existan brackets en el string, devuelve el mismo
+En el caso de que no existan brackets en el string, devuelve el mismo.
 ERRORES
 Si hay algún error de syntaxis se imprime el mensaje de error y se devuelve NULL
 Si hay algún error de malloc se sale del programa directamente*/
@@ -51,10 +51,10 @@ char	*erase_brackets(char *str)
 
 	i = -1;
 	bracks_count = 0;
-	//Comprobar valid_brackets antes de nada aquí?
 	if (!valid_brackets(str))
 	{
 		printf(BRACKS_ERROR, "\'"); //PROVISIONAL
+		free(str);
 		return (NULL);
 	}
 	while (str[++i])
@@ -85,7 +85,7 @@ char	*erase_brackets2(char *str, int bracks_count)
 	j = 0;
 	new_str = (char *)ft_calloc(ft_strlen(str) - bracks_count + 1, sizeof(char));
 	if (!new_str)
-		exit(1);
+		exit(1); //Aquí llamaríamos a la función que libera todo y hace exit
 	while (str[++i])
 	{
 		if (str[i] == '"' || str[i] == '\'')

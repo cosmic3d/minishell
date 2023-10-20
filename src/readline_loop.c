@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/18 20:35:42 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:58:06 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 int	readline_loop(t_ms *ms)
 {
 	char	*buffer;
+	char	*buffer_nobracks;
 
 	while (42)
 	{
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);
-		buffer = erase_brackets(buffer);
-		printf("Content: %s\n", buffer);
+		buffer_nobracks = erase_brackets(buffer);
+		printf("Content: %s\n", buffer_nobracks);
+		if (buffer_nobracks)
+			free(buffer_nobracks);
 		continue ; //PROVISIONAL
 		tokenize(buffer, ms);
 		print_tokens(ms->token);
