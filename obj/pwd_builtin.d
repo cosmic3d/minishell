@@ -1,4 +1,4 @@
-obj/cmd_parse.o: src/cmd_parse.c hdrs/minishell.h \
+obj/pwd_builtin.o: src/pwd_builtin.c hdrs/minishell.h \
  hdrs/../libs/libft/libft.h hdrs/../libs/readline/readline.h \
  hdrs/../libs/readline/rlstdc.h hdrs/../libs/readline/rltypedefs.h \
  hdrs/../libs/readline/keymaps.h hdrs/../libs/readline/chardefs.h \

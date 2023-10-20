@@ -6,16 +6,13 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/20 18:08:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:01:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* TO-DO:
-*/
-
-/* Printea el output del BUILTIN 'env' */
+/* función que emula el builtin env */
 int	ms_env(t_env *env)
 {
 	t_env	*current;
