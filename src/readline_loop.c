@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:34:56 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/15 17:09:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Prototipo provisional // Nombre provisional
-int	readline_loop(void)
+int	readline_loop(t_ms *ms)
 {
 	char	*buffer;
 
@@ -22,7 +22,9 @@ int	readline_loop(void)
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);
-		// Aquí enviaríamos el buffer al parser
+		tokenize(buffer, ms);
+		print_tokens(ms->token);
+		free_tokens(&ms->token);
 		free(buffer);
 	}
 	rl_clear_history();

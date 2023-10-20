@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 12:32:23 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/20 17:39:11 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:37:19 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,3 +186,15 @@ int	test_export_separados(t_ms *ms, int argc)
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+void	print_tokens(t_token *token)
+{
+	t_token	*current;
+
+	current = token;
+	while (current)
+	{
+		//printf("name: %s\n", current->type);
+		printf("content: %s\n", current->content);
+		current = current->next;
+	}
+}

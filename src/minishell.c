@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/20 17:43:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:40:11 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
-	// int		i;
-	// char	*test;
 
 	argv[0] = NULL;
 	argv = NULL;
@@ -31,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 
 	signal_handler();
 
-	if (readline_loop())
+	if (readline_loop(&ms))
 		return (1);
 	return (0);
 }
