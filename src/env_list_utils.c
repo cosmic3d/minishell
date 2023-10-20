@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:29:59 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:15:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:10:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,31 +129,32 @@ int	env_update(char *name, char *content, t_env *env)
 	return (0);
 }
 
-/* Printea la lista de variables del entorno.
-La variable function puede ser ENV o EXPORT que son las dos funciiones que 
-pueden printear la lista de variables de entorno.
-En base al valor de function, este programa imprimirá en un formato u otro. */
-int	env_print(t_env *env, int function)
+// OLD
+// char	*get_env_content(char *name, t_env *env)
+// {
+// 	t_env	*variable;
+// 	char	*content;
+
+// 	variable = env_find(name, env);
+// 	if (!variable)
+// 		return (NULL);
+// 	free(name);
+// 	content = ft_strdup(variable->content);
+// 	if (!content)
+// 	{
+// 		ms_error(MALLOC_ERR);
+// 		return (NULL);
+// 	}
+// 	return (content);	
+// }
+
+char	*get_env_content(char *name, t_env *env)
 {
-	if (function == ENV)
-	{
-		while (env)
-		{
-			if (env->content)
-				printf("%s=%s\n", env->name, env->content);
-			env = env->next;
-		}
-	}
-	else if (function == EXPORT)
-	{
-		while (env)
-		{
-			printf("declare -x %s", env->name);
-			if (env->content)
-				printf("=\"%s\"", env->content);
-			printf("\n");
-			env = env->next;
-		}
-	}
-	return (0);
+	t_env	*variable;
+
+	variable = env_find(name, env);
+	free(name);
+	if (!variable)
+		return (NULL);
+	return (variable->content);
 }

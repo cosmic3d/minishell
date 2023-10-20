@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:33:00 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 18:40:41 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 17:27:00 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,38 @@ int	ms_error(char *error_message)
 	return (1);
 }
 
-// PROVISIONAL TOO
-void	*ms_error_ptr(char *error_message)
+void	export_perror(char *argument)
 {
-	write(STDERR_FILENO, "Error\n", 7);
-	write(STDERR_FILENO, error_message, ft_strlen(error_message));
-	return (NULL);
+	write(STDERR_FILENO, "minishell: export: `", 21);
+	write(STDERR_FILENO, argument, ft_strlen(argument));
+	write(STDERR_FILENO, "': not a valid identifier\n", 27);
 }
+
+// void	ms_perror(t_ms *ms, char *program, char *error)
+// {
+// 	write(STDERR_FILENO, "minishell: ", 12);
+// 	write(STDERR_FILENO, program, ft_strlen(program));
+// 	write(STDERR_FILENO, ": ", 2);
+// 	write(STDERR_FILENO, error, ft_strlen(error));
+// }
+
+// int	ms_error_quit(char *error, int exit_status, char *error)
+// {
+
+// }
+
+// TO-DO:
+/*
+	- Necesitaremos un ms_error para salir de los programas que llamemos.
+		Por lo que he visto, supongo que tendremos que liberar cosas de
+		la pipe con la que llamemos al programa así que tendrá que ser
+		una función especifica para eso.
+	
+	- Hay errores de los cuales solo necesitaremos un return en vez de
+	un exit. Habrá que hacer esa función también.
+
+	- Hay que estandarizar las funciones de error en general, seguramente
+	ms_error cambie de nombre más adelante, o cambie su funcionamiento.
+
+	- ?
+*/

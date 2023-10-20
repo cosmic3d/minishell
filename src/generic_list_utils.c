@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generic_list_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:35:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/13 20:40:13 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:39:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,60 @@ void	*head(void *node)
 	return (list);
 }
 
-// /* Crea un nuevo nodo en una lista generica */
+/* Crea un nuevo nodo en una lista generica */
+int	append(t_lst **head, size_t size)
+{
+	t_lst	*new;
+	t_lst	*last;
+
+	new = malloc(size);
+	if (!new)
+	{
+		ms_error(MALLOC_ERR);
+		return (FAILURE);
+	}
+	new->prev = NULL;
+	new->next = NULL;
+	if (*head == NULL)
+		*head = new;
+	else
+	{
+		last = tail(*head);
+		last->next = new;
+		new->prev = last;
+	}
+	return (SUCCESS);
+}
+
+// Swapea dos elementos de una lista
+void	swap(void *ptr_a, void *ptr_b)
+{
+	t_lst	*a;
+	t_lst	*b;
+	t_lst	*temp;
+
+	if (!ptr_a | !ptr_b)
+		return ;
+	a = (t_lst *)ptr_a;
+	b = (t_lst *)ptr_b;
+	if (a->prev)
+		a->prev->next = b;
+	if (b->prev)
+		b->prev->next = a;
+	if (a->next != b)
+	{
+		temp = a->next;
+		a->next = b->next;
+		b->next = temp;
+	}
+	else
+		b->next = a;
+	return ;
+}
+
+
+// Version e chus
+/* Crea un nuevo nodo en una lista generica */
 // int	append(t_lst **head, size_t size)
 // {
 // 	t_lst	*new;

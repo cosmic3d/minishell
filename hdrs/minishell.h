@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/18 20:41:26 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:33:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # include <termios.h>
 # include <sys/stat.h>
 # include <curses.h>
+# include "../libs/libft/libft.h"
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
-# include "../libs/libft/libft.h"
 # include <errno.h>
 
 /* --------------------------------- MACROS --------------------------------- */
@@ -54,6 +54,15 @@
 # define FAILURE 1
 # define TRUE 1
 # define FALSE 0
+
+// Export valid character pattern
+# define EXPORT_NAME_PATTERN "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu\
+vwxyz0123456789_"
+
+// EXPORT OPERATORS
+# define EXPORT_NO_OP 0
+# define EXPORT_ADD 1
+# define EXPORT_EQ 2
 
 /* --------------------------------- STRUCTS -------------------------------- */
 
@@ -94,6 +103,19 @@ typedef struct s_minishell
 	int		shlvl;
 }				t_ms;
 
+typedef struct s_export
+{
+	char	*name;
+	char	*content;
+	int		eq_i;
+	int		name_len;
+	int		op;
+	int		valid_name;
+	int		valid_content;
+	int		exit_status;
+}				t_export;
+
+
 /* --------------------------------- FUNCS ---------------------------------- */
 
 //////// DEBUG
@@ -101,8 +123,12 @@ void	print_envp(char **envp);
 void	print_env_and_export_output(t_ms *ms);
 void	print_env(t_env *env);
 void	check(void);
+void	test_export(t_ms *ms);
 void	print_tokens(t_token *token);
 //////////////
+
+// env_builtin.c
+int		env_print(t_env *env);
 
 // env_list_init.c
 void	env_init(t_ms *ms, char **envp);
@@ -113,15 +139,25 @@ int		env_add_content(char *name, char *content, t_env *new);
 t_env	*env_find(char *name, t_env *head);
 int		env_remove(char *name, t_env *env);
 int		env_update(char *name, char *content, t_env *env);
-int		env_print(t_env *env, int function); // provisionalmente
+char	*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
 // error.c
 int		ms_error(char *error_message);
+void	export_perror(char *argument);
+
+// export_init.c
+void	export_init(t_export *data, char *arg);
+int		export_name_syntax(t_export *data, char *arg);
+
+// export_testing.c
+int		ms_export(t_ms *ms, char **argv);
+// int		export_print(t_env *env, t_env *current, t_env *abc_min, char *prev);
 
 // generic list tools
 void	*tail(void *node);
 void	*head(void *node);
 int		append(t_lst **head, size_t size); // ?????
+void	swap(void *ptr_a, void *ptr_b); // TESTING
 
 // prompt.c
 // char	*set_prompt(char *cwd);
