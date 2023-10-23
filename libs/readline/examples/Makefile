@@ -32,11 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-<<<<<<< HEAD
 BUILD_DIR = /mnt/c/Code/42/minishell/libs/readline
-=======
-BUILD_DIR = /home/albert/minishell/libs/readline
->>>>>>> AlbertDebian
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

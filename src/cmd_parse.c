@@ -34,11 +34,10 @@ int	tokenize(char *cmd_line, t_ms *ms)
 			add_token(cmd_line, &i, &nt, ms);
 	}
 	free(cmd_line);
-	/* if (check_tokens(ms) == SUCCESS)
+	if (check_tokens(ms) == SUCCESS)
 		return (SUCCESS);
 	free_tokens(&ms->token);
-	return (FAILURE); */ //DE MOMENTO ASÍ
-	return (SUCCESS);
+	return (FAILURE);
 }
 
 //Aquí se definen los limitadores entre token y token
@@ -111,21 +110,3 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 		*nt = -1;
 	}
 }
-
-/*Esta función se encargará de comprobar que no existan erorres de sintaxis,
-parejas de comillas incompletas... Entre otras cosas feas.
-
-Si devuelve FAILURE quiere decir que ha habido
-algún error de ese tipo en algún token.
-
-Si se da el caso, esta función NO liberará nada. Lo único de lo que se encarga
-esta función aparte de comprobar errores es de eliminar las comillas del anterior
-string y de igualar este nuevo string alojado al puntero de content del token.*/
-//int	check_tokens(t_ms *ms)//COMENTALA SI TE DA PROBLEMAS
-//{
-	/*1. Se comprueba el token_type
-	  2. En función del token_type se comprueba si el siguiente es adecuado
-	  3. Si el token es de tipo texto se intentan eliminar las comillas.
-	  4. Se devuelve FAILURE si algo falla*/
-	//return (SUCCESS);
-//}

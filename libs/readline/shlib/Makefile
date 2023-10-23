@@ -32,11 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-<<<<<<< HEAD
 BUILD_DIR = /mnt/c/Code/42/minishell/libs/readline
-=======
-BUILD_DIR = /home/albert/minishell/libs/readline
->>>>>>> AlbertDebian
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

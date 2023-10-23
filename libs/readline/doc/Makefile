@@ -49,11 +49,7 @@ RM = rm -f
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 
-<<<<<<< HEAD
 BUILD_DIR = /mnt/c/Code/42/minishell/libs/readline
-=======
-BUILD_DIR = /home/albert/minishell/libs/readline
->>>>>>> AlbertDebian
 TEXINPUTDIR = $(srcdir)
 
 MAKEINFO    = LANGUAGE= makeinfo

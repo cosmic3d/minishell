@@ -31,11 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-<<<<<<< HEAD
 BUILD_DIR = /mnt/c/Code/42/minishell/libs/readline
-=======
-BUILD_DIR = /home/albert/minishell/libs/readline
->>>>>>> AlbertDebian
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

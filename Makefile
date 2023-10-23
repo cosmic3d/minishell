@@ -69,7 +69,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
 
 clean:
 	@$(RM) -r $(OBJ_DIR)
-	#@make clean -sC $(RDL_DIR)
+	@make clean -sC $(RDL_DIR)
 	@make clean -sC $(LFT_DIR)
 	@echo "$(CYAN)Dependencies and objects removed$(RESET)"
 

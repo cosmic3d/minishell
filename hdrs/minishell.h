@@ -48,6 +48,7 @@
  resetting to 1\n"
 # define CMD_ERROR "minishell: %s: command not found\n"
 # define BRACKS_ERROR "minishell: unexpected EOF while looking for matching `%c\'\n"
+# define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
 
 //Token types
 # define TEXT 0
@@ -185,12 +186,15 @@ int		tokenize(char *cmd_line, t_ms *ms);
 int		get_token(int *i, char *cmd_line);
 int		get_token_type(char *str);
 void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms);
-int		check_tokens(t_ms *ms);
 
 //cmd_parse_brackets.c
 int		valid_brackets(char *str);
 char	*erase_brackets(char *str);
 char	*erase_brackets2(char *str, int bracks_count);
+
+//cmd_parse_checker.c
+int		check_tokens(t_ms *ms);
+int		check_token(t_token *token);
 
 //token_list_utils.c
 t_token	*token_tail(t_token *token);

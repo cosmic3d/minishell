@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/17 18:55:14 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/24 00:16:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	free_tokens(t_token **token)
 		tmp = *token;
 		tmp->prev = NULL;
 		*token = (*token)->next;
-		free(tmp->content);
+		if (tmp->content)
+			free(tmp->content);
 		free(tmp);
 		tmp = NULL;
 	}
