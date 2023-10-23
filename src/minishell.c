@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/20 20:02:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:18:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ int	main(int argc, char **argv, char **envp)
 	ms_unset(&ms, unset_zhola_arg);
 	ms_export(&ms, print_arg);
 
-	exit(0);
+	// exit(0);
 
+	printf("PID = %d\n", getpid());
 
 	// test_export(&ms);
 
