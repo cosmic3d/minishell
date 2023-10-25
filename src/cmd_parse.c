@@ -21,6 +21,8 @@ int	tokenize(char *cmd_line, t_ms *ms)
 	i = -1;
 	nt = -1;
 	ms->token = NULL;
+	if (!valid_brackets(cmd_line))
+		return (FAILURE);
 	while (cmd_line[++i])
 	{
 		if (nt == -1)
@@ -45,7 +47,7 @@ int	get_token(int *i, char *cmd_line)
 {
 	char	tmp;
 
-	if (!in_x("<>|", cmd_line[*i]) && in_x("\"\'", cmd_line[*i + 1]))
+	if (!in_x("<>|\"\'", cmd_line[*i]) && in_x("\"\'", cmd_line[*i + 1]))
 		return (FALSE);
 	if (!in_x("<>|\'\"", cmd_line[*i]) && \
 	(in_x(" <>|\'\"", cmd_line[*i + 1]) || !cmd_line[*i + 1]))
@@ -56,7 +58,7 @@ int	get_token(int *i, char *cmd_line)
 		*i = *i + 1;
 		while (cmd_line[*i] && cmd_line[*i] != tmp)
 			*i = *i + 1;
-		if (in_x("\'\"", cmd_line[*i + 1]))
+		if ((!in_x("<>| ", cmd_line[*i + 1]) && cmd_line[*i + 1]) || cmd_line[*i - 1] == tmp)
 			return (FALSE);
 	}
 	else if (in_x("<>", cmd_line[*i]))
