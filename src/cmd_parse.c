@@ -58,7 +58,7 @@ int	get_token(int *i, char *cmd_line)
 		*i = *i + 1;
 		while (cmd_line[*i] && cmd_line[*i] != tmp)
 			*i = *i + 1;
-		if ((!in_x("<>| ", cmd_line[*i + 1]) && cmd_line[*i + 1]) || cmd_line[*i - 1] == tmp)
+		if ((!in_x("<>| ", cmd_line[*i + 1]) && cmd_line[*i + 1]))
 			return (FALSE);
 	}
 	else if (in_x("<>", cmd_line[*i]))

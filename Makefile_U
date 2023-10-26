@@ -51,7 +51,7 @@ INCLUDE 	= -Ihdrs
 all: $(NAME)
 
 $(NAME):: $(LIBS) $(OBJS)
-	$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(SANS) -ltermcap libs/libft/libft.a $(OBJS) -o $(NAME) -Llibs/libft -l:libft.a -lreadline
 	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
 
 $(NAME)::

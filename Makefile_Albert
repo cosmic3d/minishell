@@ -85,7 +85,7 @@ clean:
 
 fclean:	clean
 	@make fclean -sC $(LFT_DIR)
-	@echo "(RED)Libft library fcleaned$(RESET)"
+	@echo "$(RED)Libft library fcleaned$(RESET)"
 	@$(RM) $(NAME)
 	@echo "$(RED)$(NAME) succesfully removed$(RESET)"
 
