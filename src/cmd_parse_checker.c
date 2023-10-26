@@ -20,7 +20,8 @@ algún error de ese tipo en algún token.
 
 Si se da el caso, esta función NO liberará nada. Lo único de lo que se encarga
 esta función aparte de comprobar errores es de eliminar las comillas del anterior
-string y de igualar este nuevo string alojado al puntero de content del token.*/
+string y de igualar este nuevo string alojado al puntero de content del token.
+*/
 int	check_tokens(t_ms *ms)
 {
 	t_token	*tmp;
@@ -44,10 +45,7 @@ int	check_token(t_token *token)
 	if (token->type == PIPE)
 	{
 		if (!token->next || token->next->type == PIPE)
-		{
-			printf(SYNTAX_ERROR, "|");
-			return (FALSE);
-		}
+			return (printf(SYNTAX_ERROR, "|") * FALSE);
 	}
 	else if (token->type != TEXT)
 	{

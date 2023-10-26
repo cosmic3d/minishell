@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 21:50:27 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/26 20:13:20 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,3 @@ int	signal_handler(void)
 	signal(CTRL_BACKSLASH, signal_tal);
 	return (1);
 }
-
-
