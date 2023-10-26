@@ -124,7 +124,6 @@ typedef struct s_export
 	int		exit_status;
 }				t_export;
 
-
 /* --------------------------------- FUNCS ---------------------------------- */
 
 //////// DEBUG
@@ -177,6 +176,8 @@ char	*terminal_entry(void);
 
 // signal_handler.c
 int		signal_handler(void);
+void	disable_control_chars_echo(void);
+void	restore_terminal_settings(void);
 
 // utils.c
 int		ms_arraylen(char **array);

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/26 20:13:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/26 21:05:01 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,20 @@ char	*terminal_entry(void)
 {
 	char	*buffer;
 
+	disable_control_chars_echo();
 	buffer = readline(CMDPROMPT);
 	if (!buffer)
 	{
 		// Una de dos:
 		// Error de readline
 		// NULL enviado a readline
+		if (rl_eof_found)
+		{
+			write(1, "\033[A", 4);
+			write(1, "\033[2K", 5);
+			printf("%s%s", CMDPROMPT, "exit\n");
+		}
+		restore_terminal_settings();
 		return (NULL);
 	}
 	if (buffer[0] != '\0')

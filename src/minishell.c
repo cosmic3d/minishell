@@ -21,13 +21,11 @@ int	main(int argc, char **argv, char **envp)
 	argv = NULL;
 	if (argc != 1 || argv)
 		return (ms_error(ARGC_ERR));
-
 	// print_envp(envp); // debug
 	// envp = NULL; // debug
 	env_init(&ms, envp);
 
 	// test_export(&ms);
-
 	signal_handler();
 
 	if (readline_loop(&ms))
