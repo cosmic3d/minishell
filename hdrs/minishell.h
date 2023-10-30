@@ -74,6 +74,19 @@ vwxyz0123456789_"
 # define EXPORT_EQ 2
 
 /* --------------------------------- STRUCTS -------------------------------- */
+typedef struct s_redirection
+{
+	int		type;
+	char	*fd;
+}				t_redirection;
+
+typedef struct s_cmdinfo
+{
+	char			*cmd;
+	char			**args;
+	t_redirection	**rd;
+	int				has_pipe;
+}				t_cmdinfo;
 
 typedef struct s_env
 {
