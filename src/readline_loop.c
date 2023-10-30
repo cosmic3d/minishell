@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/26 21:05:01 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:02:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	readline_loop(t_ms *ms)
 
 	while (42)
 	{
+		disable_control_chars_echo();
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);

@@ -17,6 +17,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
+	//printf("argv[0]=%s\n", argv[0]);
 	argv[0] = NULL;
 	argv = NULL;
 	if (argc != 1 || argv)
