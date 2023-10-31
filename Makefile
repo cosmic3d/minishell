@@ -33,16 +33,28 @@ MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
 MUTE		= &> /dev/null
+CR			= \033[K\r
+# -=-=-=-=-	FUNCTIONS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+# Function to hide the cursor
+define hide_cursor
+    @printf "\e[?25l"  # Hide the cursor
+endef
+
+# Function to show the cursor
+define show_cursor
+    @printf "\e[?25h"  # Show the cursor
+endef
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		+= $(INC_DIR)minishell.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= $(notdir $(wildcard src/*.c))
+SRCS		:= $(shell find src -name "*.c")
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+#OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+OBJS		:= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
@@ -51,11 +63,12 @@ INCLUDE 	= -Ihdrs
 all: $(NAME)
 
 $(NAME):: $(LIBS) $(OBJS)
-	$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
-	@echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
+	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
+	@printf "$(GREEN)\n🐜🐌MINISHELL COMPILED🐜🐌$(RESET)\n"
 
 $(NAME)::
-	@echo "$(BLUE)Nothing to be done for $@$(RESET)";
+	@printf "$(BLUE)Nothing to be done for $@\n$(RESET)";
+	@$(show_cursor)
 
 $(LIBS):
 	@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
@@ -63,9 +76,10 @@ $(LIBS):
 	@make -sC $(LFT_DIR) $(MUTE)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
+	@$(hide_cursor)
 	@$(MKDIR) $(dir $@)
-	@echo "$(MAGENTA)Compiling: $<$(RESET)"
-	$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
+	@printf "$(MAGENTA)Compiling: $(notdir $<)$(RESET)$(CR)"
+	@$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

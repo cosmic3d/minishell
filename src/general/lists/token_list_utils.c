@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/25 20:09:07 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/31 18:56:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	free_tokens(t_token **token)
 	token = NULL;
 }
 
+//Devuelve true si almenos uno de los caracteres de str es c
 int	in_x(char *str, char c)
 {
 	int	i;

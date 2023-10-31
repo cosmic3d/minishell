@@ -47,7 +47,8 @@
 # define SHLVL_WARNING "minishell: warning: shell level (%d) too high,\
  resetting to 1\n"
 # define CMD_ERROR "minishell: %s: command not found\n"
-# define BRACKS_ERROR "minishell: unexpected EOF while looking for matching `%c\'\n"
+# define BRACKS_ERROR "minishell: unexpected EOF while \
+looking for matching `%c\'\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
 
 //Token types
@@ -82,10 +83,11 @@ typedef struct s_redirection
 
 typedef struct s_cmdinfo
 {
-	char			*cmd;
-	char			**args;
-	t_redirection	**rd;
-	int				has_pipe;
+	char				*cmd;
+	char				**args;
+	t_redirection		**rd;
+	int					has_pipe;
+	struct s_cmdinfo	*next_cmd;
 }				t_cmdinfo;
 
 typedef struct s_env
@@ -120,6 +122,7 @@ typedef struct s_minishell
 {
 	t_env	*env;
 	t_token	*token;
+	t_cmdinfo	*cmd
 	char	**envp;
 	char	*prev_wd; // Previous working directory
 	int		shlvl;
@@ -215,5 +218,9 @@ t_token	*token_tail(t_token *token);
 void	free_tokens(t_token **token);
 int		token_append(t_token **token);
 int		in_x(char *str, char c);
+
+//cmd_struct.c
+int		get_cmd_info(t_ms *ms);
+int		get_num_cmds(t_token *token);
 
 #endif
