@@ -19,6 +19,8 @@ int	valid_brackets(char *str)
 	char	bracks;
 
 	i = -1;
+	if (!str)
+		return (FALSE);
 	while (str[++i])
 	{
 		if (str[i] == '"' || str[i] == '\'')

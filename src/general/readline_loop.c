@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/30 17:02:18 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/10/31 19:30:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ char	*terminal_entry(void)
 		// Una de dos:
 		// Error de readline
 		// NULL enviado a readline
+
+		//Al recibir Ctrl+D (eof), volvemos a la línea anterior y la eliminamos para luego imprimir exit
 		if (rl_eof_found)
-		{
-			write(1, "\033[A", 4);
-			write(1, "\033[2K", 5);
-			printf("%s%s", CMDPROMPT, "exit\n");
-		}
+			printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
 		restore_terminal_settings();
 		return (NULL);
 	}

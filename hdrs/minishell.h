@@ -78,16 +78,16 @@ vwxyz0123456789_"
 typedef struct s_redirection
 {
 	int		type;
-	char	*fd;
+	char	*str;
 }				t_redirection;
 
 typedef struct s_cmdinfo
 {
 	char				*cmd;
 	char				**args;
-	t_redirection		**rd;
+	t_redirection		*rd;
 	int					has_pipe;
-	struct s_cmdinfo	*next_cmd;
+	//struct s_cmdinfo	*next_cmd; //Me da que no
 }				t_cmdinfo;
 
 typedef struct s_env
@@ -122,7 +122,7 @@ typedef struct s_minishell
 {
 	t_env	*env;
 	t_token	*token;
-	t_cmdinfo	*cmd
+	t_cmdinfo	*cmd;
 	char	**envp;
 	char	*prev_wd; // Previous working directory
 	int		shlvl;
@@ -220,7 +220,8 @@ int		token_append(t_token **token);
 int		in_x(char *str, char c);
 
 //cmd_struct.c
-int		get_cmd_info(t_ms *ms);
+int		iterate_cmds(t_ms *ms);
 int		get_num_cmds(t_token *token);
+t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo);
 
 #endif

@@ -44,7 +44,7 @@ int	check_token(t_token *token)
 {
 	if (token->type == PIPE)
 	{
-		if (!token->next || token->next->type == PIPE)
+		if (!token->next || token->next->type == PIPE || !token->prev)
 			return (printf(SYNTAX_ERROR, "|") * FALSE);
 	}
 	else if (token->type != TEXT)
@@ -52,9 +52,9 @@ int	check_token(t_token *token)
 		if (!token->next || token->next->type != TEXT)
 		{
 			if (!token->next)
-				printf(SYNTAX_ERROR, "newline");
+				return (printf(SYNTAX_ERROR, "newline") * FALSE);
 			else
-				printf(SYNTAX_ERROR, token->next->content);
+				return (printf(SYNTAX_ERROR, token->next->content) * FALSE);
 			return (FALSE);
 		}
 	}
