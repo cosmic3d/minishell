@@ -198,3 +198,24 @@ void	print_tokens(t_token *token)
 		current = current->next;
 	}
 }
+
+void	print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (cmdinfo && ++i < num_cmd)
+	{
+		j = -1;
+		printf("COMMAND %i:\n", i);
+		printf("\tPathname: %s\n\tArgs: [", cmdinfo[i].cmd);
+		while (cmdinfo[i].args && cmdinfo[i].args[++j])
+			printf("%s, ", cmdinfo[i].args[j]);
+		printf("]\n\tnum_ rd: %i\n\tRedirections: [", cmdinfo[i].num_rd);
+		j = -1;
+		while (cmdinfo[i].rd && ++j < cmdinfo[i].num_rd)
+			printf("(%s, %i), ", cmdinfo[i].rd[j].str, cmdinfo[i].rd[j].type);
+		printf("\n");
+	}
+}
