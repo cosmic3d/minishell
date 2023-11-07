@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:54:04 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/20 18:09:49 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:25:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* función que emula el funcionamiento del builtin pwd */
 int	ms_pwd(void)
 {
 	char	*cwd;

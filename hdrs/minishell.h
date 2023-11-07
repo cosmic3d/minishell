@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/20 18:33:47 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/10/20 20:05:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,9 @@ void			swap(void *ptr_a, void *ptr_b); // TESTING
 // prompt.c
 // char	*set_prompt(char *cwd);
 
+// pwd_builtin.c
+int		ms_pwd(void);
+
 // readline_loop.c
 int				readline_loop(t_ms *ms);
 char			*terminal_entry(void);
@@ -196,6 +199,9 @@ char			*terminal_entry(void);
 int				signal_handler(void);
 void			disable_control_chars_echo(void);
 void			restore_terminal_settings(void);
+
+// unset_builtin.c
+int		ms_unset(t_ms *ms, char **argv);
 
 // utils.c
 int				ms_arraylen(char **array);
