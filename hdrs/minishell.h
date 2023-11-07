@@ -24,6 +24,7 @@
 # include <termios.h>
 # include <sys/stat.h>
 # include <curses.h>
+# include <dirent.h>
 # include "../libs/libft/libft.h"
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"

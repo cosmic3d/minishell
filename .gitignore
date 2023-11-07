@@ -1,8 +1,9 @@
 .DS_Store
 .vscode/
 *.log
-libs/readline/*
+libs/readline/
 *.o
 *.
+*.a
 /obj
 minishell
