@@ -58,11 +58,11 @@ int	check_token(t_token *token)
 			return (FALSE);
 		}
 	}
-	else
+	/* else
 	{
 		token->content = erase_brackets(token->content);
 		if (!token->content)
 			return (FALSE);
-	}
+	} */
 	return (TRUE);
 }

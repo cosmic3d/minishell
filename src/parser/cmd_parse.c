@@ -109,6 +109,10 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 			exit(1);
 		}
 		last->type = get_token_type(last->content);
+		if (last->type == TEXT)
+			last->can_expand = possible_expansion();
+		else
+			last->can_expand = FALSE;
 		*nt = -1;
 	}
 }

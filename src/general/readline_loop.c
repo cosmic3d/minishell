@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/03 04:06:10 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/08 17:02:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	readline_loop(t_ms *ms)
 			return (1);
 		if (tokenize(buffer, ms) == FAILURE)
 			continue ;
-		//print_tokens(ms->token);
+		print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
 		free_tokens(&ms->token);
