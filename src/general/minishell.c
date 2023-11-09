@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/07 17:47:17 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:21:24 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&ms, envp);
 
 	char	*print_arg[] = {"export", NULL};
-	char	*set_zhola_arg[] = {"export", "ZHOLA=hola soy una variable", NULL};
-	char	*unset_zhola_arg[] = {"unset", "ZHOLA", NULL};
+	char	*set_zhola_arg[] = {"export", "ZHOLA=hola soy una variable", "Z_NO=No_cal_más_tokens", "Z_SI=Si cal mas tokens", NULL};
+	// char	*unset_zhola_arg[] = {"unset", "ZHOLA", NULL};
 	ms_export(&ms, set_zhola_arg);
-	ms_export(&ms, print_arg);
-	printf("\n");
-	printf("\n");
-	ms_unset(&ms, unset_zhola_arg);
+	// ms_export(&ms, print_arg);
+	// printf("\n");
+	// printf("\n");
+	// ms_unset(&ms, unset_zhola_arg);
 	ms_export(&ms, print_arg);
 
 	// exit(0);
