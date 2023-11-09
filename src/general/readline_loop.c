@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/08 17:02:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:03:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	readline_loop(t_ms *ms)
 			return (1);
 		if (tokenize(buffer, ms) == FAILURE)
 			continue ;
+		if (expansor(ms, ms->token) == FAILURE) // testing
+			continue ; // testing
 		print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;

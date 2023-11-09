@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+static int	possible_expansion(char *str);
+
 //Crea los tokens y los va añadiendo a una linked list
 int	tokenize(char *cmd_line, t_ms *ms)
 {
@@ -110,9 +112,27 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 		}
 		last->type = get_token_type(last->content);
 		if (last->type == TEXT)
-			last->can_expand = possible_expansion();
+			last->can_expand = possible_expansion(last->content);
 		else
 			last->can_expand = FALSE;
+		printf("Can expand? %d\n", last->can_expand);
 		*nt = -1;
 	}
+}
+
+// Comprueba si este token debe ser expandido por el expansor
+static int	possible_expansion(char *str)
+{
+	int		i;
+
+	i = -1;
+	while (str[++i] != '\0')
+	{
+		if (str[i] == '\'')
+			i = ft_skip_chr_i(str, i);
+		else if (str[i] == '$' && \
+		(ft_isalpha(str[i + 1]) || str[i + 1] == '?' || str[i + 1] == '_'))
+			return (TRUE);
+	}
+	return (FALSE);
 }

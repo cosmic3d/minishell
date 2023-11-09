@@ -63,6 +63,8 @@ void	ft_putnbr(int n);
 void	ft_puthex(unsigned int x);
 void	ft_putaddress(unsigned long long address);
 void	ft_nl(void);
+char	*ft_skip_chr_ptr(char *str);
+int		ft_skip_chr_i(char *str, int i);
 
 //bonus
 typedef struct s_list

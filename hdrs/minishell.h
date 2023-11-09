@@ -240,4 +240,7 @@ int				get_num_cmds(t_token *token);
 char			**get_arguments(t_token *token);
 t_redirection	*get_redirections(t_token *token, int rd_count);
 
+//cmd_expansor.c
+int	expansor(t_ms *ms, t_token *token);
+
 #endif
