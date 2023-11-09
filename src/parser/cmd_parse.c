@@ -23,13 +23,13 @@ int	tokenize(char *cmd_line, t_ms *ms)
 	i = -1;
 	nt = -1;
 	ms->token = NULL;
-	if (!valid_brackets(cmd_line))
+	if (!valid_brackets(cmd_line) || is_empty(cmd_line))
 		return (FAILURE);
 	while (cmd_line[++i])
 	{
 		if (nt == -1)
 		{
-			if (cmd_line[i] == ' ')
+			if (cmd_line[i] == ' ' || cmd_line[i] == '\t')
 				continue ;
 			else
 				nt = i;
@@ -37,7 +37,6 @@ int	tokenize(char *cmd_line, t_ms *ms)
 		if (nt != -1)
 			add_token(cmd_line, &i, &nt, ms);
 	}
-	free(cmd_line);
 	if (check_tokens(ms) == SUCCESS)
 		return (SUCCESS);
 	free_tokens(&ms->token);

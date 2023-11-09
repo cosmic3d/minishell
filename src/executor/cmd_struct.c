@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/08 17:32:27 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:35:01 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	print_cmd_structs(ms->cmd, ms->num_cmd);
+	//print_cmd_structs(ms->cmd, ms->num_cmd);
 	return (SUCCESS);
 }
 

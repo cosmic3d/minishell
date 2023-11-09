@@ -222,6 +222,7 @@ char			*erase_brackets2(char *str, int bracks_count);
 //cmd_parse_checker.c
 int				check_tokens(t_ms *ms);
 int				check_token(t_token *token);
+int				is_empty(char *str);
 
 //token_list_utils.c
 t_token			*token_tail(t_token *token);
