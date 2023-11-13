@@ -27,6 +27,13 @@ void	export_perror(char *argument)
 	write(STDERR_FILENO, "': not a valid identifier\n", 27);
 }
 
+// Printea el error y usa exit(EXIT_FAILURE); // necesitará t_ms *ms?
+void	ms_quit(char *error_message)
+{
+	ms_error(error_message);
+	exit(EXIT_FAILURE);
+}
+
 // void	ms_perror(t_ms *ms, char *program, char *error)
 // {
 // 	write(STDERR_FILENO, "minishell: ", 12);

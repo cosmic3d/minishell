@@ -172,6 +172,7 @@ char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archiv
 // error.c
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
+void			ms_quit(char *error_message);
 
 // export_init.c
 void			export_init(t_export *data, char *arg);
@@ -242,5 +243,8 @@ t_redirection	*get_redirections(t_token *token, int rd_count);
 
 //cmd_expansor.c
 int	expansor(t_ms *ms, t_token *token);
+
+//cmd_expansor_utils.c
+char	*update_token(t_ms *ms, char *str, int j);
 
 #endif
