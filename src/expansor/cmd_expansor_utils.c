@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/13 17:33:10 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:45:09 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,21 @@ char	*update_token(t_ms *ms, char *str, int j)
 	return (new_str);
 }
 
-// int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str)
-// {
-// 	int	i;
+int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str)
+{
+	ms->shlvl = 1; // para que no llore gcc
+	int	i;
 
-// 	i = 0;
-// 	while (o_str[i])
-// 	{
-
-// 		i++;
-// 	}
-// }
+	i = -1;
+	while (o_str[++i])
+	{
+		if (o_str[i] == '"')
+			i = ft_skip_chr_i(o_str, i);
+		if (o_str[i] == ' ')
+			printf("new token at i = %d\n", i);
+	}
+	return (0);
+}
 
 /*
 	Names:

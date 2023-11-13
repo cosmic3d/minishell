@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/13 17:31:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:44:42 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	find_and_expand(t_ms *ms, t_token *token, char *str)
 		{
 			printf("i = %d\n", i);
 			str = update_token(ms, str, i);
+			create_new_tokens(ms, token, str);
 			// if (create_new_tokens(ms, token, str))
 			// {
 				
