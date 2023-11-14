@@ -14,6 +14,7 @@
 # define LIBFT_H
 # include <stdlib.h>
 
+int		ft_abs(int num);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -23,6 +24,7 @@ int		ft_isspace(int c);
 int		ft_isiter(const char *s, int (*f)(int));
 int		ft_match_ch(int c, const char *pattern);
 int		ft_match_str(char *str, const char *pattern);
+int		ft_chrcount(char *str, int c);
 size_t	ft_strlen(const char *s);
 size_t	ft_low_strlen(const char *s1, const char *s2);
 int		ft_intlen(int number);
@@ -50,7 +52,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strljoin(char const *s1, size_t s1_n, char const *s2, size_t s2_n);
+char	*ft_strljoin(char const *s1, long s1_n, char const *s2, long s2_n);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);

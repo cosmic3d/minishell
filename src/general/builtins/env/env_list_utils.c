@@ -148,13 +148,26 @@ int	env_update(char *name, char *content, t_env *env)
 // 	return (content);	
 // }
 
+/* Obtiene el contenido de una variable de entorno de nombre name.
+Si la variable no existe, retorna el contenido ""
+Retorna un puntero nuevo, de esta forma no hay riesgo de sobreescribir el 
+contenido de la variable accidentalmente. */
 char	*get_env_content(char *name, t_env *env)
 {
 	t_env	*variable;
+	char	*content;
 
 	variable = env_find(name, env);
 	free(name);
 	if (!variable)
-		return (NULL);
-	return (variable->content);
+	{
+		content = ft_strdup("");
+		if (!content)
+			ms_quit(MALLOC_ERR);
+		return (content);
+	}
+	content = ft_strdup(variable->content);
+	if (!content)
+		ms_quit(MALLOC_ERR);
+	return (content);
 }

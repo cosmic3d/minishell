@@ -75,6 +75,12 @@ vwxyz0123456789_"
 # define EXPORT_ADD 1
 # define EXPORT_EQ 2
 
+// Expansor
+# define ON 1
+# define OFF -1
+# define SWITCH -1
+
+
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
 {
@@ -103,6 +109,7 @@ typedef struct s_token
 {
 	struct s_token	*prev;
 	struct s_token	*next;
+	struct s_quotes	*quotes;
 	char			*content;
 	int				type;
 	int				can_expand;
@@ -129,6 +136,7 @@ typedef struct s_minishell
 	char	**envp;
 	char	*prev_wd; // Previous working directory
 	int		shlvl;
+	int		exit_status; // para $?
 }				t_ms;
 
 typedef struct s_export
@@ -142,6 +150,23 @@ typedef struct s_export
 	int		valid_content;
 	int		exit_status;
 }				t_export;
+
+typedef struct s_quotes
+{
+	int	*s;
+	int	*d;
+	int	s_on;
+	int	d_on;
+}				t_quotes;
+
+typedef struct s_variable_data
+{
+	char	*name;
+	char	*content;
+	int		n_len;
+	int		c_len;
+	int		index;
+}				t_var;
 
 /* --------------------------------- FUNCS ---------------------------------- */
 
@@ -247,5 +272,8 @@ int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
 
 //cmd_expansor_utils.c
 char	*update_token(t_ms *ms, char *str, int j);
+// char	*expand_and_update(t_ms *ms, char *str, int *index, t_quotes *quote);
+// void	expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
+char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 #endif
