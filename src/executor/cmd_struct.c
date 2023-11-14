@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/09 17:35:01 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/14 20:37:22 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 
 /* Esta función se encarga de rellenar la estructura del comando y de devolver
 un puntero al inicio del siguiente comando*/
-static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo) //MIRA EXECUTOR EN TRELLO PARA SABER QUÉ PLANEO
+static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
 {
 	cmdinfo->num_rd = get_num_redirections(token);
 	cmdinfo->rd = get_redirections(token, cmdinfo->num_rd);
@@ -67,7 +67,7 @@ token hasta el siguiente pipe o NULL.*/
 int	iterate_cmds(t_ms *ms)
 {
 	int	i;
-	t_token *tmp;
+	t_token	*tmp;
 
 	i = -1;
 	ms->num_cmd = get_num_cmds(ms->token);

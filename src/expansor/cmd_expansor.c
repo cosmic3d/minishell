@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expansor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/09 16:51:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/14 20:27:56 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	expansor(t_ms *ms, t_token *token)
 	ms->shlvl = 1; // para que no se queje norminette por ahora
 	while (token)
 	{
-		if (token->can_expand == TRUE)
+		/* if (token->can_expand == TRUE)
 		{
 			printf("Might need new tokens? %d\n", new_tokens_check(token->content, ms->env));
 			// printf("Are you sure? %d\n", expand_check(token->content, ms->env));
-		}
+		} */
 		token = token->next;
 	}
 	return (SUCCESS);

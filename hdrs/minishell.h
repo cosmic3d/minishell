@@ -105,7 +105,6 @@ typedef struct s_token
 	struct s_token	*next;
 	char			*content;
 	int				type;
-	int				can_expand;
 }				t_token;
 
 typedef struct s_generic_list
