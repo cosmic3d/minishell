@@ -205,7 +205,8 @@ void	print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd)
 	int	j;
 
 	i = -1;
-	while (cmdinfo && ++i < num_cmd)
+	//printf("%i\n", num_cmd);
+	while (++i < num_cmd && cmdinfo)
 	{
 		j = -1;
 		printf("COMMAND %i:\n", i);

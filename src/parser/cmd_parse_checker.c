@@ -66,3 +66,14 @@ int	check_token(t_token *token)
 	} */
 	return (TRUE);
 }
+
+int	is_empty(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (!in_x(" \t", str[i]))
+			return (FALSE);
+	return (TRUE);
+}
