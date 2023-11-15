@@ -143,15 +143,7 @@ static int	export_new_content(t_export *data, t_env *node)
 	if (data->op == EXPORT_NO_OP && !data->content)
 		return (SUCCESS);
 	if (data->op == EXPORT_NO_OP || data->op == EXPORT_EQ)
-	{
-		if (env_update(data->name, data->content, node)) // Qué hago aquí? En teoría podría sudar de este check, además que no tiene por que ser malloc error y si lo fuese ya habría printeado malloc error dentro
-		{
-			ms_error(MALLOC_ERR);
-			free(data->name);
-			free(data->content);
-			return (FAILURE);
-		}
-	}
+		env_update(data->name, data->content, node);
 	else if (data->op == EXPORT_ADD)
 	{
 		if (export_add_content(data, node))

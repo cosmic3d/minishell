@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 17:27:04 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:03:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,12 @@ char	*terminal_entry(void)
 
 		//Al recibir Ctrl+D (eof), volvemos a la línea anterior y la eliminamos para luego imprimir exit
 		if (rl_eof_found)
+		{
 			printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
+			exit(EXIT_SUCCESS);
+		}
 		restore_terminal_settings();
-		return (NULL);
+		ms_quit(MALLOC_ERR);
 	}
 	if (buffer[0] != '\0')
 		add_history(buffer);

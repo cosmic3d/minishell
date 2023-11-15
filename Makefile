@@ -25,7 +25,8 @@ LFT_DIR = $(LIB_DIR)libft/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-SANS		= -fsanitize=address -g
+SANS		=
+# SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
 RM			= rm -f

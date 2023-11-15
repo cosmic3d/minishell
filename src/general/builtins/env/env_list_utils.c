@@ -115,11 +115,7 @@ int	env_update(char *name, char *content, t_env *env)
 	free(change->content);
 	change->content = ft_strdup(content);
 	if (!change->content)
-	{
-		// ms_error(MALLOC_ERR); // no conviene mucho para no confundir el return 1
 		ms_quit(MALLOC_ERR);
-		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 
