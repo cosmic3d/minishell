@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/15 12:40:16 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:22:07 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	free_tokens(t_token **token)
 		*token = (*token)->next;
 		if (tmp->content)
 			free(tmp->content);
-		if (tmp->quotes) // Añadido por Albert -> Para liberar las quotes del token
+		if (tmp->type == TEXT && tmp->quotes) // Añadido por Albert -> Para liberar las quotes del token
 		{
 			if (tmp->quotes->d)
 				free(tmp->quotes->d);

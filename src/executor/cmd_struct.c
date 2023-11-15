@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/14 20:37:22 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:34:09 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ int	iterate_cmds(t_ms *ms)
 	tmp = ms->token;
 	ms->cmd = (t_cmdinfo *)malloc(sizeof(t_cmdinfo) * (ms->num_cmd));
 	if (!ms->cmd)
-		exit(1); //MIMIMI
+		ms_quit(MALLOC_ERR);
 	while (++i < ms->num_cmd && tmp) //EN PROCESO
 	{
 		tmp = get_cmd_info(tmp, &ms->cmd[i]);
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	//print_cmd_structs(ms->cmd, ms->num_cmd);
+	print_cmd_structs(ms->cmd, ms->num_cmd);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 17:13:30 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:29:30 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,12 @@ int	expansor(t_ms *ms, t_token *token)
 	{
 		if (token->type == TEXT)
 		{
+			// write(1, "HOLA\n\n\n", 7);
 			init_quote_struct(token);
+			// for (int x = 0; token->quotes->d[x] != -1; x++)
+				// printf("d[%d] = %d", x, token->quotes->d[x]);
 			expand(ms, token);
-			// token->content = erase_brackets(token->content);
+			token->content = erase_brackets(token->content);
 			// retokenize() falta
 		}
 		token = token->next;

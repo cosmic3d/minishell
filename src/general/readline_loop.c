@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 17:13:30 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:27:04 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	readline_loop(t_ms *ms)
 			free(buffer);
 			continue ;
 		}
-		// if (expansor(ms, ms->token) == FAILURE) // testing
-		// 	continue ; // testing
+		if (expansor(ms, ms->token) == FAILURE) // testing
+			continue ; // testing
 		//print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;

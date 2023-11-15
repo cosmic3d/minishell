@@ -75,7 +75,7 @@ char	**get_arguments(t_token *token)
 		return (NULL);
 	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
-		exit(1); //PROVISIONAL (se utilizará función que intente liberar todo y hará exit)
+		ms_quit(MALLOC_ERR);
 	args[arg_count] = NULL;
 	while (token && token->type != PIPE)
 	{
@@ -86,7 +86,7 @@ char	**get_arguments(t_token *token)
 		}
 		args[++i] = ft_strdup(token->content);
 		if (!args[i])
-			exit(1);
+			ms_quit(MALLOC_ERR);
 		token = token->next;
 	}
 	return (args);
@@ -104,7 +104,7 @@ t_redirection *get_redirections(t_token *token, int rd_count)
 		return (NULL);
 	rd = (t_redirection *)malloc(sizeof(t_redirection) * (rd_count--));
 	if (!rd)
-		exit(1); //PROVISIONAL (se utilizará función que intente liberar todo y hará exit)
+		ms_quit(MALLOC_ERR);
 	while (token && token->type != PIPE)
 	{
 		if (token->type == TEXT)
@@ -115,7 +115,7 @@ t_redirection *get_redirections(t_token *token, int rd_count)
 		rd[rd_count].type = token->type;
 		rd[rd_count].str = ft_strdup(token->next->content);
 		if (!rd[rd_count--].str)
-			exit(1); //PROVISIONAL (se utilizará función que intente liberar todo y hará exit)
+			ms_quit(MALLOC_ERR);
 		token = token->next->next;
 	}
 	return (rd);
