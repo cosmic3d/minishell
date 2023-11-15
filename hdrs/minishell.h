@@ -112,7 +112,6 @@ typedef struct s_token
 	struct s_quotes	*quotes;
 	char			*content;
 	int				type;
-	int				can_expand;
 }				t_token;
 
 typedef struct s_generic_list
@@ -158,15 +157,6 @@ typedef struct s_quotes
 	int	s_on;
 	int	d_on;
 }				t_quotes;
-
-typedef struct s_variable_data
-{
-	char	*name;
-	char	*content;
-	int		n_len;
-	int		c_len;
-	int		index;
-}				t_var;
 
 /* --------------------------------- FUNCS ---------------------------------- */
 

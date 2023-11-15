@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/10/31 18:56:03 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:40:16 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ void	free_tokens(t_token **token)
 		*token = (*token)->next;
 		if (tmp->content)
 			free(tmp->content);
+		if (tmp->quotes) // Añadido por Albert -> Para liberar las quotes del token
+		{
+			if (tmp->quotes->d)
+				free(tmp->quotes->d);
+			if (tmp->quotes->s)
+				free(tmp->quotes->s);
+			free(tmp->quotes);
+		}
 		free(tmp);
 		tmp = NULL;
 	}

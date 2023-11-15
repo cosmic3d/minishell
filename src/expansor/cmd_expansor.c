@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/14 19:15:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:51:00 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,28 @@
 static void	init_quote_struct(t_token *token);
 static int	*get_quotes(char *str, char get);
 static void	expand(t_ms *ms, t_token *token);
-static int	is_valid_quote(int index, int *s_quotes);
+static int	is_valid_quote(int index, int *quote_array);
 
+/* Itera por la lista de tokens de la linea de comandos actual y, si son de tipo
+TEXT, los hace pasar por el proceso que expandirá sus variables de entorno y 
+retokenizará su contenido si es necesario. */
 int	expansor(t_ms *ms, t_token *token)
 {
-	ms->shlvl = 1; // gcc no llores
-
 	while (token)
 	{
-		if (token->type == TEXT) // Si el token es de tipo TEXT, usar el expansor
+		if (token->type == TEXT)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
-			// retokenize(ms, token, token->content, &quotes);
+			token->content = erase_brackets(token->content);
+			// retokenize() falta
 		}
 		token = token->next;
 	}
 	return (SUCCESS);
 }
 
+/* Inicializa la struct para la gestión de las comillas. */
 static void	init_quote_struct(t_token *token)
 {
 	token->quotes = malloc(sizeof(t_quotes));
@@ -45,6 +48,9 @@ static void	init_quote_struct(t_token *token)
 	token->quotes->d_on = OFF;
 }
 
+/* Devuelve un array int* con los valores de los index en los que en la string 
+'str' se encuentre el caracter 'get', está pensado para que 'get' sea \' o \".
+Cierra el array con el valor -1 como terminador. */
 static int	*get_quotes(char *str, char get)
 {
 	int	*array;
@@ -68,13 +74,13 @@ static int	*get_quotes(char *str, char get)
 	return (array);
 }
 
+/* Recorre el contenido del token proporcionado y llama a expand_and_update 
+si detecta un $ */
 static void	expand(t_ms *ms, t_token *token)
 {
 	int		i;
 
 	i = -1;
-	// for (int x = 0; token->quote->d[x] != -1; x++) //debug
-	// 	printf("token->quote %d\n", token->quote->d[x]);
 	while (token->content[++i])
 	{
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
@@ -84,21 +90,22 @@ static void	expand(t_ms *ms, t_token *token)
 		&& is_valid_quote(i, token->quotes->d))
 			token->quotes->d_on *= SWITCH;
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
-		{
-			token->content = expand_and_update(ms, token->content, &i, token->quotes);
-		}
+			token->content = expand_and_update(ms, token->content, \
+			&i, token->quotes);
 	}
 	return ;
 }
 
-static int	is_valid_quote(int index, int *array)
+/* Comprueba si el index recibido corresponde con uno de los valores 
+en el array recibido. Retorna 1 si lo encuentra y 0 si no.*/
+static int	is_valid_quote(int index, int *quote_array)
 {
 	int	i;
 
 	i = 0;
-	while (array[i] != -1)
+	while (quote_array[i] != -1)
 	{
-		if (index == array[i])
+		if (index == quote_array[i])
 			return (TRUE);
 		i++;
 	}

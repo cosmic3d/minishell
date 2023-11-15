@@ -6,51 +6,71 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/14 19:15:51 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:46:50 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* struct con los valores necesarios para el funcionamiento del expansor.
+	name = Nombre de la variable
+	content = Contenido de la variable
+	n_len = Longitud de name
+	c_len = Longitud de content
+	index = Index en el que en el contenido del token se encuentre el primer
+		caracter de la variable. */
+typedef struct s_variable_data
+{
+	char	*name;
+	char	*content;
+	int		n_len;
+	int		c_len;
+	int		index;
+}				t_var;
+// NOTA: De momento lo dejo en este archivo en vez de en minishell.h por que 
+// solo este archivo hace uso de esta struct.
+
 static void		update_quote_positions(t_quotes *quote, t_var *var);
 static t_var	*get_variable_data(t_ms *ms, char *str, int index);
 
-/* Esta función recibe un puntero *str al contenido de un token, también 
-recibe j que es el indice en el que en str podemos encontrar un '$', indicando 
-que podría haber una variable a expandir.
-Esta función expande, si es posible, la variable indicada por el '$' y devuelve 
-la string actualizada. */
+/* Expande y actualiza, si es posible, la variable de entorno indicada por 
+str[*i], retorna la string resultante tras la expansión.
+- Actualiza el valor de *i al final de la variable expandida.
+- Llama a update_quote_positions() para updatear t_quotes *quote
+- FALTA LIBERAR
+*/
 char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 {
 	t_var	*variable;
 	char	*aux_str;
 	char	*new_str;
-	
+
 	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?')
 		return (str);
-	variable = get_variable_data(ms, str + *i + 1, *i);
+	variable = get_variable_data(ms, str, *i);
 	aux_str = ft_strljoin(str, *i, variable->content, -1);
 	if (!aux_str)
 		ms_quit(MALLOC_ERR);
 	new_str = ft_strljoin(aux_str, -1, str + *i + variable->n_len + 1, -1);
 	if (!new_str)
 		ms_quit(MALLOC_ERR);
-	update_quote_positions(quote, variable);
-	*i += variable->c_len - 1;
 	free(aux_str);
 	free(str);
+	update_quote_positions(quote, variable);
+	*i += variable->c_len - 1;
+	free(variable->name);
+	free(variable->content);
+	free(variable);
 	return (new_str);
 }
 
-/* Esta función retorna un puntero a la struct s_variable_data inicializado y 
-con la información sobre la variable a la que apunta el puntero str.
-str ha de ser un puntero al primer caracter del nombre de una variable. 
-index ha de ser el index en la string del token equivalente al $ que precede 
-el nombre de la variable. */
+/* Retorna un puntero a la struct s_variable_data inicializado y 
+con la información sobre la variable indicada por str[index]. */
 static t_var	*get_variable_data(t_ms *ms, char *str, int index)
 {
 	t_var	*var;
 
+	str += index + 1;
 	var = malloc(sizeof(t_var));
 	if (!var)
 		ms_quit(MALLOC_ERR);
@@ -82,10 +102,8 @@ static void	update_quote_positions(t_quotes *quote, t_var *var)
 	i = 0;
 	while (quote->d[i] != -1)
 	{
-		// printf("old quote [%d] = %d\n", i, quote->d[i]); // debug
 		if (quote->d[i] > var->index)
 			quote->d[i] += ft_abs(var->c_len - var->n_len) - 1;
-		// printf("new quote [%d] = %d\n", i, quote->d[i]); // debug
 		i++;
 	}
 	i = 0;
@@ -97,19 +115,3 @@ static void	update_quote_positions(t_quotes *quote, t_var *var)
 	}
 	return ;
 }
-
-// int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str)
-// {
-// 	ms->shlvl = 1; // para que no llore gcc
-// 	int	i;
-
-// 	i = -1;
-// 	while (o_str[++i])
-// 	{
-// 		if (o_str[i] == '"')
-// 			i = ft_skip_chr_i(o_str, i);
-// 		if (o_str[i] == ' ')
-// 			printf("new token at i = %d\n", i);
-// 	}
-// 	return (0);
-// }

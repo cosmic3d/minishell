@@ -109,12 +109,6 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 			exit(1);
 		}
 		last->type = get_token_type(last->content);
-		// if (last->type == TEXT)
-			// last->can_expand = possible_expansion(last->content);
-		// else
-			// last->can_expand = FALSE;
-		last->can_expand = FALSE; // De momento dejo esto para que no se queje gcc
-		// printf("Can expand? %d\n", last->can_expand);
 		*nt = -1;
 	}
 }

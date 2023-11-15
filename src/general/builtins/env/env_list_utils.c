@@ -158,7 +158,6 @@ char	*get_env_content(char *name, t_env *env)
 	char	*content;
 
 	variable = env_find(name, env);
-	free(name);
 	if (!variable)
 	{
 		content = ft_strdup("");
