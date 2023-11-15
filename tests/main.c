@@ -1,13 +1,12 @@
 #include <stdio.h>
+#include <unistd.h>
 
 int	main(int argc, char **argv, char **envp)
 {
-	int	i = 0;
-	while (envp[i] != 0)
-	{
-		printf("%s\n", envp[i]);
-		i++;
-	}
+	printf("CWD = %s\n", getcwd(NULL, 0));
+
+	chdir("/Users/apresas-");
+
+	printf("CWD = %s\n", getcwd(NULL, 0));
 	return (0);
 }
-

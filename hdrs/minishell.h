@@ -128,14 +128,14 @@ typedef struct s_generic_list
 
 typedef struct s_minishell
 {
-	t_env	*env;
-	t_token	*token;
+	t_env		*env;
+	t_token		*token;
 	t_cmdinfo	*cmd;
 	int			num_cmd;
-	char	**envp;
-	char	*prev_wd; // Previous working directory
-	int		shlvl;
-	int		exit_status; // para $?
+	char		**envp;
+	char		*prev_wd; // Previous working directory
+	int			shlvl;
+	int			exit_status; // para $?
 }				t_ms;
 
 typedef struct s_export

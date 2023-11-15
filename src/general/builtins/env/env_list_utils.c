@@ -117,16 +117,18 @@ int	env_update(char *name, char *content, t_env *env)
 		// Variable de entorno no encontrada.
 		// Podríamos llamar aquí a que sea creada y añadida o hacerlo
 		// fuera de la función donde sea llamada por export
-		return (1);
+		// O simplemente devolver 1 y fuera que es lo que creo que dejaré
+		return (FAILURE);
 	}
 	free(change->content);
 	change->content = ft_strdup(content);
 	if (!change->content)
 	{
-		ms_error(MALLOC_ERR);
-		return (1);
+		// ms_error(MALLOC_ERR); // no conviene mucho para no confundir el return 1
+		ms_quit(MALLOC_ERR);
+		return (FAILURE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 // OLD
