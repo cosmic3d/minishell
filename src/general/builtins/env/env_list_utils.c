@@ -69,9 +69,8 @@ int	env_add_content(char *name, char *content, t_env *new)
 	return (SUCCESS);
 }
 
-/* Recorre la lista de variable de entorno y busca una en particular por 
-el valor de su ->name, cuando la encuentra, devuelve el puntero a ese nodo.
-Si no encuentra la variable de entorno, devuelve NULL */
+/* Retorna el puntero al nodo de la lista de variables de entorno cuyo nombre 
+es name. Si no lo encuentra, devuelve NULL */
 t_env	*env_find(char *name, t_env *head)
 {
 	while (head)
@@ -85,17 +84,15 @@ t_env	*env_find(char *name, t_env *head)
 	return (NULL);
 }
 
-/* Elimina la variable de entorno con el name dado de la lista y 
-reroutea sus nodos previos y siguientes para unir la lista. 
-Luego, libera el contenido y el puntero de este nodo. 
-Si en la lista no hay variable de entorno con este nombre, retorna 1. */
+/* Elimina la variable de entorno de nombre name de la lista t_env de forma 
+limpia. Si en la lista no hay variable de entorno con este nombre, retorna 1. */
 int	env_remove(char *name, t_env *env)
 {
 	t_env	*remove;
 
 	remove = env_find(name, env);
 	if (!remove)
-		return (1); // Environment Variable doesn't exist
+		return (FAILURE);
 	if (remove->prev)
 		remove->prev->next = remove->next;
 	if (remove->next)
@@ -103,23 +100,18 @@ int	env_remove(char *name, t_env *env)
 	free(remove->name);
 	free(remove->content);
 	free(remove);
-	return (0);	
+	return (SUCCESS);
 }
 
-/* Busca la variable de entorno en base a su ->name y actualiza su content. */
+/* Busca la variable de entorno en base a su ->name y actualiza su ->content.
+Si la variable no existe, retorna 1. Si ft_strdup falla, termina el programa. */
 int	env_update(char *name, char *content, t_env *env)
 {
 	t_env	*change;
 
 	change = env_find(name, env);
 	if (!change)
-	{
-		// Variable de entorno no encontrada.
-		// Podríamos llamar aquí a que sea creada y añadida o hacerlo
-		// fuera de la función donde sea llamada por export
-		// O simplemente devolver 1 y fuera que es lo que creo que dejaré
 		return (FAILURE);
-	}
 	free(change->content);
 	change->content = ft_strdup(content);
 	if (!change->content)
@@ -130,25 +122,6 @@ int	env_update(char *name, char *content, t_env *env)
 	}
 	return (SUCCESS);
 }
-
-// OLD
-// char	*get_env_content(char *name, t_env *env)
-// {
-// 	t_env	*variable;
-// 	char	*content;
-
-// 	variable = env_find(name, env);
-// 	if (!variable)
-// 		return (NULL);
-// 	free(name);
-// 	content = ft_strdup(variable->content);
-// 	if (!content)
-// 	{
-// 		ms_error(MALLOC_ERR);
-// 		return (NULL);
-// 	}
-// 	return (content);	
-// }
 
 /* Obtiene el contenido de una variable de entorno de nombre name.
 Si la variable no existe, retorna el contenido ""
