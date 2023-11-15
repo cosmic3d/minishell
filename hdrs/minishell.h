@@ -158,6 +158,22 @@ typedef struct s_quotes
 	int	d_on;
 }				t_quotes;
 
+/* struct con los valores necesarios para el funcionamiento del expansor.
+	name = Nombre de la variable
+	content = Contenido de la variable
+	n_len = Longitud de name
+	c_len = Longitud de content
+	index = Index en el que en el contenido del token se encuentre el primer
+		caracter de la variable. */
+typedef struct s_variable_data
+{
+	char	*name;
+	char	*content;
+	int		n_len;
+	int		c_len;
+	int		index;
+}				t_var;
+
 /* --------------------------------- FUNCS ---------------------------------- */
 
 //////// DEBUG
@@ -202,6 +218,7 @@ void			*tail(void *node);
 void			*head(void *node);
 int				append(t_lst **head, size_t size); // ?????
 void			swap(void *ptr_a, void *ptr_b); // TESTING
+int				list_len(void *head);
 
 // prompt.c
 // char	*set_prompt(char *cwd);
@@ -262,8 +279,9 @@ int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
 
 //cmd_expansor_utils.c
 char	*update_token(t_ms *ms, char *str, int j);
-// char	*expand_and_update(t_ms *ms, char *str, int *index, t_quotes *quote);
-// void	expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
+
+//cmd_env_creation.c
+char	**env_list_to_envp(t_env *head);
 
 #endif

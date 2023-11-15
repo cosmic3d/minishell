@@ -91,33 +91,18 @@ void	swap(void *ptr_a, void *ptr_b)
 	return ;
 }
 
+/* Retorna la cantidad de nodos de una lista. */
+int	list_len(void *head)
+{
+	t_lst	*temp;
+	int		len;
 
-// Version e chus
-/* Crea un nuevo nodo en una lista generica */
-// int	append(t_lst **head, size_t size)
-// {
-// 	t_lst	*new;
-// 	t_lst	*last;
-
-// 	write(1, "HOLIS2\n", 8);
-// 	new = malloc(size);
-// 	if (!new)
-// 	{
-// 		ms_error(MALLOC_ERR);
-// 		return (FAILURE);
-// 	}
-// 	write(1, "HOLIS\n", 7);
-// 	new->prev = NULL;
-// 	new->next = NULL;
-// 	if (*head == NULL)
-// 		*head = new;
-// 	else
-// 	{
-// 		write(1, "HOLIS3\n", 8);
-// 		last = tail(*head);
-// 		write(1, "HOLIS4\n", 8);
-// 		last->next = new;
-// 		new->prev = last;
-// 	}
-// 	return (SUCCESS);
-// }
+	temp = (t_lst *)head;
+	len = 0;
+	while (temp)
+	{
+		temp = temp->next;
+		len++;
+	}
+	return (len);
+}

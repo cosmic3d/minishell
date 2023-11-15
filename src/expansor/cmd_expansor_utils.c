@@ -6,29 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 13:46:50 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:16:15 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* struct con los valores necesarios para el funcionamiento del expansor.
-	name = Nombre de la variable
-	content = Contenido de la variable
-	n_len = Longitud de name
-	c_len = Longitud de content
-	index = Index en el que en el contenido del token se encuentre el primer
-		caracter de la variable. */
-typedef struct s_variable_data
-{
-	char	*name;
-	char	*content;
-	int		n_len;
-	int		c_len;
-	int		index;
-}				t_var;
-// NOTA: De momento lo dejo en este archivo en vez de en minishell.h por que 
-// solo este archivo hace uso de esta struct.
 
 static void		update_quote_positions(t_quotes *quote, t_var *var);
 static t_var	*get_variable_data(t_ms *ms, char *str, int index);
