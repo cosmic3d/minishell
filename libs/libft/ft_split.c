@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 15:24:39 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/11 17:56:03 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:18:02 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	**place_words(const char *s, char **array, char c, int words)
 		if (s[i] != c)
 		{
 			j = 0;
-			while (s[i] != c && s[i] != '\0')
+			while (s[++i] != c && s[i] != '\0')
 			{
 				i++;
 				j++;

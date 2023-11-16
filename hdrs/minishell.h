@@ -276,7 +276,11 @@ t_redirection	*get_redirections(t_token *token, int rd_count);
 
 //cmd_expansor.c
 int	expansor(t_ms *ms, t_token *token);
-int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
+//int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
+int	is_valid_quote(int index, int *quote_array);
+
+//token_expansor.c
+t_token	*retokenizer(t_token *token);
 
 //cmd_expansor_utils.c
 char	*update_token(t_ms *ms, char *str, int j);
