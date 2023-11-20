@@ -158,6 +158,15 @@ typedef struct s_quotes
 	int	d_on;
 }				t_quotes;
 
+typedef struct s_program_path_tools
+{
+	char	*filepath;
+	char	*error_message;
+	int		exit_status;
+	int		cmd_type;
+	int		path_exists;
+}				t_ppath;
+
 /* struct con los valores necesarios para el funcionamiento del expansor.
 	name = Nombre de la variable
 	content = Contenido de la variable

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 12:48:28 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/16 18:21:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:21:00 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,65 @@ Casos por definir:
 
 */
 
+char	*find_program(char *cmd, int *exit_status, t_ms *ms)
+{
+	char	*program;
+
+	if (!cmd || !cmd[0])
+	{
+		*exit_status = no_cmd_case(ms);
+		return (NULL);
+	}
+	*exit_status = directory_check(cmd);
+	if (exit_status != SUCCESS)
+		return (NULL);
+	program = find_in_path(cmd, exit_status, ms);
+	if (program)
+		return (program);
+	program = find_in_pwd(cmd, exit_status, ms);
+	if (program)
+		return (program);
+	program = find_as_absolute_path(cmd, exit_status, ms);
+	if (program)
+		return (program);
+	return (program);
+}
+
+int	no_cmd_case(t_ms *ms)
+{
+	if (path_exists(ms->env))
+		return (ERR_CMD_NOT_FOUND); // 127 A
+	else
+		return (ERR_NO_SUCH_FILE); // 127 B
+}
+
+int	directory_check(char *cmd)
+{
+	struct stat	statinfo;
+	int			i;
+
+	lstat(cmd, &statinfo);
+	if (!S_ISREG(statinfo.st_mode))
+	{
+		i = 0;
+		while (cmd[i])
+		{
+			if (cmd[i] == '/')
+			{
+				if (access(cmd, F_OK) == SUCCESS)
+					return (ERR_IS_DIR);
+				return (ERR_NO_SUCH_FILE);
+			}
+			i++;
+		}
+	}
+	else if (S_ISDIR(statinfo.st_mode))
+		return (ERR_CMD_NOT_FOUND);
+	return (SUCCESS);
+}
+
+
+
 # define NOPATH 1
 # define YESPATH 0
 
@@ -124,7 +183,6 @@ char	*get_file_in_directory(char *filename, char *dir_path)
 		return (NULL);
 	}
 }
-
 char	*find_program(char *name, t_ms *ms)
 {
 	char	*program;
@@ -136,3 +194,24 @@ char	*find_program(char *name, t_ms *ms)
 	program = find_in_path(name, ms, &path_flag);
 
 }
+
+/* NOTAS SOBRE PERMSSIONS:
+
+Tests:
+
+Ejecutando archivos dentro de directorios con permisos determinados:
+
+rwx 7 (111) -> OK
+rw- 6 (110) -> KO !
+r-x 5 (101) -> OK
+r-- 4 (100) -> KO !
+-wx 3 (011) -> OK
+-w- 2 (010) -> KO !
+--x 1 (001) -> OK
+
+Parece ser que lo único que necesito son permisos de ejecución. (LO MISMO CON CD <DIR>)
+
+Lo mismo parece ocurrir si se trata de un directorio dentro de otro, si todos ellos tienen permissos -x,
+se podrá ejecutar el programa si tienes el path exacto al archivo.
+
+*/
