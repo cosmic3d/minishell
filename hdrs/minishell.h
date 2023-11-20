@@ -162,9 +162,11 @@ typedef struct s_program_path_tools
 {
 	char	*filepath;
 	char	*error_message;
+	t_env	*envpath;
 	int		exit_status;
 	int		cmd_type;
 	int		path_exists;
+	int		is_path;
 }				t_ppath;
 
 /* struct con los valores necesarios para el funcionamiento del expansor.
