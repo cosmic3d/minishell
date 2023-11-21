@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/16 20:13:47 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 02:31:37 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	expansor(t_ms *ms, t_token *token)
 			expand(ms, token);
 			//printf("Content: %s\n", token->content);
 			//token->content = erase_brackets(token->content);
-
 			token = retokenizer(token);
 		}
 		token = token->next;

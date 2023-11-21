@@ -282,6 +282,9 @@ int	is_valid_quote(int index, int *quote_array);
 //token_expansor.c
 t_token	*retokenizer(t_token *token);
 
+//token_expansor_utils.c
+int		*goodbrack(char bracks, t_token *t);
+
 //cmd_expansor_utils.c
 char	*update_token(t_ms *ms, char *str, int j);
 char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
