@@ -30,8 +30,8 @@ Kernel configured for up to 6 processors.
 Processor type: x86_64h (Intel x86-64h Haswell)
 Processors active: 0 1 2 3 4 5
 Primary memory available: 8.00 gigabytes
-Default processor set: 360 tasks, 1636 threads, 6 processors
-Load average: 1.47, Mach factor: 4.52
+Default processor set: 363 tasks, 1628 threads, 6 processors
+Load average: 1.54, Mach factor: 4.45
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -1939,7 +1939,7 @@ configure:7072: checking for tgetent
 configure:7072: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture x86_64:
   "_tgetent", referenced from:
-      _main in conftest-83ea73.o
+      _main in conftest-0efead.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7072: $? = 1
@@ -2234,7 +2234,7 @@ configure:7419: checking for mbscasecmp
 configure:7419: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture x86_64:
   "_mbscasecmp", referenced from:
-      _main in conftest-1b66b0.o
+      _main in conftest-91058a.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7419: $? = 1
@@ -2374,7 +2374,7 @@ configure:7426: checking for mbscmp
 configure:7426: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture x86_64:
   "_mbscmp", referenced from:
-      _main in conftest-fcccfb.o
+      _main in conftest-3d9072.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7426: $? = 1
@@ -2522,7 +2522,7 @@ configure:7448: checking for mbschr
 configure:7448: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture x86_64:
   "_mbschr", referenced from:
-      _main in conftest-1fc7c7.o
+      _main in conftest-96d7f3.o
 ld: symbol(s) not found for architecture x86_64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7448: $? = 1
@@ -2897,6 +2897,7 @@ config.status:951: creating shlib/Makefile
 config.status:951: creating readline.pc
 config.status:951: creating history.pc
 config.status:951: creating config.h
+config.status:1126: config.h is unchanged
 config.status:1140: executing stamp-h commands
 
 ## ---------------- ##

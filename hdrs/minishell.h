@@ -223,7 +223,7 @@ int				list_len(void *head);
 // char	*set_prompt(char *cwd);
 
 // pwd_builtin.c
-int		ms_pwd(void);
+int				ms_pwd(void);
 
 // readline_loop.c
 int				readline_loop(t_ms *ms);
@@ -235,7 +235,7 @@ void			disable_control_chars_echo(void);
 void			restore_terminal_settings(void);
 
 // unset_builtin.c
-int		ms_unset(t_ms *ms, char **argv);
+int				ms_unset(t_ms *ms, char **argv);
 
 // utils.c
 int				ms_arraylen(char **array);
@@ -259,6 +259,7 @@ int				is_empty(char *str);
 //token_list_utils.c
 t_token			*token_tail(t_token *token);
 void			free_tokens(t_token **token);
+void			free_token(t_token *tmp);
 int				token_append(t_token **token);
 int				in_x(char *str, char c);
 
@@ -274,21 +275,23 @@ char			**get_arguments(t_token *token);
 t_redirection	*get_redirections(t_token *token, int rd_count);
 
 //cmd_expansor.c
-int	expansor(t_ms *ms, t_token *token);
+int				expansor(t_ms *ms, t_token *token);
 //int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
-int	is_valid_quote(int index, int *quote_array);
+int				is_valid_quote(int index, int *quote_array);
 
 //token_expansor.c
-t_token	*retokenizer(t_token *token);
+t_token			*retokenizer(t_token *token);
 
 //token_expansor_utils.c
-int		*goodbrack(char bracks, t_token *t);
+int				*goodbrack(char bracks, t_token *t);
+char			**token_splitter_helper(char **strs, t_token *t, int tkn_count);
+t_token			*token_joiner(char **strs);
 
 //cmd_expansor_utils.c
-char	*update_token(t_ms *ms, char *str, int j);
-char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
+char			*update_token(t_ms *ms, char *str, int j);
+char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 //cmd_env_creation.c
-char	**env_list_to_envp(t_env *head);
+char			**env_list_to_envp(t_env *head);
 
 #endif

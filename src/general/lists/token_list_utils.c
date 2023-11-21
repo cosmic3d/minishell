@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/15 17:22:07 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 21:13:37 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 //Obtiene el último token de una lista de tokens
 t_token	*token_tail(t_token *token)
 {
+	if (!token)
+		return (NULL);
 	while (token->next != NULL)
 		token = token->next;
 	return (token);
@@ -53,23 +55,28 @@ void	free_tokens(t_token **token)
 	while (*token)
 	{
 		tmp = *token;
-		tmp->prev = NULL;
 		*token = (*token)->next;
-		if (tmp->content)
-			free(tmp->content);
-		if (tmp->type == TEXT && tmp->quotes) // Añadido por Albert -> Para liberar las quotes del token
-		{
-			if (tmp->quotes->d)
-				free(tmp->quotes->d);
-			if (tmp->quotes->s)
-				free(tmp->quotes->s);
-			free(tmp->quotes);
-		}
-		free(tmp);
-		tmp = NULL;
+		free_token(tmp);
 	}
 	*token = NULL;
 	token = NULL;
+}
+
+void	free_token(t_token *tmp)
+{
+	tmp->prev = NULL;
+	if (tmp->content)
+		free(tmp->content);
+	if (tmp->type == TEXT && tmp->quotes)
+	{
+		if (tmp->quotes->d)
+			free(tmp->quotes->d);
+		if (tmp->quotes->s)
+			free(tmp->quotes->s);
+		free(tmp->quotes);
+	}
+	free(tmp);
+	tmp = NULL;
 }
 
 //Devuelve true si almenos uno de los caracteres de str es c
