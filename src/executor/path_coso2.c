@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:08:45 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:43:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:02:39 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ char	*get_and_check_file(char *filename, char *dir_path)
 #define PERMISSION_DENIED "Permission denied"
 #define _NO_SUCH_FILE 127
 #define NO_SUCH_FILE "No such file or directory"
+#define _CMD_NOT_FOUND 127
+#define CMD_NOT_FOUND "command not found"
 
 char	*find_as_path(char *cmd, int *exit_status, t_ms *ms)
 {
@@ -127,7 +129,7 @@ char	*find_as_path(char *cmd, int *exit_status, t_ms *ms)
 			exec_error(cmd, PERMISSION_DENIED);
 		}
 		else
-			write(1, "En exec, archivo raro, no sé qué hacer\n", 41);
+			exec_error(cmd, "Archivo raro?"); // provisional
 	}
 	else
 	{
@@ -171,10 +173,20 @@ char	*find_in_path(char *cmd, int *exit_status, t_ms *ms)
 	if (!path_dir)
 		return (NULL);
 	i = 0;
-	while (path[i])
+	while (path_dir[i])
 	{
-		program = get_file_in_directory(cmd, path[i]);
+		filepath = get_file_in_directory(cmd, exit_status, path_dir[i]);
+		if (filepath || *exit_status != 0) // creo que todo bien pero dejo esto aquí de momento
+		{
+			free_array(path_dir);
+			return (filepath);
+		}
+		i++;
 	}
+	free_array(path_dir);
+	*exit_status = _CMD_NOT_FOUND;
+	exec_error(cmd, CMD_NOT_FOUND);
+	return (NULL);
 }
 
 char	**get_path_directories(t_env *env)
@@ -191,23 +203,35 @@ char	**get_path_directories(t_env *env)
 	return (path_split);
 }
 
-char	*get_file_in_directory(char *filename, char *directory)
+char	*get_file_in_directory(char *filename, int *exit_status, char *dir)
 {
 	char	*filepath;
 
-	filepath = join_filename(filename, directory);
-	if (!filepath)
-		ms_quit(MALLOC_ERR);
-	
+	filepath = join_filename(filename, dir);
+	if (access(filepath, F_OK) == SUCCESS) // si el archivo existe
+	{
+		if (is_file(filepath))
+		{
+			if (access(filepath, X_OK) == SUCCESS) // tiene permisos de ejecución
+				return (filepath);
+			*exit_status = _PERMISSION_DENIED;
+			exec_error(filepath, PERMISSION_DENIED);
+		}			
+		else if (!is_directory(filepath))
+			exec_error(filepath, "Archivo raro?"); // provisional
+	}
+	free(filepath);
+	return (NULL);
 }
 
+/* Une un nombre de archivo y el path a su directorio. */
 char	*join_filename(char *filename, char *directory)
 {
 	char	*aux;
 	char	*filepath;
 	
 	if (!filename || !directory)
-		write (1, "Fallo random en join filename\n", 30); // provisional
+		ms_quit("Fallo raro en join_filename"); // provisional
 	aux = ft_strjoin(directory, "/");
 	if (!aux)
 		ms_quit(MALLOC_ERR);
@@ -219,6 +243,99 @@ char	*join_filename(char *filename, char *directory)
 	}
 	free(aux);
 	return (filepath);
+}
+
+/* Libera un char **array */ // meter en libft?
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	return ;
+}
+
+char	*find_in_pwd(char *cmd, int *exit_status, t_ms *ms)
+{
+	char	*filepath;
+	char	*pwd;
+
+	pwd = exec_getcwd(cmd, exit_status);
+	if (!pwd)
+		return (NULL);
+	filepath = join_filename(cmd, pwd);
+	free(pwd);
+	
+	if (access(filepath, F_OK) == SUCCESS) // si el archivo existe
+	{
+		if (is_file(filepath))
+		{
+			if (access(filepath, X_OK) == SUCCESS)
+				return (filepath);
+			*exit_status = _PERMISSION_DENIED;
+			exec_error(cmd, PERMISSION_DENIED);
+		}
+		else if (is_directory(filepath))
+		{
+			*exit_status = _IS_DIR;
+			exec_error(cmd, IS_DIR);
+		}
+		else
+			ms_quit("Archivo raro en pwd según el executor"); // provisional
+	}
+	else
+	{
+		*exit_status = _NO_SUCH_FILE;
+		exec_error(cmd, NO_SUCH_FILE);
+	}
+	free(filepath);
+	return (NULL);
+}
+
+char	*exec_getcwd(char *cmd, int *exit_status)
+{
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd) // han borrado el current directory de algún modo u otro
+	{
+		*exit_status = _NO_SUCH_FILE;
+		exec_error(NO_SUCH_FILE);
+		return (NULL);
+	}
+	return (cwd);
+}
+
+int	file_check(char *cmd, char *filename)
+{
+	if (access(filename, F_OK) == FAILURE)
+	{
+		exec_error(cmd, NO_SUCH_FILE);
+		return (_NO_SUCH_FILE);
+	}
+	if (is_file(filename))
+	{
+		if (access(filename, X_OK) == FAILURE)
+		{
+			exec_error(cmd, PERMISSION_DENIED);
+			return (_PERMISSION_DENIED);
+		}
+		return (SUCCESS);
+	}
+	else if (is_directory(filename))
+	{
+		exec_error(cmd, IS_DIR);
+		return (_IS_DIR);
+	}
+	else
+	{
+		exec_error(cmd, "Archivo raro en exec, find");
+	}
 }
 
 // int	local_path_check(t_ppath *data, char *cmd)

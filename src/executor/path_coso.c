@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 12:48:28 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:27:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:09:28 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,8 @@ char	*find_program(char *cmd, int *exit_status, t_ms *ms)
 
 	if (ft_strchr(cmd, '/'))
 		return (find_as_path(cmd, ms));
-	
 	program = find_in_path(cmd, exit_status, ms);
-	if (program)
+	if (program || *exit_status != 0) // creo que bien
 		return (program);
 	program = find_in_pwd(cmd, exit_status, ms);
 	if (program)
