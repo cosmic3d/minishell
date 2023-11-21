@@ -1,12 +1,7 @@
-#include <stdio.h>
 #include <unistd.h>
 
 int	main(int argc, char **argv, char **envp)
 {
-	printf("CWD = %s\n", getcwd(NULL, 0));
-
-	chdir("/Users/apresas-");
-
-	printf("CWD = %s\n", getcwd(NULL, 0));
+	write(1, "Hola\n", 5);
 	return (0);
 }

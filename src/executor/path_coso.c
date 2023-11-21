@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 12:48:28 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 15:09:28 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:56:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,7 @@ minishell: <comando>: <mensaje de error>
 
 */
 
-/* Función de printeo de error para esta sección de minishell */
-int	exec_error(char *command, char *error_message)
-{
-	write(2, "minishell: ", 12);
-	write(2, &command, ft_strlen(command));
-	write(2, ": ", 2);
-	write(2, &error_message, ft_strlen(error_message));
-	return (FAILURE);
-}
+
 /* Opcionalmente esto puede no tener return y podemos hacer un return statement 
 fuera de esta función tipo:
 	return (execution_error(cmd, error), ms->exit_status);
@@ -113,151 +105,127 @@ Casos por definir:
 
 */
 
-char	*find_program(char *cmd, int *exit_status, t_ms *ms)
-{
-	char	*program;
 
-	if (!cmd || !cmd[0])
-	{
-		// Es esto posible?
-		// *exit_status = no_cmd_case(ms);
-		return (NULL);
-	}
-	// *exit_status = directory_check(cmd);
 
-	if (ft_strchr(cmd, '/'))
-		return (find_as_path(cmd, ms));
-	program = find_in_path(cmd, exit_status, ms);
-	if (program || *exit_status != 0) // creo que bien
-		return (program);
-	program = find_in_pwd(cmd, exit_status, ms);
-	if (program)
-		return (program);
-	program = find_as_absolute_path(cmd, exit_status, ms);
-	if (program)
-		return (program);
-	return (program);
-}
+// int	no_cmd_case(t_ms *ms)
+// {
+// 	if (path_exists(ms->env))
+// 		return (ERR_CMD_NOT_FOUND); // 127 A
+// 	else
+// 		return (ERR_NO_SUCH_FILE); // 127 B
+// }
 
-int	no_cmd_case(t_ms *ms)
-{
-	if (path_exists(ms->env))
-		return (ERR_CMD_NOT_FOUND); // 127 A
-	else
-		return (ERR_NO_SUCH_FILE); // 127 B
-}
+// int	directory_check(char *cmd)
+// {
+// 	struct stat	statinfo;
+// 	int			i;
 
-int	directory_check(char *cmd)
-{
-	struct stat	statinfo;
-	int			i;
-
-	lstat(cmd, &statinfo);
-	if (!S_ISREG(statinfo.st_mode))
-	{
-		i = 0;
-		while (cmd[i])
-		{
-			if (cmd[i] == '/')
-			{
-				if (access(cmd, F_OK) == SUCCESS)
-					return (ERR_IS_DIR);
-				return (ERR_NO_SUCH_FILE);
-			}
-			i++;
-		}
-	}
-	else if (S_ISDIR(statinfo.st_mode))
-		return (ERR_CMD_NOT_FOUND);
-	return (SUCCESS);
-}
+// 	lstat(cmd, &statinfo);
+// 	if (!S_ISREG(statinfo.st_mode))
+// 	{
+// 		i = 0;
+// 		while (cmd[i])
+// 		{
+// 			if (cmd[i] == '/')
+// 			{
+// 				if (access(cmd, F_OK) == SUCCESS)
+// 					return (ERR_IS_DIR);
+// 				return (ERR_NO_SUCH_FILE);
+// 			}
+// 			i++;
+// 		}
+// 	}
+// 	else if (S_ISDIR(statinfo.st_mode))
+// 		return (ERR_CMD_NOT_FOUND);
+// 	return (SUCCESS);
+// }
 
 
 
-# define NOPATH 1
-# define YESPATH 0
+// # define NOPATH 1
+// # define YESPATH 0
 
-char	*find_in_path(char *name, t_ms *ms, int *flag)
-{
-	char	*program;
-	char	**path;
-	int		i;
+// char	*find_in_path(char *name, t_ms *ms, int *flag)
+// {
+// 	char	*program;
+// 	char	**path;
+// 	int		i;
 
-	path = get_path(ms->env, flag);
-	i = 0;
-	while (path[i])
-	{
-		program = get_file_in_directory(name, path[i]);
-		if (program)
-			break ;
-		i++;
-	}
-	free(path);
-	return (program);
-}
+// 	path = get_path(ms->env, flag);
+// 	i = 0;
+// 	while (path[i])
+// 	{
+// 		program = get_file_in_directory(name, path[i]);
+// 		if (program)
+// 			break ;
+// 		i++;
+// 	}
+// 	free(path);
+// 	return (program);
+// }
 
-char	**get_path(t_env *env, int *flag)
-{
-	t_env	*path_env;
-	char	**path_split;
+// char	**get_path(t_env *env, int *flag)
+// {
+// 	t_env	*path_env;
+// 	char	**path_split;
 
-	path_env = env_find("PATH", env);
-	if (!path_env)
-		return (NULL);
-	if (!path_env->content[0]) // creo que este es el único check necesario
-		return (NULL);
-	*flag = YESPATH;
-	path_split = ft_split(path_env->content, ':');
-	if (!path_split)
-		ms_quit(MALLOC_ERR);
-	// aquí haré algunas pruebas por si acaso, printear el contenido y eso, pero en teoría está bien
-	return (path_split);
-}
+// 	path_env = env_find("PATH", env);
+// 	if (!path_env)
+// 		return (NULL);
+// 	if (!path_env->content[0]) // creo que este es el único check necesario
+// 		return (NULL);
+// 	*flag = YESPATH;
+// 	path_split = ft_split(path_env->content, ':');
+// 	if (!path_split)
+// 		ms_quit(MALLOC_ERR);
+// 	// aquí haré algunas pruebas por si acaso, printear el contenido y eso, pero en teoría está bien
+// 	return (path_split);
+// }
 
-char	*get_file_in_directory(char *filename, char *dir_path)
-{
-	char	*filepath;
+// char	*get_file_in_directory(char *filename, char *dir_path)
+// {
+// 	char	*filepath;
 
-	filepath = ft_strjoin(dir_path, filename);
-	if (!filepath)
-		ms_quit(MALLOC_ERR);
-	if (access(filepath, F_OK) != -1)
-		return (filepath);
-	else
-	{
-		free(filepath);
-		return (NULL);
-	}
-}
-char	*find_program(char *name, t_ms *ms)
-{
-	char	*program;
-	int		path_flag;
+// 	filepath = ft_strjoin(dir_path, filename);
+// 	if (!filepath)
+// 		ms_quit(MALLOC_ERR);
+// 	if (access(filepath, F_OK) != -1)
+// 		return (filepath);
+// 	else
+// 	{
+// 		free(filepath);
+// 		return (NULL);
+// 	}
+// }
+// char	*find_program(char *name, t_ms *ms)
+// {
+// 	char	*program;
+// 	int		path_flag;
 
-	path_flag = NOPATH;
-	if (ft_strchr(name, '/')) // Si hay un '/'
-		return (name); // Entonces name es un path/to/name
-	program = find_in_path(name, ms, &path_flag);
+// 	path_flag = NOPATH;
+// 	if (ft_strchr(name, '/')) // Si hay un '/'
+// 		return (name); // Entonces name es un path/to/name
+// 	program = find_in_path(name, ms, &path_flag);
 
-}
+// }
 
-/* NOTAS SOBRE PERMSSIONS:
+// /* NOTAS SOBRE PERMSSIONS:
 
-Tests:
+// Tests:
 
-Ejecutando archivos dentro de directorios con permisos determinados:
+// Ejecutando archivos dentro de directorios con permisos determinados:
 
-rwx 7 (111) -> OK
-rw- 6 (110) -> KO !
-r-x 5 (101) -> OK
-r-- 4 (100) -> KO !
--wx 3 (011) -> OK
--w- 2 (010) -> KO !
---x 1 (001) -> OK
+// rwx 7 (111) -> OK
+// rw- 6 (110) -> KO !
+// r-x 5 (101) -> OK
+// r-- 4 (100) -> KO !
+// -wx 3 (011) -> OK
+// -w- 2 (010) -> KO !
+// --x 1 (001) -> OK
 
-Parece ser que lo único que necesito son permisos de ejecución. (LO MISMO CON CD <DIR>)
+// Parece ser que lo único que necesito son permisos de ejecución. (LO MISMO CON CD <DIR>)
 
-Lo mismo parece ocurrir si se trata de un directorio dentro de otro, si todos ellos tienen permissos -x,
-se podrá ejecutar el programa si tienes el path exacto al archivo.
+// Lo mismo parece ocurrir si se trata de un directorio dentro de otro, si todos ellos tienen permissos -x,
+// se podrá ejecutar el programa si tienes el path exacto al archivo.
 
-*/
+// */

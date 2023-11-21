@@ -80,6 +80,16 @@ vwxyz0123456789_"
 # define OFF -1
 # define SWITCH -1
 
+// Executor filepath check errors
+# define _IS_DIR 126
+# define IS_DIR "is a directory"
+# define _PERMISSION_DENIED 126
+# define PERMISSION_DENIED "Permission denied"
+# define _NO_SUCH_FILE 127
+# define NO_SUCH_FILE "No such file or directory"
+# define _CMD_NOT_FOUND 127
+# define CMD_NOT_FOUND "command not found"
+
 
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
@@ -295,5 +305,15 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 //cmd_env_creation.c
 char	**env_list_to_envp(t_env *head);
+
+// find_filepath.c
+char	*find_program(char *cmd, int *exit_status, t_ms *ms);
+
+// find_filepath_utils.c
+int	exec_error(char *command, char *error_message);
+int	is_directory(char *cmd);
+int	is_file(char *cmd);
+void	free_array(char **array);
+char	*join_filename(char *filename, char *directory);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/15 16:23:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:16:58 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,14 @@ int	main(int argc, char **argv, char **envp)
 	// envp = NULL; // debug
 	env_init(&ms, envp);
 
-	// char	*print_arg[] = {"export", NULL};
+	char *newpath[] = {"export", "PATH=tests", NULL};
+	ms_export(&ms, newpath);
+
 	// char	*set_zhola_arg[] = {"export", "ZHOLA=hola soy una variable", "Z_NO=No_cal_más_tokens", "Z_SI=Si cal mas tokens", NULL};
 	// char	*unset_zhola_arg[] = {"unset", "ZHOLA", NULL};
 	// ms_export(&ms, set_zhola_arg);
-	// ms_export(&ms, print_arg);
+	char	*print_arg[] = {"export", NULL};
+	ms_export(&ms, print_arg);
 	// printf("\n");
 	// printf("\n");
 	// ms_unset(&ms, unset_zhola_arg);
