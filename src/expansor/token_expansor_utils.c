@@ -62,6 +62,7 @@ t_token	*token_joiner(char **strs)
 		new_tkn->content = strs[i];
 		new_tkn->type = TEXT;
 		new_tkn->quotes = NULL;
+		new_tkn->next = NULL;
 		//printf("TOken content: %s\n", new_tkn->content);
 	}
 	free(strs);

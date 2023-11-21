@@ -280,7 +280,7 @@ int				expansor(t_ms *ms, t_token *token);
 int				is_valid_quote(int index, int *quote_array);
 
 //token_expansor.c
-t_token			*retokenizer(t_token *token);
+t_token			*retokenizer(t_token *token, t_ms *ms);
 
 //token_expansor_utils.c
 int				*goodbrack(char bracks, t_token *t);
