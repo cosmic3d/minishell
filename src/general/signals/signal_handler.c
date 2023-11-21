@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/16 17:13:40 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:05:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	disable_control_chars_echo(void)
 	struct termios	new_termios;
 
 	tcgetattr(0, &new_termios);
-	new_termios.c_lflag &= ~ECHOCTL;
+	/* new_termios.c_lflag &= ~ECHOCTL; */
+	new_termios.c_lflag &= ~(ICANON | ECHOCTL);
 	tcsetattr(0, TCSANOW, &new_termios);
 }
 
@@ -31,7 +32,8 @@ void	restore_terminal_settings(void)
 	struct termios	new_termios;
 
 	tcgetattr(0, &new_termios);
-	new_termios.c_lflag &= ECHOCTL;
+	/* new_termios.c_lflag &= ~ECHOCTL; */
+	new_termios.c_lflag |= (ICANON | ECHOCTL);
 	tcsetattr(0, TCSANOW, &new_termios);
 }
 

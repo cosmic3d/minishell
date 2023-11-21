@@ -80,7 +80,6 @@ vwxyz0123456789_"
 # define OFF -1
 # define SWITCH -1
 
-
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
 {
