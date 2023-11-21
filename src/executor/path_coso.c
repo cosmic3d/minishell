@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 12:48:28 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/20 18:08:25 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:27:01 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,50 @@
 
 /* Este es el archivo donde hago temas de PATH, el nombre es provisional. De 
 hecho, todo es provisional. */
+
+/* Idea:
+
+Antes de hacer fork, es necesario hacer varias cosas, entre ellas:
+
+-Buscar si es necesario, el comando en el PATH
+-Comprobar errores de lectura (falta de permisos)
+-Comprobar si estamos intentando ejecutar un directorio
+etc.
+
+Todos estos checks tienen que ocurrir antes de intentar ejecutar el comando con
+execve.
+
+En caso de que todo este preámbulo vaya bien, el exit_status se mantendrá a 0
+Pero si algo no funciona como esperabamos, entonces es necesario printear el 
+error apropiado y setear el valor del exit_status para el valor de $?
+
+Qué necesitamos:
+
+- Una función de printeo de error formateada como:
+minishell: <comando>: <mensaje de error>
+
+- Una función que busque en los directorios del PATH el comando recibido
+	Además debe tener en cuenta que If !PATH (PATH no existe o PATH="" o PATH existe pero no tiene content)
+	Then el comando recibido será tratado como un file/directory. Estoy afecta el mensaje de error pero no el exit_status.
+
+-  Una función que busque el comando en el directorio local (esto va siempre después de checkear el PATH)
+
+
+*/
+
+/* Función de printeo de error para esta sección de minishell */
+int	exec_error(char *command, char *error_message)
+{
+	write(2, "minishell: ", 12);
+	write(2, &command, ft_strlen(command));
+	write(2, ": ", 2);
+	write(2, &error_message, ft_strlen(error_message));
+	return (FAILURE);
+}
+/* Opcionalmente esto puede no tener return y podemos hacer un return statement 
+fuera de esta función tipo:
+	return (execution_error(cmd, error), ms->exit_status);
+Haciendo que esa función retorne el valor de exit_status, es solo una idea. */
 
 /* Qué necesitamos?
 
@@ -75,12 +119,15 @@ char	*find_program(char *cmd, int *exit_status, t_ms *ms)
 
 	if (!cmd || !cmd[0])
 	{
-		*exit_status = no_cmd_case(ms);
+		// Es esto posible?
+		// *exit_status = no_cmd_case(ms);
 		return (NULL);
 	}
-	*exit_status = directory_check(cmd);
-	if (exit_status != SUCCESS)
-		return (NULL);
+	// *exit_status = directory_check(cmd);
+
+	if (ft_strchr(cmd, '/'))
+		return (find_as_path(cmd, ms));
+	
 	program = find_in_path(cmd, exit_status, ms);
 	if (program)
 		return (program);

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:08:45 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/20 18:11:05 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:43:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,124 @@ char	*get_and_check_file(char *filename, char *dir_path)
 		ms_quit(MALLOC_ERR);
 	
 	
+}
+
+#define _IS_DIR 126
+#define IS_DIR "is a directory"
+#define _PERMISSION_DENIED 126
+#define PERMISSION_DENIED "Permission denied"
+#define _NO_SUCH_FILE 127
+#define NO_SUCH_FILE "No such file or directory"
+
+char	*find_as_path(char *cmd, int *exit_status, t_ms *ms)
+{
+	if (access(cmd, F_OK) == SUCCESS) // el archivo EXISTE
+	{
+		if (is_directory(cmd))
+		{
+			*exit_status = _IS_DIR;
+			exec_error(cmd, IS_DIR);
+		}
+		else if (is_file(cmd))
+		{
+			if (access(cmd, X_OK) == SUCCESS)
+				return (cmd);
+			*exit_status = _PERMISSION_DENIED;
+			exec_error(cmd, PERMISSION_DENIED);
+		}
+		else
+			write(1, "En exec, archivo raro, no sé qué hacer\n", 41);
+	}
+	else
+	{
+		*exit_status = ERR_NO_SUCH_FILE;
+		exec_error(cmd, NO_SUCH_FILE);
+	}
+	return (NULL);
+}
+
+
+// Funciones que quizá hacen todo más leible aunque un poco menos eficiente
+int	is_directory(char *cmd)
+{
+	struct stat file;
+
+	lstat(cmd, &file);
+	if (S_ISDIR(file.st_mode))
+		return (TRUE);
+	return (FALSE);
+}
+
+int	is_file(char *cmd)
+{
+	struct stat file;
+
+	lstat(cmd, &file);
+	if (S_ISREG(file.st_mode))
+		return (TRUE);
+	return (FALSE);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+char	*find_in_path(char *cmd, int *exit_status, t_ms *ms)
+{
+	char	*filepath;
+	char	**path_dir;
+	int		i;
+
+	path_dir = get_path_directories(ms->env);
+	if (!path_dir)
+		return (NULL);
+	i = 0;
+	while (path[i])
+	{
+		program = get_file_in_directory(cmd, path[i]);
+	}
+}
+
+char	**get_path_directories(t_env *env)
+{
+	t_env	*path_env;
+	char	**path_split;
+
+	path_env = env_find("PATH", env);
+	if (!path_env || !path_env->content || !path_env->content[0])
+		return (NULL);
+	path_split = ft_split(path_env->content, ':');
+	if (!path_split)
+		ms_quit(MALLOC_ERR);
+	return (path_split);
+}
+
+char	*get_file_in_directory(char *filename, char *directory)
+{
+	char	*filepath;
+
+	filepath = join_filename(filename, directory);
+	if (!filepath)
+		ms_quit(MALLOC_ERR);
+	
+}
+
+char	*join_filename(char *filename, char *directory)
+{
+	char	*aux;
+	char	*filepath;
+	
+	if (!filename || !directory)
+		write (1, "Fallo random en join filename\n", 30); // provisional
+	aux = ft_strjoin(directory, "/");
+	if (!aux)
+		ms_quit(MALLOC_ERR);
+	filepath = ft_strjoin(aux, filename);
+	if (!filepath)
+	{
+		free(aux);
+		ms_quit(MALLOC_ERR);
+	}
+	free(aux);
+	return (filepath);
 }
 
 // int	local_path_check(t_ppath *data, char *cmd)
