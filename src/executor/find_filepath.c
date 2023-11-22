@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 18:25:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/22 18:14:13 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,48 @@
 /* TO-DO:
 
 Arreglar los casos de PATH con rutas relativas.
-Además si la ruta relativa ya tiene una / al final, no hace falta añadir otra 
-al joinear. Etc.
-
-Enviar solamente . no muestra:
-
-Aqui hay algo raro, esto es de bash:
-
-bash-3.2$ echo $PATH
-/Users/apresas-/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/usr/local/munki:/Users/apresas-/utils/Visual\ Studio\ Code.app/Contents/Resources/app/bin:testpath:testpath
-bash-3.2$ teste
-bash: teste: command not found
-bash-3.2$ testo
-Hola
-bash-3.2$ misco
-bash: misco: command not found
-bash-3.2$ testo
-Hola
-bash-3.2$
-
-Cuando hago misco falla pero me dice command not found en vez de 
-testpath/misco No such file etc.
+Con las rutas relativas me parecía que bash printeaba los errores así:
+bash: testpath/misco: No such file or directory
+Pero resulta que eso solo es por que bash parece conservar un registro interno
+de archivos a los que ha accedido recientemente.
+Me explico mejor:
+bash se acuerda de que anteriormente has abierto un archivo en un directorio
+relativo indicado por PATH. Por lo tanto, al hacer:
+"misco" (asumiendo que existe ese archivo en el directorio relativo)
+(y asumiendo que ahora mismo no podemos acceder al directorio relativo en 
+questión)
+el error será:
+bash: <directorio>/misco: No such file or directory
+Pero si hicies cualquier otro comando, por ejemplo "jones", entonces
+bash simplemente dirá:
+bash: jones: command not found
+Como nosotros no gestionamos esa clase de cosas, registros de en qué archivos
+ya hemos accedido relativo a qué otros archivos bla bla bla...
+Entonces podemos pasar de esto..
 
 Quizá hay más por ver
 
+Caso curioso:
+	Asumamos que estamos en un directorio "test"
+	En él hay un ARCHIVO "file" y un DIRECTORIO "dir"
+	Si hacemos:
+	dir/
+	bash: dir/: is a directory
+	$? = 126
+	Y si hacemos:
+	file/
+	bash: file/: Not a directory
+	$? = 126
+
+O sea, bash se queja si hacemos dir/ por que en este contexto se espera un
+comando o un archivo.
+Y si hacemos file/, bash se queja por que la sintaxis <name>/ es para 
+directorios y file no es un directorio.
+En resumen, se queja siempre, pero por motivos distintos.
+
+Si hacemos <archivo que no existe>/ entonces da el clásico
+bash: <archivo que no existe>/: No such file or directory
+$? = 127
 */
 
 static char	*find_as_path(char *cmd, char *cmderror, int *exit_status);
@@ -53,12 +71,8 @@ char	*find_program(char *cmd, int *exit_status, t_ms *ms)
 {
 	char	*program; 
 
-	if (!cmd || !cmd[0])
-	{
-		// Es esto posible?
-		// *exit_status = no_cmd_case(ms);
-		return (NULL);
-	}
+	// if (!cmd)
+	//	no debería ocurrir nunca esto
 	if (ft_strchr(cmd, '/'))
 		return (find_as_path(cmd, NULL, exit_status));
 	program = find_in_path(cmd, exit_status, ms);
@@ -75,7 +89,6 @@ y gestiona errores como si es un directorio, si el archivo no existe, o si el
 archivo encontrado no tiene permisos de ejecución. */
 static char	*find_as_path(char *cmd, char *cmderror, int *exit_status)
 {
-	write(1, "AWOWA\n", 6); // check
 	if (!cmderror)
 		cmderror = cmd;
 	if (access(cmd, F_OK) == SUCCESS) // el archivo EXISTE
