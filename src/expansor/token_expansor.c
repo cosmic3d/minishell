@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/22 00:37:34 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/22 20:25:43 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,34 @@ static int	token_count(t_token *t, int count)
 	return (count);
 }
 
+/* Itera todo el string de un token y va haciendo substrings de los tokens
+nuevos que vaya encontrando para añadirlos a strs y luego devolverlo*/
+static char	**token_splitter_helper(char **strs, t_token *t, int tkn_count)
+{
+	int		i;
+	int		start;
+	int		str_i;
+
+	i = 0;
+	str_i = 0;
+	while (t->content[i] && str_i < tkn_count)
+	{
+		if (t->content[i] && t->content[i] != ' ')
+		{
+			start = i;
+			token_traverse(t, &i);
+			strs[str_i] = ms_substr(t->content, start, i - start, t);
+			if (!strs[str_i])
+				ms_quit(MALLOC_ERR);
+			str_i++;
+		}
+		if (t->content[i])
+			i++;
+	}
+	strs[str_i] = NULL;
+	return (strs);
+}
+
 /* Esta función devuelve unos strings de los tokens
 que deberán de ser tokenizados.
 Si devuelve NULL, quiere decir que únicamente
@@ -55,6 +83,7 @@ static t_token	*token_splitter(t_token *token)
 
 	if (!ft_strlen(token->content))
 		return (NULL);
+	printf("LLEGA: %s\n", token->content);
 	num_tokens = token_count(token, 0);
 	//printf("NUM OF TOKENS: %i\n", num_tokens);
 	if (num_tokens == 1)
@@ -76,26 +105,36 @@ de los bordes y las vacías.
 Para distinguir las comillas que escribió el usuario de las que se encuentran
 al expandir utilizaré un array de enteros que contiene las posiciones de las
 comillas que hay que tener en cuenta. */
-t_token	*retokenizer(t_token *token, t_ms *ms)
+t_token	*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp)
 {
-	t_token	*new_tkn;
-
-	new_tkn = token_splitter(token);
-	if (!new_tkn)
+	nt = token_splitter(token);
+	if (!nt)
+	{
+		tmp = token->content;
+		token->content = ms_substr(token->content, 0, \
+		ft_strlen(token->content), token);
+		free(tmp);
 		return (token);
+	}
 	if (token->prev)
 	{
-		token->prev->next = new_tkn;
-		new_tkn->prev = token->prev;
+		token->prev->next = nt;
+		nt->prev = token->prev;
 	}
 	else
-		ms->token = new_tkn;
+		ms->token = nt;
 	if (token->next)
 	{
-		token->next->prev = new_tkn;
-		new_tkn = token_tail(new_tkn);
-		new_tkn->next = token->next;
+		token->next->prev = nt;
+		nt = token_tail(ms->token);
+		nt->next = token->next;
 	}
+	/* printf("LO QUE SALE DE LA FUNCIÓN:\n");
+	print_tokens(ms->token);
+	printf("\n");
+	printf("EL ÚLTIMO QUE SE ENVÍA: \n");
+	printf("Content of ultimo: %s\n", nt->content);
+	printf("\n"); */
 	free_token(token);
-	return (new_tkn);
+	return (token_tail(ms->token));
 }

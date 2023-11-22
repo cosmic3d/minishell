@@ -280,12 +280,13 @@ int				expansor(t_ms *ms, t_token *token);
 int				is_valid_quote(int index, int *quote_array);
 
 //token_expansor.c
-t_token			*retokenizer(t_token *token, t_ms *ms);
+t_token			*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp);
 
 //token_expansor_utils.c
 int				*goodbrack(char bracks, t_token *t);
-char			**token_splitter_helper(char **strs, t_token *t, int tkn_count);
 t_token			*token_joiner(char **strs);
+char			*ms_substr(char *s, int start, int n, t_token *t);
+void			token_traverse(t_token *t, int *i);
 
 //cmd_expansor_utils.c
 char			*update_token(t_ms *ms, char *str, int j);

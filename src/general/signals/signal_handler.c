@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 17:05:03 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:57:14 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	restore_terminal_settings(void)
 	struct termios	new_termios;
 
 	tcgetattr(0, &new_termios);
-	/* new_termios.c_lflag &= ~ECHOCTL; */
 	new_termios.c_lflag |= (ICANON | ECHOCTL);
 	tcsetattr(0, TCSANOW, &new_termios);
 }
@@ -44,9 +43,9 @@ static void	signal_action(int signum)
 	{
 		printf("\n");
 		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
 	}
-	rl_on_new_line();
-	rl_redisplay();
 	return ;
 }
 

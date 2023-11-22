@@ -23,7 +23,7 @@ int	*goodbrack(char bracks, t_token *t)
 
 /* Itera desde al principio hasta el final de un token con el puntero de i.
 De esta manera tenemos más líneas para trabajar. */
-static void	token_traverse(t_token *t, int *i)
+void	token_traverse(t_token *t, int *i)
 {
 	char	bracks;
 
@@ -69,30 +69,53 @@ t_token	*token_joiner(char **strs)
 	return (first_tkn);
 }
 
-/* Itera todo el string de un token y va haciendo substrings de los tokens
-nuevos que vaya encontrando para añadirlos a strs y luego devolverlo*/
-char	**token_splitter_helper(char **strs, t_token *t, int tkn_count)
+/* Esta función auxiliar resta las comillas válidas al string que
+se va a extraer y devuelve el string con el len adecuado. */
+static int	ms_substr_helper(char *s, int start, int len, t_token *t)
 {
-	int		i;
-	int		start;
-	int		str_i;
+	int	final_len;
+	int	i;
 
-	i = 0;
-	str_i = 0;
-	while (t->content[i] && str_i < tkn_count)
+	final_len = len;
+	i = start;
+	while (s[i] && i < start + len)
 	{
-		if (t->content[i] && t->content[i] != ' ')
-		{
-			start = i;
-			token_traverse(t, &i);
-			strs[str_i] = ft_substr(t->content, start, i - start + 1);
-			if (!strs[str_i])
-				ms_quit(MALLOC_ERR);
-			str_i++;
-		}
-		if (t->content[i])
-			i++;
+		if ((s[i] == '"' || s[i] == '\'') && \
+		is_valid_quote(i, goodbrack(s[i], t)))
+			final_len--;
+		i++;
 	}
-	strs[str_i] = NULL;
-	return (strs);
+	return (final_len);
+}
+
+/* Este split es un split modificado de tal manera que se adapte a nuestras
+necesidades con las comillas válidas. Además de hacer un split normal,
+este también elimina las comillas válidas en base a los punteros de
+las comillas contenido en el token.*/
+char	*ms_substr(char *s, int start, int n, t_token *t)
+{
+	char	*str;
+	int		s_len;
+	int		i;
+
+	if (!s)
+		return (0);
+	s_len = ft_strlen(s);
+	i = 0;
+	if (n > s_len)
+		n = s_len + 1;
+	n = ms_substr_helper(s, start, n, t);
+	str = malloc(sizeof(char) * (n + 1));
+	if (!str)
+		ms_quit(MALLOC_ERR);
+	while (i < n)
+	{
+		if ((s[start] == '"' || s[start] == '\'') && \
+		is_valid_quote(start, goodbrack(s[start], t)))
+			start++;
+		else
+			str[i++] = s[start++];
+	}
+	str[i] = '\0';
+	return (str);
 }
