@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_filepath.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 17:47:48 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:28:40 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	**get_path_directories(t_env *env);
 static char	*find_locally(char *cmd, int *exit_status);
 static char	*find_as_a_path(char *file_path, int *exit_status);
 
-/* Devuelve el file_path al programa representado por la string cmd y gestiona 
+/* Devuelve el file_path al programa representado por la string cmd y gestiona
 errores de ejecución previos asignando un valor a exit_status */
 char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms)
 {
@@ -43,7 +43,7 @@ char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms)
 	return (NULL);
 }
 
-/* Gestiona la búsqueda de un comando cmd en los directorios indicados por la 
+/* Gestiona la búsqueda de un comando cmd en los directorios indicados por la
 variable de entorno PATH y gestiona los posibles errores. */
 static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms)
 {
@@ -57,6 +57,7 @@ static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms)
 	i = 0;
 	while (directories[i] != NULL)
 	{
+		printf("Content %i: %s\n", i, directories[i]);
 		file_path = join_filename(cmd, directories[i]);
 		if (file_check(file_path, IS_FILE) && \
 		(ft_strcmp(".", cmd) && ft_strcmp("..", cmd)))
@@ -89,9 +90,9 @@ static char	**get_path_directories(t_env *env)
 	return (path_split);
 }
 
-/* Gestiona la búsqueda del archivo indicado por cmd en el directorio actual, 
-cosa que minishell hará si no tiene un PATH válido. También gestiona errores 
-varios como si el directorio actual ya no existe por que fue eliminado como 
+/* Gestiona la búsqueda del archivo indicado por cmd en el directorio actual,
+cosa que minishell hará si no tiene un PATH válido. También gestiona errores
+varios como si el directorio actual ya no existe por que fue eliminado como
 si el archivo buscado no existe, etc. */
 static char	*find_locally(char *cmd, int *exit_status)
 {
@@ -120,7 +121,7 @@ static char	*find_locally(char *cmd, int *exit_status)
 	return (NULL);
 }
 
-/* Esta función asume que cmd ya está formateado como una dirección que hay 
+/* Esta función asume que cmd ya está formateado como una dirección que hay
 que interpretar literalmente como path absoluto o relativo. */
 static char	*find_as_a_path(char *file_path, int *exit_status)
 {

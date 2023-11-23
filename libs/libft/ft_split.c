@@ -6,85 +6,98 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 15:24:39 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 18:18:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:31:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_words(char const *s, char c)
+static char	**ft_free(char **str, int wordc)
 {
-	int	count;
 	int	i;
 
-	count = 0;
 	i = 0;
-	while (s[i] != '\0')
+	while (i < wordc)
 	{
-		if (s[i] == c)
-			i++;
-		else
-		{
-			while (s[i] != c && s[i] != '\0')
-			{
-				i++;
-			}
-			count++;
-		}
+		free(str[i]);
+		i++;
 	}
-	return (count);
-}
-
-static char	**free_all(char **array, int k)
-{
-	while (k > 0)
-		free(array[k--]);
-	free(array[k]);
-	free(array);
+	free(str);
 	return (NULL);
 }
 
-static char	**place_words(const char *s, char **array, char c, int words)
+static int	word_count(char *str, char separator)
 {
 	int	i;
-	int	j;
-	int	k;
+	int	counter;
 
+	counter = 0;
 	i = 0;
-	k = 0;
-	while (k < words)
+	while (str[i] != '\0')
 	{
-		if (s[i] != c)
-		{
-			j = 0;
-			while (s[++i] != c && s[i] != '\0')
-			{
-				i++;
-				j++;
-			}
-			array[k] = ft_calloc (sizeof(char), (j + 1));
-			if (!array)
-				return (free_all(array, k));
-			ft_strlcpy(array[k], &s[i - j], j + 1);
-			k++;
-		}
+		if (str[i] != separator && i == 0)
+			counter++;
+		if (str[i] == separator && str[i + 1] != separator && str[i + 1])
+			counter++;
 		i++;
 	}
-	return (array);
+	return (counter);
+}
+
+static char	**loc_mem(char *str, char s)
+{
+	int		i;
+	int		j;
+	int		w;
+	int		wordc;
+	char	**words;
+
+	wordc = word_count(str, s);
+	words = malloc(sizeof(char *) * (wordc + 1));
+	if (!words)
+		return (0);
+	j = 0;
+	i = -1;
+	while (++i < wordc)
+	{
+		w = 0;
+		while (str[j] == s)
+			j++;
+		while ((str[j] && str[j] != s)
+			&& ((j == 0 && str[j] != s) || (str[j] != s)) && w++ != -1)
+			j++;
+		words[i] = malloc(sizeof(char) * (w + 1));
+		if (!words[i])
+			return (ft_free(words, i));
+	}
+	return (words);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**array;
-	int		words;
+	int		i;
+	int		j;
+	int		k;
+	char	**words;
 
-	if (!s)
+	words = loc_mem((char *)s, c);
+	if (!words)
 		return (0);
-	words = count_words(s, c);
-	array = malloc (sizeof(char *) * (words + 1));
-	if (!array)
-		return (0);
-	place_words(s, array, c, words);
-	array[words] = 0;
-	return (array);
+	i = 0;
+	j = 0;
+	while (i < word_count((char *)s, c))
+	{
+		k = 0;
+		while ((char)s[j] == c)
+			j++;
+		if ((j == 0 && (char)s[j] != c) || ((char)s[j] != c && (char)s[j]))
+		{
+			while ((char)s[j] && (char)s[j] != c)
+				words[i][k++] = (char)s[j++];
+			words[i][k] = '\0';
+		}
+		i++;
+	}
+	words[i] = NULL;
+	return (words);
 }
