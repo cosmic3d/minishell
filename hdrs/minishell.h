@@ -83,13 +83,22 @@ vwxyz0123456789_"
 // Executor filepath check errors
 # define _IS_DIR 126
 # define IS_DIR "is a directory"
-# define _PERMISSION_DENIED 126
-# define PERMISSION_DENIED "Permission denied"
+# define _NOT_DIR 126
+# define NOT_DIR "Not a directory"
+# define _PERM_DENIED 126
+# define PERM_DENIED "Permission denied"
 # define _NO_SUCH_FILE 127
 # define NO_SUCH_FILE "No such file or directory"
 # define _CMD_NOT_FOUND 127
 # define CMD_NOT_FOUND "command not found"
 
+// For access(), better readability of its macros
+# define HAS_READ_PERMISSIONS R_OK
+# define HAS_WRITE_PERMISSIONS W_OK
+# define HAS_EXECUTE_PERMISSIONS X_OK
+# define FILE_EXISTS F_OK
+# define IS_FILE 1001
+# define IS_DIRECTORY 1002
 
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
@@ -307,13 +316,16 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 char	**env_list_to_envp(t_env *head);
 
 // find_filepath.c
-char	*find_program(char *cmd, int *exit_status, t_ms *ms);
+// char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
+char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
-int	exec_error(char *command, char *error_message);
-int	is_directory(char *cmd);
-int	is_file(char *cmd);
+int		exec_error(char *cmd, char *error_str, int errnum);
+int		is_directory(char *cmd);
+int		is_file(char *cmd);
 void	free_array(char **array);
 char	*join_filename(char *filename, char *directory);
+int		file_check(char *file_path, int check);
+char	*safe_getcwd(char *cmd, int *exit_status);
 
 #endif

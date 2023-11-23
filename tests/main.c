@@ -1,7 +1,7 @@
 #include <unistd.h>
 
-int	main(int argc, char **argv, char **envp)
+int	main(void)
 {
-	write(1, "Hola\n", 5);
+	write(1, "Hola que tal\n", 13);
 	return (0);
 }

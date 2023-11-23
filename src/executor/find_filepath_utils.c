@@ -6,22 +6,33 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 18:06:03 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:35:27 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// OLD
+// int	exec_error(char *command, char *error_message)
+// {
+// 	write(2, "minishell: ", 12);
+// 	write(2, command, ft_strlen(command));
+// 	write(2, ": ", 2);
+// 	write(2, error_message, ft_strlen(error_message));
+// 	write(2, "\n", 1);
+// 	return (FAILURE);
+// }
+
 /* Función de printeo de error para el executor, al menos durante los checks 
 previos a la ejecución. */
-int	exec_error(char *command, char *error_message)
+int	exec_error(char *cmd, char *error_str, int errnum)
 {
 	write(2, "minishell: ", 12);
-	write(2, command, ft_strlen(command));
+	write(2, cmd, ft_strlen(cmd));
 	write(2, ": ", 2);
-	write(2, error_message, ft_strlen(error_message));
+	write(2, error_str, ft_strlen(error_str));
 	write(2, "\n", 1);
-	return (FAILURE);
+	return (errnum);
 }
 
 /* Comprueba si el archivo representado por cmd es un directorio */
@@ -43,6 +54,35 @@ int	is_file(char *cmd)
 	lstat(cmd, &file);
 	if (S_ISREG(file.st_mode))
 		return (TRUE);
+	return (FALSE);
+}
+
+/* Devuelve TRUE o FALSE respecto al valor de check */
+int	file_check(char *file_path, int check)
+{
+	struct stat file;
+
+	if (check == IS_DIRECTORY)
+	{
+		if (access(file_path, FILE_EXISTS) != SUCCESS)
+			return (FALSE);
+		lstat(file_path, &file);
+		if (S_ISDIR(file.st_mode))
+			return (TRUE);
+	}
+	else if (check == IS_FILE)
+	{
+		if (access(file_path, FILE_EXISTS) != SUCCESS)
+			return (FALSE);
+		lstat(file_path, &file);
+		if (S_ISREG(file.st_mode))
+			return (TRUE);
+	}
+	else
+	{
+		if (access(file_path, check) == SUCCESS)
+			return (TRUE);
+	}
 	return (FALSE);
 }
 
@@ -68,7 +108,7 @@ char	*join_filename(char *filename, char *directory)
 	char	*filepath;
 	
 	if (!filename || !directory)
-		ms_quit("Fallo raro en join_filename"); // provisional
+		return (NULL); // conflictivo
 	aux = ft_strjoin(directory, "/");
 	if (!aux)
 		ms_quit(MALLOC_ERR);
@@ -80,4 +120,17 @@ char	*join_filename(char *filename, char *directory)
 	}
 	free(aux);
 	return (filepath);
+}
+
+char	*safe_getcwd(char *cmd, int *exit_status)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		*exit_status = exec_error(cmd, NO_SUCH_FILE, _NO_SUCH_FILE);
+		return (NULL);
+	}
+	return (pwd);
 }
