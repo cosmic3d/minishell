@@ -31,6 +31,7 @@ void	export_perror(char *argument)
 void	ms_quit(char *error_message)
 {
 	ms_error(error_message);
+	restore_terminal_settings();
 	exit(EXIT_FAILURE);
 }
 
@@ -53,7 +54,7 @@ void	ms_quit(char *error_message)
 		Por lo que he visto, supongo que tendremos que liberar cosas de
 		la pipe con la que llamemos al programa así que tendrá que ser
 		una función especifica para eso.
-	
+
 	- Hay errores de los cuales solo necesitaremos un return en vez de
 	un exit. Habrá que hacer esa función también.
 

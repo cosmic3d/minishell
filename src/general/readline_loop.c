@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 16:37:32 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/23 18:14:38 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	readline_loop(t_ms *ms)
 
 	while (42)
 	{
-		disable_control_chars_echo();
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);
@@ -51,7 +50,6 @@ char	*terminal_entry(void)
 {
 	char	*buffer;
 
-	disable_control_chars_echo();
 	buffer = readline(CMDPROMPT);
 	if (!buffer)
 	{
@@ -63,9 +61,9 @@ char	*terminal_entry(void)
 		if (rl_eof_found)
 		{
 			printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
-			exit(EXIT_SUCCESS);
+			restore_terminal_settings();
+			exit(SUCCESS);
 		}
-		restore_terminal_settings();
 		ms_quit(MALLOC_ERR);
 	}
 	if (buffer[0] != '\0')
