@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 16:35:27 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:48:39 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,10 @@ int	exec_error(char *cmd, char *error_str, int errnum)
 	return (errnum);
 }
 
-/* Comprueba si el archivo representado por cmd es un directorio */
-int	is_directory(char *cmd)
-{
-	struct stat file;
-
-	lstat(cmd, &file);
-	if (S_ISDIR(file.st_mode))
-		return (TRUE);
-	return (FALSE);
-}
-
-/* Comprueba si el archivo representado por cmd es un archivo normal */
-int	is_file(char *cmd)
-{
-	struct stat file;
-
-	lstat(cmd, &file);
-	if (S_ISREG(file.st_mode))
-		return (TRUE);
-	return (FALSE);
-}
-
 /* Devuelve TRUE o FALSE respecto al valor de check */
 int	file_check(char *file_path, int check)
 {
-	struct stat file;
+	struct stat	file;
 
 	if (check == IS_DIRECTORY)
 	{
@@ -106,9 +84,7 @@ char	*join_filename(char *filename, char *directory)
 {
 	char	*aux;
 	char	*filepath;
-	
-	if (!filename || !directory)
-		return (NULL); // conflictivo
+
 	aux = ft_strjoin(directory, "/");
 	if (!aux)
 		ms_quit(MALLOC_ERR);

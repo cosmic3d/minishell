@@ -177,17 +177,6 @@ typedef struct s_quotes
 	int	d_on;
 }				t_quotes;
 
-typedef struct s_program_path_tools
-{
-	char	*filepath;
-	char	*error_message;
-	t_env	*envpath;
-	int		exit_status;
-	int		cmd_type;
-	int		path_exists;
-	int		is_path;
-}				t_ppath;
-
 /* struct con los valores necesarios para el funcionamiento del expansor.
 	name = Nombre de la variable
 	content = Contenido de la variable
@@ -321,8 +310,6 @@ char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
 int		exec_error(char *cmd, char *error_str, int errnum);
-int		is_directory(char *cmd);
-int		is_file(char *cmd);
 void	free_array(char **array);
 char	*join_filename(char *filename, char *directory);
 int		file_check(char *file_path, int check);
