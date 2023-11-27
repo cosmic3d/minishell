@@ -3,23 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:54:04 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/07 17:25:26 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:34:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* función que emula el funcionamiento del builtin pwd */
-int	ms_pwd(void)
+int	ms_pwd(t_ms *ms)
 {
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
-	// malloc check?
-	write(1, &cwd, ft_strlen(cwd));
-	free(cwd);
+	write(1, ms->pwd, ft_strlen(ms->pwd));
+	write(1, "\n", 1);
 	return (EXIT_SUCCESS);
 }

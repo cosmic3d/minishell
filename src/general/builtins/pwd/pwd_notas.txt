@@ -1,0 +1,11 @@
+Notas sobre pwd:
+
+- a pwd se la pelan los permisos. Si estás en un directorio, da igual los permisos que tengan,
+pwd funcionará.
+
+- si el directorio local es borrado, el pwd de bash sigue funcionando
+- si la variable de entorno $PWD es modificada o eliminada, pwd funciona igualmente, de forma
+independiente.
+	Por estos dos últimos motivos he añadido la variable interna pwd al puntero t_ms.
+	Este puntero se setea al inicio de minishell, cuando las variables de entorno y se
+	irá actualizando por cada uso del builtin cd.

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/27 17:03:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:31:14 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,17 @@ int	main(int argc, char **argv, char **envp)
 	char	*cdArg1[] = {"cd", "/Users/apresas-/Desktop/cd_tests/", NULL};
 	ms_cd(&ms, cdArg1);
 
+	ms_pwd(&ms);
+
 	char	*cdArg2[] = {"cd", ".././../Dowloads", NULL};
 	ms_cd(&ms, cdArg2);
 
+	ms_pwd(&ms);
+
 	char	*cdArg22[] = {"cd", ".././../Downloads", NULL};
 	ms_cd(&ms, cdArg22);
+
+	ms_pwd(&ms);
 
 	char	*exportArg[] = {"./export", "PWD=\"Misco\"", NULL};
 	ms_export(&ms, exportArg);
@@ -40,8 +46,12 @@ int	main(int argc, char **argv, char **envp)
 	char	*cdArg3[] = {"cd", "/Users/apresas-/Music/.././Pictures/././../utils/../minishell", NULL};
 	ms_cd(&ms, cdArg3);
 
+	ms_pwd(&ms);
+
 	char	*cdArg4[] = {"cd", "minishell", NULL};
 	ms_cd(&ms, cdArg4);
+
+	ms_pwd(&ms);
 
 	// char *newpath[] = {"export", "PATH=tests", NULL};
 	// ms_export(&ms, newpath);

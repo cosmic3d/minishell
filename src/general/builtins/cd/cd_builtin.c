@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/27 17:07:20 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:27:55 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ int	ms_cd(t_ms *ms, char **argv)
 		return (EXIT_FAILURE);
 	}
 	update_environment(ms, pwd);
+	if (ms->pwd)
+		free(ms->pwd);
+	ms->pwd = ft_strdup(pwd);
+	if (!ms->pwd)
+		ms_quit(MALLOC_ERR);
 	return (EXIT_SUCCESS);
 }
 

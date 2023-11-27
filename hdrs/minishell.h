@@ -150,6 +150,7 @@ typedef struct s_minishell
 	t_env		*env;
 	t_token		*token;
 	t_cmdinfo	*cmd;
+	char		*pwd;
 	int			num_cmd;
 	char		**envp;
 	char		*prev_wd; // Previous working directory
@@ -238,12 +239,6 @@ void			*head(void *node);
 int				append(t_lst **head, size_t size); // ?????
 void			swap(void *ptr_a, void *ptr_b); // TESTING
 int				list_len(void *head);
-
-// prompt.c
-// char	*set_prompt(char *cwd);
-
-// pwd_builtin.c
-int				ms_pwd(void);
 
 // readline_loop.c
 int				readline_loop(t_ms *ms);
@@ -339,5 +334,8 @@ char	*safe_getcwd(char *cmd, int *exit_status);
 
 // cd_builtin.c
 int	ms_cd(t_ms *ms, char **argv);
+
+// pwd_builtin.c
+int	ms_pwd(t_ms *ms);
 
 #endif

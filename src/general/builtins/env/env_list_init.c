@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static t_env	*env_null_case(t_env *env);
+static t_env	*env_null_case(t_ms *ms, t_env *env);
 static t_env	*env_get_envp(char **envp, t_env *head);
 static int		get_envp_values(char **name, char **content, char *envp_line);
 static t_env	*env_update_list(t_env *env);
@@ -27,31 +27,32 @@ void	env_init(t_ms *ms, char **envp)
 	env = NULL;
 	if (!envp || !envp[0]) // NULL case
 	{
-		ms->env = env_null_case(env);
+		ms->env = env_null_case(ms, env);
 		return ;
 	}
 	env = env_get_envp(envp, env);
 	env = env_update_list(env); // TODO NEXT
 	ms->env = env;
+	ms->pwd = getcwd(NULL, 0);
+	if (!ms->pwd)
+		ms_quit(MALLOC_ERR);
 	return ;
 }
 
-static t_env	*env_null_case(t_env *env)
+static t_env	*env_null_case(t_ms *ms, t_env *env)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-	{
-		ms_error(MALLOC_ERR);
-		exit(EXIT_FAILURE);
-	}
+		ms_quit(MALLOC_ERR);
 	if (env_add("SHLVL", "1", &env))
 		exit(EXIT_FAILURE);
 	if (env_add("OLDPWD", NULL, &env))
 		exit(EXIT_FAILURE);
 	if (env_add("PWD", pwd, &env))
 		exit(EXIT_FAILURE);
+	ms->pwd = pwd;
 	return (env);
 }
 
