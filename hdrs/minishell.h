@@ -341,4 +341,7 @@ int	ms_pwd(t_ms *ms);
 // echo_builtin.c
 int	ms_echo(char **argv);
 
+// exit_builtin.c
+int	ms_exit(char **argv);
+
 #endif

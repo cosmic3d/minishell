@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/27 18:36:05 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:51:18 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	main(int argc, char **argv, char **envp)
 
 	char	*echoArg5[] = {"echo", "-n", "-nnnnnnnnnnnnnnnnnnnnnnnnnn", NULL};
 	ms_echo(echoArg5);
+
 
 	// char *newpath[] = {"export", "PATH=tests", NULL};
 	// ms_export(&ms, newpath);
