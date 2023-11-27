@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/27 14:50:13 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:12:55 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ int	ms_cd(t_ms *ms, char **argv)
 		perror("Testing chdir");
 		return(EXIT_FAILURE);
 	}
-	new_pwd = getcwd(NULL, 0);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		cd_error(argv[1], "getcwd error noseque"); // Hay que pensar esto
+		return (EXIT_FAILURE);
+	}
 	update_environment();
 	env_update("PWD", new_pwd, ms->env);
 	return (EXIT_SUCCESS);
