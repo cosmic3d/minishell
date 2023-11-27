@@ -6,32 +6,79 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/21 15:48:00 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 14:50:13 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	check_arg_errors(char *arg);
+static void	cd_error(char *arg, char *error_str);
+
 int	ms_cd(t_ms *ms, char **argv)
 {
-	char	*new_oldpwd;
-	char	*new_pwd;
+	char	*error_str;
+	char	*oldpwd;
+	char	*pwd;
 
-	if (argv[1] == NULL)
+	if (argv[1] == NULL | !argv[1][0])
 		return (EXIT_SUCCESS);
-	else if (!argv[1][0])
-		return (EXIT_SUCCESS);
-	new_oldpwd = get_env_content("OLDPWD", ms->env); // debatir sobre el error, get_env_content si falla por malloc hace quit y fuera, pero no dirá nada de minishell: cd: tal
-	env_update("OLDPWD", new_oldpwd, ms->env);
+	if (check_arg_errors(argv[1]) == FAILURE)
+		return (EXIT_FAILURE);
 	if (chdir(argv[1]) == -1)
 	{
-		// "minishell: cd: <argumento>: "
-		perror(NULL);
+		perror("Testing chdir");
 		return(EXIT_FAILURE);
 	}
 	new_pwd = getcwd(NULL, 0);
+	update_environment();
 	env_update("PWD", new_pwd, ms->env);
 	return (EXIT_SUCCESS);
+}
+
+int	update_environment(t_ms *ms)
+{
+	/* Primero updateamos OLDPWD
+	OLDPWD="$PWD"*/
+	t_env *oldpwd;
+
+	oldpwd = env_find("OLDPWD", ms->env);
+	if (!oldpwd)
+	{
+		if (env_add("OLDPWD", , &ms->env))
+	}
+}
+
+static int	check_arg_errors(char *arg)
+{
+	struct stat file;
+
+	if (access(arg, FILE_EXISTS) == FAILURE)
+	{
+		cd_error(arg, NO_SUCH_FILE);
+		return (FAILURE);
+	}
+	lstat(arg, &file);
+	if (!S_ISDIR(file.st_mode))
+	{
+		cd_error(arg, NOT_DIR);
+		return (FAILURE);
+	}
+	if (access(arg, HAS_EXECUTE_PERMISSIONS) == FAILURE)
+	{
+		cd_error(arg, PERM_DENIED);
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+static void	cd_error(char *arg, char *error_str)
+{
+	write(2, "minishell: cd: ", 15);
+	write(2, &arg, ft_strlen(arg));
+	write(2, ": ", 2);
+	write(2, &error_str, ft_strlen(error_str));
+	write(2, "\n");
 }
 
 /* Sobre cd

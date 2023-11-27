@@ -1,0 +1,56 @@
+Sobre CD
+
+- cd sin argumentos lleva a ~ (HOME)
+	Bash gestiona internamente el valor de ~ independientemente de las variables de entorno, 
+	pero nosotros no tenemos por qué hacerlo.
+
+- cd siempre reescribe la variable de entorno PWD
+	Si ya existe, la reescribe.
+	Si no existe, la crea y le da valor.
+
+- cd siempre reescribe la variable de entorno OLDPWD
+	Si ya existe, la reescribe.
+	Si no existe, la crea y le da valor.
+
+- cd reescribe OLDPWD en base al anterior PWD, literalmente.
+	O sea que no hay que romperse la cabeza. Si $PWD="holi" y hacemos "cd .", el nuevo valor de 
+	OLDPWD será "holi", muy fácil de gestionar. De hecho, es la forma más intuitiva de gestionarlo.
+	Además, es indiferente si no hemos cambiado de directorio.
+	"cd ." => PWD="path/to/." OLDPWD="lo que valiese PWD antes de esta operación"
+	"cd ." => PWD="path/to/." OLDPWD= "path/to/."
+	Mega fácil.
+	Incluso "cd" actualiza PWD y OLDPWD.
+
+- "cd" no hace nada y exit_status = 0
+- "cd <nada>" no hace nada y exit_status = 0
+
+- cd SOLO trata el primer argumento, todo lo demás le da totalmente igual. Puedes poner direcciones
+válidas o inválidas, si el primer argumento funciona, cd lo ejecuta y $? = 0, todo lo demás se la
+pela.
+
+- Si PWD no existe, al hacer cd y actualizar el valor de OLDPWD, este se volverá "".
+
+- Si el cwd es eliminado mientras estamos en él, al hacer "cd ." da este error:
+	cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+	Pero, aún así hace $? = 0, por algún motivo.
+	El valor de $OLDPWD se actualiza a:
+		OLDPWD="$PWD"
+	El valor de $PWD se actualiza a:
+		PWD="$PWD/."
+	Pero esto parece ocurrir solo cuando hacemos "cd .", otros "cd X" válidos no dan
+	problemas, o no los veo.
+	También parece que en ESTE caso específico, OLDPWD no se actualiza. Pero no sé si esto se debe a
+	que bash utiliza variables internas para obtener OLDPWD.
+	Puede, que PWD y OLDPWD solo se actualizen cuando cd ha cambiado de directorio.
+	Es decir, si hago "cd ." normalmente, aunque el directorio al que me muevo sea el mismo,
+	técnicamente hemos cambiado de directorio, simplemente hemos cambiado al mismo.
+	Pero como ha habido un movimiento, PWD y OLDPWD se actualizan.
+	En cambio, en este caso, como "cd ." no me lleva a ningún lado por que el directorio no
+	existe, PWD y OLDPWD no se actualizan. Igual que "cd <invalid_arg>" no actualizará
+	PWD y OLDPWD.
+	Es decir, PWD y OLDPWD se actualizan sí o sí después de que cd haya hecho toda su faena.
+
+- Parece ser que al intentar obtener el pwd y fallar, el PWD se convierte a "$PWD/."
+	NOTA: Ocurre lo MISMO con el Builtin "pwd".
+
+- Cuando PWD no existe por que han borrado el directorio local:
