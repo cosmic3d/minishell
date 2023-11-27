@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/27 17:31:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:36:05 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,25 @@ int	main(int argc, char **argv, char **envp)
 	ms_cd(&ms, cdArg4);
 
 	ms_pwd(&ms);
+
+	char	*echoArg1[] = {"echo", NULL};
+	ms_echo(echoArg1);
+
+	char	*echoArg2[] = {"echo", "hola que tal", "como estas", "miscoojones", "23", NULL};
+	ms_echo(echoArg2);
+
+	char	*echoArg3[] = {"echo", "-n", "-nnn", "-nnnnnn", "--n", "-n-n", "hola que tal", "como estas", "miscoojones", "23", NULL};
+	ms_echo(echoArg3);
+
+	ms_echo(echoArg1);
+
+	char *echoArg4[] = {"echo", "-nnnnnnnnnnnnnnnnnnnn", "-n", "-nnnnnno", "holi", NULL};
+	ms_echo(echoArg4);
+
+	ms_echo(echoArg1);
+
+	char	*echoArg5[] = {"echo", "-n", "-nnnnnnnnnnnnnnnnnnnnnnnnnn", NULL};
+	ms_echo(echoArg5);
 
 	// char *newpath[] = {"export", "PATH=tests", NULL};
 	// ms_export(&ms, newpath);
