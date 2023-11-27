@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_filepath_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 17:48:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:26:43 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 // 	return (FAILURE);
 // }
 
-/* Función de printeo de error para el executor, al menos durante los checks 
-previos a la ejecución. */
+/* Función de printeo de error para el executor, al menos durante los checks
+previos a la ejecución. */ //Chus: No sería mejor utilizar perror?
 int	exec_error(char *cmd, char *error_str, int errnum)
 {
 	write(2, "minishell: ", 12);
