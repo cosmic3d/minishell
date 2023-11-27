@@ -19,7 +19,6 @@ Sobre CD
 	"cd ." => PWD="path/to/." OLDPWD="lo que valiese PWD antes de esta operación"
 	"cd ." => PWD="path/to/." OLDPWD= "path/to/."
 	Mega fácil.
-	Incluso "cd" actualiza PWD y OLDPWD.
 
 - "cd" no hace nada y exit_status = 0
 - "cd <nada>" no hace nada y exit_status = 0
