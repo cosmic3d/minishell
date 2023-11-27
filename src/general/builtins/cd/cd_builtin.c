@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/27 17:03:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:07:20 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	check_arg_errors(char *arg);
 static void	cd_error(char *arg, char *error_str);
 static void	update_environment(t_ms *ms, char *new_pwd);
 
+/* Función que emula el builtin cd */
 int	ms_cd(t_ms *ms, char **argv)
 {
 	char	*pwd;
