@@ -49,10 +49,10 @@ void	print_env(t_env *env)
 	int i = 0;
 	while (current)
 	{
-		printf("%s\n", current->name);
+		printf("%s", current->name);
+		printf("=%s\n", current->content);
 		i++;
 		// printf("%s=", current->name);
-		// printf("%s\n", current->content);
 		current = current->next;
 	}
 	printf("TOTAL %d VARIABLES\n", i);

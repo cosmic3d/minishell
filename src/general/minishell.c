@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/23 18:07:30 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:03:37 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@ int	main(int argc, char **argv, char **envp)
 	// print_envp(envp); // debug
 	// envp = NULL; // debug
 	env_init(&ms, envp);
+
+	char	*cdArg1[] = {"cd", "/Users/apresas-/Desktop/cd_tests/", NULL};
+	ms_cd(&ms, cdArg1);
+
+	char	*cdArg2[] = {"cd", ".././../Dowloads", NULL};
+	ms_cd(&ms, cdArg2);
+
+	char	*cdArg22[] = {"cd", ".././../Downloads", NULL};
+	ms_cd(&ms, cdArg22);
+
+	char	*exportArg[] = {"./export", "PWD=\"Misco\"", NULL};
+	ms_export(&ms, exportArg);
+
+	char	*cdArg3[] = {"cd", "/Users/apresas-/Music/.././Pictures/././../utils/../minishell", NULL};
+	ms_cd(&ms, cdArg3);
+
+	char	*cdArg4[] = {"cd", "minishell", NULL};
+	ms_cd(&ms, cdArg4);
 
 	// char *newpath[] = {"export", "PATH=tests", NULL};
 	// ms_export(&ms, newpath);

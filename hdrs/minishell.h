@@ -337,4 +337,7 @@ char	*join_filename(char *filename, char *directory);
 int		file_check(char *file_path, int check);
 char	*safe_getcwd(char *cmd, int *exit_status);
 
+// cd_builtin.c
+int	ms_cd(t_ms *ms, char **argv);
+
 #endif
