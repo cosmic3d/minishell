@@ -338,4 +338,7 @@ int	ms_cd(t_ms *ms, char **argv);
 // pwd_builtin.c
 int	ms_pwd(t_ms *ms);
 
+// echo_builtin.c
+int	ms_echo(char **argv);
+
 #endif
