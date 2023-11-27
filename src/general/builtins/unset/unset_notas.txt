@@ -1,0 +1,5 @@
+Notas sobre unset:
+
+Ahora mismo, unset ya está hecho, pero no sé si realmente funciona como es debido.
+Pero, como ya funciona ahora mismo, me esperaré a que el executor funcione para probarlo bien y
+ver si necesita cambios.
