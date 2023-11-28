@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 18:14:38 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:05:44 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ int	readline_loop(t_ms *ms)
 		//print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
+		print_cmd_structs(ms->cmd, ms->num_cmd);
+		execute_cmds(ms);
+		exit(ms->exit_status);
 		//// debugging find path coso
 		int	exit_status = 0;
 		char *path = command_to_file_path(ms->token->content, &exit_status, ms);

@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
 # include <signal.h>
 # include <string.h>
 # include <termios.h>
@@ -114,6 +115,10 @@ typedef struct s_cmdinfo
 	t_redirection		*rd;
 	int					num_rd;
 	struct s_cmdinfo	*next_cmd;
+	t_redirection		*rd_out;
+	t_redirection		*rd_in;
+	int					fdout;
+	int					fdin;
 }				t_cmdinfo;
 
 typedef struct s_env
@@ -221,6 +226,7 @@ int				env_update(char *name, char *content, t_env *env);
 char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
 // error.c
+void			general_perror(char *s1, char *s2, char *s3, char *s4);
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
@@ -277,6 +283,12 @@ void			free_tokens(t_token **token);
 void			free_token(t_token *tmp);
 int				token_append(t_token **token);
 int				in_x(char *str, char c);
+
+//cmd_execute_redirections.c
+void			iterate_rds(t_cmdinfo	*cmd, int num_cmds, int *exit_status);
+
+//cmd_execute.c
+int				execute_cmds(t_ms *ms);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
