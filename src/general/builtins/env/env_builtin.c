@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/07 17:24:44 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:51:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ms_env(t_env *env)
 	current = env;
 	while (current)
 	{
-		if (current->content && !ft_strlcmp(current->name, "?"))
+		if (current->content)
 			printf("%s=%s\n", current->name, current->content);
 		current = current->next;
 	}
