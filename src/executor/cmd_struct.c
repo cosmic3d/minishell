@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/15 17:34:09 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:08:23 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	print_cmd_structs(ms->cmd, ms->num_cmd);
+	// print_cmd_structs(ms->cmd, ms->num_cmd); // debugging
 	return (SUCCESS);
 }
 

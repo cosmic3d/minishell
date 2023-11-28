@@ -344,4 +344,10 @@ int	ms_echo(char **argv);
 // exit_builtin.c
 int	ms_exit(char **argv);
 
+// env_builtin.c
+int	ms_env(t_env *env);
+
+// llamar_builtins.c
+int	llamar_builtins(t_ms *ms);
+
 #endif

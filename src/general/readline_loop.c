@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 18:14:38 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:46:41 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,14 @@ int	readline_loop(t_ms *ms)
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
 		//// debugging find path coso
-		int	exit_status = 0;
-		char *path = command_to_file_path(ms->token->content, &exit_status, ms);
-		printf("EXIT_STATUS = %d\n", exit_status);
-		printf("PATH = %s\n", path);
+		// int	exit_status = 0;
+		// char *path = command_to_file_path(ms->token->content, &exit_status, ms);
+		// printf("EXIT_STATUS = %d\n", exit_status);
+		// printf("PATH = %s\n", path);
 		////
+		// debug, para llamar builtins
+		ms->exit_status = llamar_builtins(ms);
+		
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO
 	}

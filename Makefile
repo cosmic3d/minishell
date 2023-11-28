@@ -25,7 +25,6 @@ LFT_DIR = $(LIB_DIR)libft/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-SANS		=
 # SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
@@ -34,20 +33,6 @@ MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
 MUTE		= &> /dev/null
-CR			= \033[K\r
-
-#.ONESHELL:
-
-# -=-=-=-=-	FUNCTIONS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-# Function to hide the cursor
-define hide_cursor
-    @printf "\e[?25l"  # Hide the cursor
-endef
-
-# Function to show the cursor
-define show_cursor
-    @printf "\e[?25h"  # Show the cursor
-endef
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		+= $(INC_DIR)minishell.h
@@ -57,44 +42,41 @@ SRCS		:= $(shell find src -name "*.c")
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-#OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
+#OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))#@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
 OBJS		:= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-INCLUDE 	= -Ihdrs
+INCLUDE 	= -I$(INC_DIR)
 
 all: $(NAME)
 
 $(NAME):: $(LIBS) $(OBJS)
-	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
-	@printf "$(GREEN)\n🐜🐌MINISHELL COMPILED🐜🐌$(RESET)\n"
+	$(CC) $(CFLAGS) $(SANS) -L$(LFT_DIR) -L$(RDL_DIR) $(INCLUDE) $(OBJS) -o $(NAME) -lft -lreadline -lhistory -ltermcap
+	echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
 
 $(NAME)::
-	@printf "$(BLUE)Nothing to be done for $@\n$(RESET)";
-	@$(show_cursor)
+	echo "$(BLUE)Nothing to be done for $@$(RESET)";
 
 $(LIBS):
-	@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
-	@make -sC $(RDL_DIR) $(MUTE)
-	@make -sC $(LFT_DIR) $(MUTE)
+	make -sC $(LFT_DIR) $(MUTE)
+	make -sC $(RDL_DIR) $(MUTE)
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
-	@$(hide_cursor)
-	@$(MKDIR) $(dir $@)
-	@printf "$(MAGENTA)Compiling: $(notdir $<)$(RESET)$(CR)"
-	@$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
+	$(MKDIR) $(dir $@)
+	echo "$(MAGENTA)Compiling: $<$(RESET)"
+	$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
 
 clean:
-	@$(RM) -r $(OBJ_DIR)
-	@make clean -sC $(RDL_DIR)
-	@make clean -sC $(LFT_DIR)
-	@echo "$(CYAN)Dependencies and objects removed$(RESET)"
+	$(RM) -r $(OBJ_DIR)
+	make clean -sC $(RDL_DIR)
+	make clean -sC $(LFT_DIR)
+	echo "$(CYAN)Dependencies and objects removed$(RESET)"
 
 fclean: clean
-	@$(RM) $(NAME)
-	@make fclean -sC $(LFT_DIR)
-	@echo "$(RED)$(NAME) succesfully removed$(RESET)"
+	$(RM) $(NAME)
+	make fclean -sC $(LFT_DIR)
+	echo "$(RED)$(NAME) succesfully removed$(RESET)"
 
 re: fclean all
 

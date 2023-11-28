@@ -21,6 +21,10 @@ exit comprueba los errores en este orden:
 Va iterando por los argumentos recibidos, en el momento en que encuentra uno que no sea
 numérico, da error:
 	"<arg>: numeric argument required" $? = 255
+	Nota: En debian me da $? = 2, pero habrá que usar de referencia el mac de 42.
+	habrá que mirar en clase "which exit" por si acaso el mac llame a un programa
+	exit en vez de el builtin. Aunque debería priorizar el builtin o sea que es
+	una tontería I guess. Aún así lo probaré.
 
 Si en este proceso se da cuenta de que hay más de un argumento, entonces da este error:
 	"too many arguments" $? = 1
@@ -35,3 +39,31 @@ Si hay un argument y ese no es numerico, printea el error pero SI es ejecutado.
 	Y hace return (255);
 
 Si hay un argument y ese es numerico, hace return (el numero en cuestón); (loopeandolo etc.)
+
+Si exit se ejecuta, se printea "exit".
+
+exit acepta un long. Cualquier número superior o inferior a un long, da error numeric
+argument required.
+
+LONG_MAX = 9223372036854775807
+LONG_MIN = -9223372036854775808
+
+Exit acepta espacios antes y después del número.
+
+
+CASOS EN BASH:
+
+minishell > exit --1
+exit
+bash: exit: --1: numeric argument required
+minishell > echo $?
+2
+
+-----------
+
+minishell > exit 2+4
+exit
+bash: exit: 2+4: numeric argument required
+minishell > echo $?
+2
+

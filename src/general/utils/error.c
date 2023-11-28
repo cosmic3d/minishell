@@ -32,6 +32,7 @@ void	ms_quit(char *error_message)
 {
 	ms_error(error_message);
 	restore_terminal_settings();
+	rl_clear_history(); // ?
 	exit(EXIT_FAILURE);
 }
 

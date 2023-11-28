@@ -36,6 +36,7 @@ void	env_init(t_ms *ms, char **envp)
 	ms->pwd = getcwd(NULL, 0);
 	if (!ms->pwd)
 		ms_quit(MALLOC_ERR);
+	ms->exit_status = 0;
 	return ;
 }
 
