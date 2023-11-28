@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/15 17:34:09 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:20:07 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	iterate_cmds(t_ms *ms)
 	ms->cmd = (t_cmdinfo *)malloc(sizeof(t_cmdinfo) * (ms->num_cmd));
 	if (!ms->cmd)
 		ms_quit(MALLOC_ERR);
-	while (++i < ms->num_cmd && tmp) //EN PROCESO
+	while (++i < ms->num_cmd && tmp)
 	{
 		tmp = get_cmd_info(tmp, &ms->cmd[i]);
 		if (tmp)
@@ -84,4 +84,3 @@ int	iterate_cmds(t_ms *ms)
 	print_cmd_structs(ms->cmd, ms->num_cmd);
 	return (SUCCESS);
 }
-

@@ -99,12 +99,14 @@ En caso de ocurrir algún error, libera todo y hace exit*/
 t_redirection *get_redirections(t_token *token, int rd_count)
 {
 	t_redirection	*rd;
+	int				i;
 
 	if (!rd_count)
 		return (NULL);
-	rd = (t_redirection *)malloc(sizeof(t_redirection) * (rd_count--));
+	rd = (t_redirection *)malloc(sizeof(t_redirection) * (rd_count));
 	if (!rd)
 		ms_quit(MALLOC_ERR);
+	i = 0;
 	while (token && token->type != PIPE)
 	{
 		if (token->type == TEXT)
@@ -112,9 +114,9 @@ t_redirection *get_redirections(t_token *token, int rd_count)
 			token = token->next;
 			continue ;
 		}
-		rd[rd_count].type = token->type;
-		rd[rd_count].str = ft_strdup(token->next->content);
-		if (!rd[rd_count--].str)
+		rd[i].type = token->type;
+		rd[i].str = ft_strdup(token->next->content);
+		if (!rd[i++].str)
 			ms_quit(MALLOC_ERR);
 		token = token->next->next;
 	}
