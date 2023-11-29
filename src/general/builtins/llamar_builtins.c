@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/28 16:48:48 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:04:14 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	llamar_builtins(t_ms *ms)
 	}
 	else if (!ft_strcmp(ms->cmd->args[0], "env"))
 	{
-		return (ms_env(ms->env));
+		return (ms_env(ms));
 	}
 	else if (!ft_strcmp(ms->cmd->args[0], "cd"))
 	{
@@ -43,5 +43,5 @@ int	llamar_builtins(t_ms *ms)
 	{
 		return (ms_unset(ms, ms->cmd->args));
 	}
-	return (0);	
+	return (-1); // debugging	
 }

@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtin.c                                      :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/29 12:05:36 by apresas-         ###   ########.fr       */
+/*   Created: 2023/11/29 11:52:17 by apresas-          #+#    #+#             */
+/*   Updated: 2023/11/29 11:54:46 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#ifndef MINISHELL_BUILTINS_H
+# define MINISHELL_BUILTINS_H
 
-/* función que emula el builtin env */
-int	ms_env(t_ms *ms)
-{
-	t_env	*var;
+# include "minishell.h"
 
-	var = ms->env;
-	while (var)
-	{
-		if (var->name && var->content)
-		{
-			write(STDOUT_FILENO, var->name, ft_strlen(var->name));
-			write(STDOUT_FILENO, "=", 1);
-			write(STDOUT_FILENO, var->content, ft_strlen(var->content));
-			write(STDOUT_FILENO, "\n", 1);
-		}
-		var = var->next;
-	}
-	return (SUCCESS);
-}
+#define NUMERIC_ARG "numeric argument required"
+#define TOO_MANY_ARG "too many arguments"
+
+#endif

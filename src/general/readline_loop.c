@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/28 16:46:41 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:50:59 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ int	readline_loop(t_ms *ms)
 		//print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
-		//// debugging find path coso
-		// int	exit_status = 0;
-		// char *path = command_to_file_path(ms->token->content, &exit_status, ms);
-		// printf("EXIT_STATUS = %d\n", exit_status);
-		// printf("PATH = %s\n", path);
-		////
 		// debug, para llamar builtins
 		ms->exit_status = llamar_builtins(ms);
-		
+		//// debugging find path coso
+		if (ms->exit_status == -1)
+		{
+			char *path = command_to_file_path(ms->token->content, &ms->exit_status, ms);
+			printf("path: = %s\n", path);
+		}
+		////
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO
 	}

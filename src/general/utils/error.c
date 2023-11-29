@@ -12,6 +12,35 @@
 
 #include "minishell.h"
 
+/* Esta función nos permite escribir en stderror un mensaje personalizado.
+Es cierto que tenemos un máximo de 4 argumentos,
+pero deberían de ser suficientes.
+Se imprime siempre minishell: delante. */
+void	ms_perror(char *s1, char *s2, char *s3, char *s4)
+{
+	write(STDERR_FILENO, "minishell: ", 11);
+	if (s1)
+	{
+		write(STDERR_FILENO, s1, ft_strlen(s1));
+	}
+	if (s2)
+	{
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, s2, ft_strlen(s2));
+	}
+	if (s3)
+	{
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, s3, ft_strlen(s3));
+	}
+	if (s4)
+	{
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, s4, ft_strlen(s4));
+	}
+	write(STDERR_FILENO, "\n", 1);
+}
+
 // PROVISIONAL, printea el error_message al STDERR y retorna 1
 int	ms_error(char *error_message)
 {

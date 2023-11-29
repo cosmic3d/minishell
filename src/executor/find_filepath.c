@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_filepath.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/23 18:28:40 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:50:13 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms)
 	i = 0;
 	while (directories[i] != NULL)
 	{
-		printf("Content %i: %s\n", i, directories[i]);
 		file_path = join_filename(cmd, directories[i]);
 		if (file_check(file_path, IS_FILE) && \
 		(ft_strcmp(".", cmd) && ft_strcmp("..", cmd)))

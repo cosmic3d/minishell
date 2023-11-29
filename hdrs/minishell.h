@@ -210,7 +210,7 @@ void			print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd);
 int				env_print(t_env *env);
 
 // env_list_init.c
-void			env_init(t_ms *ms, char **envp);
+void			env_list_init(t_ms *ms, char **envp);
 
 // env_list_utils.c
 int				env_add(char *name, char *content, t_env **head);
@@ -220,10 +220,15 @@ int				env_remove(char *name, t_env *env);
 int				env_update(char *name, char *content, t_env *env);
 char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
+// NEW
+// env_list_tal.c
+// t_env			*env_init(t_env **head);
+
 // error.c
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
+void			ms_perror(char *s1, char *s2, char *s3, char *s4);
 
 // export_init.c
 void			export_init(t_export *data, char *arg);
@@ -345,7 +350,7 @@ int	ms_echo(char **argv);
 int	ms_exit(char **argv);
 
 // env_builtin.c
-int	ms_env(t_env *env);
+int	ms_env(t_ms *ms);
 
 // llamar_builtins.c
 int	llamar_builtins(t_ms *ms);
