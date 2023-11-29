@@ -217,6 +217,10 @@ void	print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd)
 		j = -1;
 		while (cmdinfo[i].rd && ++j < cmdinfo[i].num_rd)
 			printf("(%s, %i), ", cmdinfo[i].rd[j].str, cmdinfo[i].rd[j].type);
-		printf("\n");
+		printf("\n\tfd_in: %i\n\tfd_out: %i\n", cmdinfo[i].fdin, cmdinfo[i].fdout);
+		if (cmdinfo[i].rd_in)
+			printf("\tin_rd: %s\n", cmdinfo[i].rd_in->str);
+		if (cmdinfo[i].rd_out)
+			printf("\tout_rd: %s\n", cmdinfo[i].rd_out->str);
 	}
 }

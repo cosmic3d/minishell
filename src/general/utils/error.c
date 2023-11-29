@@ -16,7 +16,7 @@
 Es cierto que tenemos un máximo de 4 argumentos,
 pero deberían de ser suficientes.
 Se imprime siempre minishell: delante. */
-void	general_perror(char *s1, char *s2, char *s3, char *s4)
+int	general_perror(char *s1, char *s2, char *s3, char *s4)
 {
 	write(STDERR_FILENO, "minishell: ", 12);
 	if (s1)
@@ -27,6 +27,8 @@ void	general_perror(char *s1, char *s2, char *s3, char *s4)
 		write(STDERR_FILENO, s3, ft_strlen(s3));
 	if (s4)
 		write(STDERR_FILENO, s4, ft_strlen(s4));
+	write(STDERR_FILENO, "\n", 1);
+	return (1);
 }
 
 // PROVISIONAL, printea el error_message al STDERR y retorna 1

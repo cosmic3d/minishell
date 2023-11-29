@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/28 19:41:11 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:32:19 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,10 @@ static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
 	cmdinfo->rd = get_redirections(token, cmdinfo->num_rd);
 	cmdinfo->args = get_arguments(token);
 	cmdinfo->next_cmd = NULL;
+	cmdinfo->fdin = STDIN_FILENO;
+	cmdinfo->fdout = STDOUT_FILENO;
+	cmdinfo->rd_in = NULL;
+	cmdinfo->rd_out = NULL;
 	if (cmdinfo->args)
 		cmdinfo->cmd = cmdinfo->args[0];
 	while (token && token->type != PIPE)

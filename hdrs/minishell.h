@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/types.h>
 # include <fcntl.h>
 # include <signal.h>
 # include <string.h>
@@ -100,6 +101,9 @@ vwxyz0123456789_"
 # define FILE_EXISTS F_OK
 # define IS_FILE 1001
 # define IS_DIRECTORY 1002
+
+// For open(), better readability of its macros
+# define DEFAULT_PERMISSIONS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH //No me funcionan en ubuntu pero quizá en mac sí
 
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
@@ -226,7 +230,7 @@ int				env_update(char *name, char *content, t_env *env);
 char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
 // error.c
-void			general_perror(char *s1, char *s2, char *s3, char *s4);
+int				general_perror(char *s1, char *s2, char *s3, char *s4);
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
