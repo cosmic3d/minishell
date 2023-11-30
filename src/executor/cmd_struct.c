@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/29 19:32:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:53:45 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,71 @@ void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 	cmdinfo = NULL;
 }
 
+/* Cuenta todos los argumentos de un comando, los aloja
+en un puntero, los rellena y devuelve el puntero.
+En caso de no haber argumentos devuelve NULL.
+En caso de ocurrir algún error, libera todo y hace exit*/
+char	**get_arguments(t_token *token)
+{
+	char	**args;
+	int		arg_count;
+	int		i;
+
+	i = -1;
+	arg_count = get_num_arguments(token);
+	if (!arg_count)
+		return (NULL);
+	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
+	if (!args)
+		ms_quit(MALLOC_ERR);
+	args[arg_count] = NULL;
+	while (token && token->type != PIPE)
+	{
+		if (token->type != TEXT)
+		{
+			token = token->next->next;
+			continue ;
+		}
+		args[++i] = ft_strdup(token->content);
+		if (!args[i])
+			ms_quit(MALLOC_ERR);
+		token = token->next;
+	}
+	return (args);
+}
+
+/* Cuenta todas las redirecciones de un comando, las aloja
+en un puntero, las rellena y devuelve el puntero.
+En caso de no haber redirecciones devuelve NULL.
+En caso de ocurrir algún error, libera todo y hace exit*/
+t_redirection	*get_redirections(t_token *token, int rd_count)
+{
+	t_redirection	*rd;
+	int				i;
+
+	if (!rd_count)
+		return (NULL);
+	rd = (t_redirection *)malloc(sizeof(t_redirection) * (rd_count));
+	if (!rd)
+		ms_quit(MALLOC_ERR);
+	i = 0;
+	while (token && token->type != PIPE)
+	{
+		if (token->type == TEXT)
+		{
+			token = token->next;
+			continue ;
+		}
+		rd[i].type = token->type;
+		get_rd_oflag(&rd[i]);
+		rd[i].str = ft_strdup(token->next->content);
+		if (!rd[i++].str)
+			ms_quit(MALLOC_ERR);
+		token = token->next->next;
+	}
+	return (rd);
+}
+
 /* Esta función se encarga de rellenar la estructura del comando y de devolver
 un puntero al inicio del siguiente comando*/
 static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
@@ -70,7 +135,7 @@ guardar toda la información necesaria en ese comando a partir de un
 token hasta el siguiente pipe o NULL.*/
 int	iterate_cmds(t_ms *ms)
 {
-	int	i;
+	int		i;
 	t_token	*tmp;
 
 	i = -1;
@@ -85,6 +150,5 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	//print_cmd_structs(ms->cmd, ms->num_cmd);
 	return (SUCCESS);
 }

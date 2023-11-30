@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/29 21:44:49 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/30 19:59:53 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 	{
 		if (file_check(rd_i->str, IS_DIRECTORY) == TRUE)
 		{
-			general_perror(rd_i->str, ": Is a directory", NULL, NULL);
+			ms_perror(rd_i->str, ": Is a directory", NULL, NULL);
 			*xs = 1;
 			return ;
 		}
@@ -29,11 +29,11 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 			*rd_in = rd_i;
 			return ;
 		}
-		general_perror(rd_i->str, ": Permission denied", NULL, NULL);
+		ms_perror(rd_i->str, ": Permission denied", NULL, NULL);
 		*xs = 1;
 		return ;
 	}
-	general_perror(rd_i->str, ": No such file or directory", NULL, NULL);
+	ms_perror(rd_i->str, ": No such file or directory", NULL, NULL);
 	*xs = 1;
 	return ;
 }
@@ -53,17 +53,12 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 			*rd_out = rd_i;
 			return ;
 		}
-		general_perror(rd_i->str, ": Permission denied", NULL, NULL);
+		ms_perror(rd_i->str, ": Permission denied", NULL, NULL);
 		*xs = 1;
 		return ;
 	}
-	fd = open(rd_i->str, O_WRONLY | O_CREAT, DEFAULT_PERMISSIONS);
-	if (fd < 0)
-	{
-		general_perror(rd_i->str, ": ", strerror(errno), NULL);
-		*xs = 1;
+	if (ms_open(rd_i, &fd, xs) == FAILURE)
 		return ;
-	}
 	*rd_out = rd_i;
 	close(fd);
 	return ;

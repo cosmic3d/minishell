@@ -38,7 +38,7 @@
 # define CTRL_C SIGINT
 # define CTRL_BACKSLASH SIGQUIT
 
-# define CMDPROMPT "minishell $ "
+# define CMDPROMPT "minishell 🐌🐚 "
 # define ENV 0
 # define EXPORT 1
 
@@ -103,13 +103,17 @@ vwxyz0123456789_"
 # define IS_DIRECTORY 1002
 
 // For open(), better readability of its macros
-# define DEFAULT_PERMISSIONS S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH //No me funcionan en ubuntu pero quizá en mac sí
+# define D_PERMS 0644
+# define STDIN STDIN_FILENO
+# define STDOUT STDOUT_FILENO
+# define STDERR STDERR_FILENO
 
 /* --------------------------------- STRUCTS -------------------------------- */
 typedef struct s_redirection
 {
 	int		type;
 	char	*str;
+	int		oflag;
 }				t_redirection;
 
 typedef struct s_cmdinfo
@@ -230,7 +234,7 @@ int				env_update(char *name, char *content, t_env *env);
 char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
 // error.c
-int				general_perror(char *s1, char *s2, char *s3, char *s4);
+int				ms_perror(char *s1, char *s2, char *s3, char *s4);
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
@@ -264,6 +268,7 @@ int				ms_unset(t_ms *ms, char **argv);
 
 // utils.c
 int				ms_arraylen(char **array);
+void			check_fds(void);
 
 //cmd_parse.c
 int				tokenize(char *cmd_line, t_ms *ms);
@@ -294,16 +299,21 @@ void			iterate_rds(t_cmdinfo	*cmd, int num_cmds, int *exit_status);
 //cmd_execute.c
 int				execute_cmds(t_ms *ms);
 
+//cmd_execute_utils.c
+int				ms_dup(int fd, int fd2, int *newfd, int *xs);
+int				ms_open(t_redirection *rd, int *fd, int *xs);
+
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
+char			**get_arguments(t_token *token);
+t_redirection	*get_redirections(t_token *token, int rd_count);
 int				iterate_cmds(t_ms *ms);
 
 //cmd_struct_utils.c
 int				get_num_arguments(t_token *token);
 int				get_num_redirections(t_token *token);
 int				get_num_cmds(t_token *token);
-char			**get_arguments(t_token *token);
-t_redirection	*get_redirections(t_token *token, int rd_count);
+void			get_rd_oflag(t_redirection *rd);
 
 //cmd_expansor.c
 int				expansor(t_ms *ms, t_token *token);

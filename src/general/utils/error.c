@@ -16,34 +16,34 @@
 Es cierto que tenemos un máximo de 4 argumentos,
 pero deberían de ser suficientes.
 Se imprime siempre minishell: delante. */
-int	general_perror(char *s1, char *s2, char *s3, char *s4)
+int	ms_perror(char *s1, char *s2, char *s3, char *s4)
 {
-	write(STDERR_FILENO, "minishell: ", 12);
+	write(STDERR, "minishell: ", 12);
 	if (s1)
-		write(STDERR_FILENO, s1, ft_strlen(s1));
+		write(STDERR, s1, ft_strlen(s1));
 	if (s2)
-		write(STDERR_FILENO, s2, ft_strlen(s2));
+		write(STDERR, s2, ft_strlen(s2));
 	if (s3)
-		write(STDERR_FILENO, s3, ft_strlen(s3));
+		write(STDERR, s3, ft_strlen(s3));
 	if (s4)
-		write(STDERR_FILENO, s4, ft_strlen(s4));
-	write(STDERR_FILENO, "\n", 1);
+		write(STDERR, s4, ft_strlen(s4));
+	write(STDERR, "\n", 1);
 	return (1);
 }
 
 // PROVISIONAL, printea el error_message al STDERR y retorna 1
 int	ms_error(char *error_message)
 {
-	write(STDERR_FILENO, "Error\n", 7);
-	write(STDERR_FILENO, error_message, ft_strlen(error_message));
+	write(STDERR, "Error\n", 7);
+	write(STDERR, error_message, ft_strlen(error_message));
 	return (1);
 }
 
 void	export_perror(char *argument)
 {
-	write(STDERR_FILENO, "minishell: export: `", 21);
-	write(STDERR_FILENO, argument, ft_strlen(argument));
-	write(STDERR_FILENO, "': not a valid identifier\n", 27);
+	write(STDERR, "minishell: export: `", 21);
+	write(STDERR, argument, ft_strlen(argument));
+	write(STDERR, "': not a valid identifier\n", 27);
 }
 
 // Printea el error y usa exit(EXIT_FAILURE); // necesitará t_ms *ms?
@@ -56,10 +56,10 @@ void	ms_quit(char *error_message)
 
 // void	ms_perror(t_ms *ms, char *program, char *error)
 // {
-// 	write(STDERR_FILENO, "minishell: ", 12);
-// 	write(STDERR_FILENO, program, ft_strlen(program));
-// 	write(STDERR_FILENO, ": ", 2);
-// 	write(STDERR_FILENO, error, ft_strlen(error));
+// 	write(STDERR, "minishell: ", 12);
+// 	write(STDERR, program, ft_strlen(program));
+// 	write(STDERR, ": ", 2);
+// 	write(STDERR, error, ft_strlen(error));
 // }
 
 // int	ms_error_quit(char *error, int exit_status, char *error)

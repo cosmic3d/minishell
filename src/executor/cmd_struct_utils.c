@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 /* Devuelve el número de argumentos detectados en un comando*/
 int	get_num_arguments(t_token *token)
@@ -59,66 +59,14 @@ int	get_num_cmds(t_token *token)
 	return (pipes + 1);
 }
 
-/* Cuenta todos los argumentos de un comando, los aloja
-en un puntero, los rellena y devuelve el puntero.
-En caso de no haber argumentos devuelve NULL.
-En caso de ocurrir algún error, libera todo y hace exit*/
-char	**get_arguments(t_token *token)
+/* Establece la oflag de una redirección, la cual nos será
+útil para más tarde al hacer open */
+void	get_rd_oflag(t_redirection *rd)
 {
-	char	**args;
-	int		arg_count;
-	int		i;
-
-	i = -1;
-	arg_count = get_num_arguments(token);
-	if (!arg_count)
-		return (NULL);
-	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
-	if (!args)
-		ms_quit(MALLOC_ERR);
-	args[arg_count] = NULL;
-	while (token && token->type != PIPE)
-	{
-		if (token->type != TEXT)
-		{
-			token = token->next->next;
-			continue ;
-		}
-		args[++i] = ft_strdup(token->content);
-		if (!args[i])
-			ms_quit(MALLOC_ERR);
-		token = token->next;
-	}
-	return (args);
-}
-
-/* Cuenta todas las redirecciones de un comando, las aloja
-en un puntero, las rellena y devuelve el puntero.
-En caso de no haber redirecciones devuelve NULL.
-En caso de ocurrir algún error, libera todo y hace exit*/
-t_redirection *get_redirections(t_token *token, int rd_count)
-{
-	t_redirection	*rd;
-	int				i;
-
-	if (!rd_count)
-		return (NULL);
-	rd = (t_redirection *)malloc(sizeof(t_redirection) * (rd_count));
-	if (!rd)
-		ms_quit(MALLOC_ERR);
-	i = 0;
-	while (token && token->type != PIPE)
-	{
-		if (token->type == TEXT)
-		{
-			token = token->next;
-			continue ;
-		}
-		rd[i].type = token->type;
-		rd[i].str = ft_strdup(token->next->content);
-		if (!rd[i++].str)
-			ms_quit(MALLOC_ERR);
-		token = token->next->next;
-	}
-	return (rd);
+	if (rd->type == REDIRECT_IN || rd->type == REDIRECT_HEARDOC)
+		rd->oflag = O_RDONLY;
+	else if (rd->type == REDIRECT_OUT)
+		rd->oflag = O_WRONLY | O_TRUNC;
+	else
+		rd->oflag = O_WRONLY | O_APPEND;
 }

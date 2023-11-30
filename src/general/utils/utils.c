@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:29:35 by apresas-          #+#    #+#             */
-/*   Updated: 2023/10/09 15:31:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/30 20:05:11 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,18 @@ int	ms_arraylen(char **array)
 		i++;
 	}
 	return (i);
+}
+
+void	check_fds(void)
+{
+	int	fd;
+
+	fd = open("testfile.msh", O_CREAT, D_PERMS);
+	if (fd < 0)
+	{
+		ms_perror("open error: ", strerror(errno), NULL, NULL);
+		exit(1);
+	}
+	close(fd);
+	return ;
 }
