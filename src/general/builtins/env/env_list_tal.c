@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:53:48 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/29 16:36:51 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:08:21 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,12 +129,20 @@ int	check_envp_syntax(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		j = 0;
-		while (envp[i][j])
+		if (!(ft_isalpha(envp[i][0]) || envp[i][0] == '_'))
+			return (FALSE);
+		j == 1;
+		while (ft_isalnum(envp[i][j]) || envp[i][j] == '_')
+			j++;
+		if (envp[i][j] == '=')
 		{
-			// Primer caracter alpha o '_'
-			// Hasta encontrar '=', caracteres alnum o '_'
+			j++;
+			while (envp[i][j])
+				j++;
 		}
+		if (envp[i][j] != '\0')
+			return (FAILURE);
+		i++;
 	}
 	return (SUCCESS);
 }
