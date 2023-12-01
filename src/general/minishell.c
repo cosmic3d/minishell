@@ -6,7 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/30 18:02:29 by jenavarr         ###   ########.fr       */
+=======
+/*   Updated: 2023/12/01 12:31:54 by apresas-         ###   ########.fr       */
+>>>>>>> albertBuiltins
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	argv = NULL;
 	if (argc != 1 || argv)
 		return (ms_error(ARGC_ERR));
+<<<<<<< HEAD
 	// print_envp(envp); // debug
 	// envp = NULL; // debug
 	env_init(&ms, envp);
@@ -90,10 +95,14 @@ int	main(int argc, char **argv, char **envp)
 
 	// test_export(&ms);
 	check_fds();
+=======
+	env_init(&ms, envp);
+>>>>>>> albertBuiltins
 	disable_control_chars_echo();
 	signal_handler();
-
 	if (readline_loop(&ms))
-		return (1);
+		return (FAILURE);
+	restore_terminal_settings();
+	exit(EXIT_SUCCESS);
 	return (0);
 }

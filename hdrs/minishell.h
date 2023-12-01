@@ -338,33 +338,42 @@ char			**env_list_to_envp(t_env *head);
 
 // find_filepath.c
 // char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
-char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
+char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
-int		exec_error(char *cmd, char *error_str, int errnum);
-void	free_array(char **array);
-char	*join_filename(char *filename, char *directory);
-int		file_check(char *file_path, int check);
-char	*safe_getcwd(char *cmd, int *exit_status);
+int				exec_error(char *cmd, char *error_str, int errnum);
+void			free_array(char **array);
+char			*join_filename(char *filename, char *directory);
+int				file_check(char *file_path, int check);
+char			*safe_getcwd(char *cmd, int *exit_status);
 
 // find_filepath.c
 // char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
-char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
+char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
-int		exec_error(char *cmd, char *error_str, int errnum);
-void	free_array(char **array);
-char	*join_filename(char *filename, char *directory);
-int		file_check(char *file_path, int check);
-char	*safe_getcwd(char *cmd, int *exit_status);
+int				exec_error(char *cmd, char *error_str, int errnum);
+void			free_array(char **array);
+char			*join_filename(char *filename, char *directory);
+int				file_check(char *file_path, int check);
+char			*safe_getcwd(char *cmd, int *exit_status);
 
 // cd_builtin.c
-int	ms_cd(t_ms *ms, char **argv);
+int				ms_cd(t_ms *ms, char **argv);
 
 // pwd_builtin.c
-int	ms_pwd(t_ms *ms);
+int				ms_pwd(t_ms *ms);
 
 // echo_builtin.c
-int	ms_echo(char **argv);
+int				ms_echo(char **argv);
+
+// exit_builtin.c
+int				ms_exit(char **argv);
+
+// env_builtin.c
+int				ms_env(t_ms *ms);
+
+// llamar_builtins.c
+int				llamar_builtins(t_ms *ms);
 
 #endif

@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+/* TO-DO IMPORTANTISIMO:
+
+- Hay que comprobar qué pasa si te pasan un envp mal formateado
+
+*/
+
 /* Añade una nueva variable de entorno a la lista t_env */
 int	env_add(char *name, char *content, t_env **head)
 {

@@ -6,7 +6,11 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/30 19:53:45 by jenavarr         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/28 16:08:23 by apresas-         ###   ########.fr       */
+>>>>>>> albertBuiltins
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +154,9 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
+<<<<<<< HEAD
+=======
+	// print_cmd_structs(ms->cmd, ms->num_cmd); // debugging
+>>>>>>> albertBuiltins
 	return (SUCCESS);
 }

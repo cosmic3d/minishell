@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_filepath.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/23 19:00:35 by jenavarr         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/29 11:50:13 by apresas-         ###   ########.fr       */
+>>>>>>> albertBuiltins
 /*                                                                            */
 /* ************************************************************************** */
 

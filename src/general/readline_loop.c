@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/11/29 19:38:24 by jenavarr         ###   ########.fr       */
+=======
+/*   Updated: 2023/11/29 11:50:59 by apresas-         ###   ########.fr       */
+>>>>>>> albertBuiltins
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +36,20 @@ int	readline_loop(t_ms *ms)
 		//print_tokens(ms->token);
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
+<<<<<<< HEAD
 		execute_cmds(ms);
 		print_cmd_structs(ms->cmd, ms->num_cmd);
 		exit(ms->exit_status);
+=======
+		// debug, para llamar builtins
+		ms->exit_status = llamar_builtins(ms);
+>>>>>>> albertBuiltins
 		//// debugging find path coso
-		int	exit_status = 0;
-		char *path = command_to_file_path(ms->token->content, &exit_status, ms);
-		printf("EXIT_STATUS = %d\n", exit_status);
-		printf("PATH = %s\n", path);
+		if (ms->exit_status == -1)
+		{
+			char *path = command_to_file_path(ms->token->content, &ms->exit_status, ms);
+			printf("path: = %s\n", path);
+		}
 		////
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO

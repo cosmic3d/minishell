@@ -18,15 +18,26 @@ pero deberían de ser suficientes.
 Se imprime siempre minishell: delante. */
 int	ms_perror(char *s1, char *s2, char *s3, char *s4)
 {
-	write(STDERR, "minishell: ", 12);
+	write(STDERR, "minishell: ", 11);
 	if (s1)
+	{
 		write(STDERR, s1, ft_strlen(s1));
+	}
 	if (s2)
+	{
+		write(STDERR, ": ", 2);
 		write(STDERR, s2, ft_strlen(s2));
+	}
 	if (s3)
+	{
+		write(STDERR, ": ", 2);
 		write(STDERR, s3, ft_strlen(s3));
+	}
 	if (s4)
+	{
+		write(STDERR, ": ", 2);
 		write(STDERR, s4, ft_strlen(s4));
+	}
 	write(STDERR, "\n", 1);
 	return (1);
 }
@@ -51,6 +62,7 @@ void	ms_quit(char *error_message)
 {
 	ms_error(error_message);
 	restore_terminal_settings();
+	rl_clear_history(); // ?
 	exit(EXIT_FAILURE);
 }
 
