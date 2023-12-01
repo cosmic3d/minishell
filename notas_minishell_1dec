@@ -1,0 +1,57 @@
+Cambios que quiero implementar en minishell:
+
+- Hacer diversos headers para diversas secciones.
+- Revisar el Makefile
+- Revisar export
+- Revisar tema t_env y su init
+	- Esto incluye comprobar el syntax del envp** recibido
+	Hablar con Chus esto:
+		Si nos dan un envp** que tiene problemas, qué hacemos? Se me ocurre:
+			A: Damos un error de envp inválido y fuera
+			B: No damos error, pero ignoramos las strings de envp que no sean válidas
+			C: ?
+	Qué hace bash:
+	Si recibe un envp correcto, bash funciona perfectamente.
+	Pero siempre, independientemente de las variables de entorno recibidas, crea las siguientes:
+	OLDPWD (sin valor al iniciar)
+	PWD=<directorio en el que ha sido ejecutado>
+	SHLVL=1
+
+	Si recibe un envp NULL:
+	Crea sus variables predeterminadas, las que explico arriba.
+
+	Si recibe un puntero en envp que sea "", lo ignora sin dar errores.
+
+	Si recibe en envp una variable con nombre inválido, le da igual. La toma como suya.
+	Pero es posible que no pueda printearla si lo intentas.
+	Export la muestra, y env también.
+
+	Ya entiendo lo que hace bash:
+	Bash toma el envp recibido, todos los char* en envp los toma siempre que sigan al menos
+	este formato:
+	texto=texto
+	Pero no acepta que la variable empiece por = por que lo entiede como que no hay nombre y
+	el = indica que ahora empieza el contenido de la variable.
+	Pero le da absolutamente igual lo demás, parece.
+
+	No da error de ningún tipo, simplemente lo toma todo y fuera.
+
+- Arreglar esto:
+	Nuestra minishell solo crea SHLVL, OLDPWD y PWD si recibe un envp** NULL
+	y da segfault al intentar updatear SHLVL por que a lo mejor no la ha creado.
+
+- Epaaaaa otro bug:
+	Finalmente sirivó el error especial para STRCHR_I
+	Parece suceder con variables que en envp están formateadas así:
+	Nombre (sin =content)
+
+Pero, nuestra minishell parece correctamente gestionar el parseo de variables con nombres
+inválidos desde envp. Bien
+
+- Plantearme si es mucha faena implementar lo que hace bash de tener $0 = bash, y el resto
+$1, $2, etc. Los argumentos que haya recibido. Puede que sea la típica cosa que da más
+problemas que otra cosa y NO ES NECESARIO. Así que la prioridad de hacer esto es muy baja.
+	De hacerlo, mi approach creo que sería crear una struct s_internal_variables t_intvar con
+	char* para n0 a n9. Y quizá ya de paso implementar alguna otra. Pero de nuevo, esto sería
+	por gusto, solo si vamos genial de tiempo y me apetece y no tengo nada más importante que
+	hacer.
