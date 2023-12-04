@@ -238,7 +238,6 @@ int				ms_perror(char *s1, char *s2, char *s3, char *s4);
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
-void			ms_perror(char *s1, char *s2, char *s3, char *s4);
 
 // export_init.c
 void			export_init(t_export *data, char *arg);
