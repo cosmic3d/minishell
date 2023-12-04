@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:35:07 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 17:45:17 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:15:42 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,13 @@ static int	update_shlvl(t_ms *ms)
 	var = env_find("SHLVL", ms->env);
 	if (!var)
 		return (env_add("SHLVL", "1", &ms->env));
+	// Hay que comprobar si SHLVL contiene caracteres no numericos, entonces SHLVL=1!
 	shlvl = ft_atoi(var->content) + 1;
-	if (shlvl >= 1000)
+	if (shlvl == 1000)
+		return (env_edit(var, ""));
+	else if (shlvl < 0)
+		shlvl = 0;
+	else if (shlvl > 1000)
 	{
 		printf(SHLVL_WARNING, shlvl); // esto va STDOUT o STDERR ??
 		shlvl = 1;
@@ -92,10 +97,7 @@ static int	update_shlvl(t_ms *ms)
 	free(var->content);
 	var->content = ft_itoa(shlvl);
 	if (!var->content)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		return (FAILURE);
-	}
+		return (ms_perror("malloc", strerror(errno), NULL, NULL));
 	return (SUCCESS);
 }
 
@@ -119,16 +121,3 @@ static int	update_pwd(t_ms *ms, char *pwd)
 	}
 	return (SUCCESS);
 }
-
-// int	env_update_or_create(char *name, char *content, t_env *head)
-// {
-// 	t_env	*var;
-
-// 	var = env_find(name, head);
-// 	if (!var)
-// 		return (env_add(name, content, &head));
-// 	var->content = ft_strdup(content);
-// 	if (!var->content)
-// 		return (ms_perror("malloc", strerror(errno), NULL, NULL));
-// 	return (var);
-// }

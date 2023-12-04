@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:39:20 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/28 16:16:44 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:15:33 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	ms_echo(char **argv)
 	int	i;
 
 	n_flag = 0;
-	if (argv[1])
+	i = 1;
+	if (argv[i])
 	{
-		i = 1;
 		n_flag = parse_flags(argv, &i);
 		while (argv[i])
 		{
@@ -55,7 +55,7 @@ int	parse_flags(char **arg, int *index)
 			if (j != 0 && arg[i][j] != 'n')
 				break ;
 		}
-		if (arg[i][j] != '\0')
+		if (arg[i][j] != '\0' || j == 0)
 			break ;
 		flag = 1;
 		*index = i + 1;
