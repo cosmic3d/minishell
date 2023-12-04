@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:35:07 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 17:28:27 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 17:45:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	update_pwd(t_ms *ms, char *pwd);
 
 int	env_list_init(t_ms *ms, char **envp)
 {
-	ms->env = NULL;
 	if (envp_to_t_env(ms, envp) == FAILURE)
 	{
 		free_env_list(ms);
@@ -83,17 +82,14 @@ static int	update_shlvl(t_ms *ms)
 
 	var = env_find("SHLVL", ms->env);
 	if (!var)
-	{
-		if (env_add("SHLVL", "1", &ms->env) == FAILURE)
-			return (FAILURE);
-		var = env_find("SHLVL", ms->env);
-	}
+		return (env_add("SHLVL", "1", &ms->env));
 	shlvl = ft_atoi(var->content) + 1;
 	if (shlvl >= 1000)
 	{
 		printf(SHLVL_WARNING, shlvl); // esto va STDOUT o STDERR ??
 		shlvl = 1;
 	}
+	free(var->content);
 	var->content = ft_itoa(shlvl);
 	if (!var->content)
 	{
@@ -117,10 +113,10 @@ static int	update_pwd(t_ms *ms, char *pwd)
 		if (env_add("PWD", NULL, &ms->env) == FAILURE)
 			return (FAILURE);
 		var = env_find("PWD", ms->env);
+		var->content = ft_strdup(pwd);
+		if (!var->content)
+			return (ms_perror("malloc", strerror(errno), NULL, NULL));
 	}
-	var->content = ft_strdup(pwd);
-	if (!var->content)
-		return (ms_perror("malloc", strerror(errno), NULL, NULL));
 	return (SUCCESS);
 }
 
