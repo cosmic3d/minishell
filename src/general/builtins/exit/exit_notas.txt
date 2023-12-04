@@ -1,0 +1,69 @@
+Notas sobre exit:
+
+En el subject pone que hay que implementar exit "without options"
+
+No sé si eso significa que hay que solo aceptar "exit" y fuera.
+
+En cualquier caso, no es muy difícil de implementar parece.
+
+Exit funciona así:
+
+	exit <num>
+
+Sale limpiamente de bash y establece el exit_status con el valor de num.
+Si no se establece num, entonces exit_status = 0;
+
+Además el valor de exit_status está en un ciclo del 0 al 255
+Por lo tanto exit 256 hará exit_status = 0.
+
+exit comprueba los errores en este orden:
+
+Va iterando por los argumentos recibidos, en el momento en que encuentra uno que no sea
+numérico, da error:
+	"<arg>: numeric argument required" $? = 255
+	Nota: En debian me da $? = 2, pero habrá que usar de referencia el mac de 42.
+	habrá que mirar en clase "which exit" por si acaso el mac llame a un programa
+	exit en vez de el builtin. Aunque debería priorizar el builtin o sea que es
+	una tontería I guess. Aún así lo probaré.
+
+Si en este proceso se da cuenta de que hay más de un argumento, entonces da este error:
+	"too many arguments" $? = 1
+
+Si el primer argumento NO es numerico, error numeric argument tal
+Si el primero SI es numerico, bien.
+	Tras esto, da igual si el segundo es numerico o no, error too many arguments.
+
+Si hay too many arguments, exit NO ES EJECUTADO.
+
+Si hay un argument y ese no es numerico, printea el error pero SI es ejecutado.
+	Y hace return (255);
+
+Si hay un argument y ese es numerico, hace return (el numero en cuestón); (loopeandolo etc.)
+
+Si exit se ejecuta, se printea "exit".
+
+exit acepta un long. Cualquier número superior o inferior a un long, da error numeric
+argument required.
+
+LONG_MAX = 9223372036854775807
+LONG_MIN = -9223372036854775808
+
+Exit acepta espacios antes y después del número.
+
+
+CASOS EN BASH:
+
+minishell > exit --1
+exit
+bash: exit: --1: numeric argument required
+minishell > echo $?
+2
+
+-----------
+
+minishell > exit 2+4
+exit
+bash: exit: 2+4: numeric argument required
+minishell > echo $?
+2
+

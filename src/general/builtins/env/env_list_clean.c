@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   env_list_clean.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/04 13:18:06 by apresas-         ###   ########.fr       */
+/*   Created: 2023/11/28 16:33:11 by apresas-          #+#    #+#             */
+/*   Updated: 2023/12/01 12:22:49 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_ms	ms;
+// Puede que añada esto
+// void	clean_env(t_env *env)
+// {
+// 	int		i;
+// 	t_env	*aux;
 
-	argv[0] = NULL;
-	argv = NULL;
-	if (argc != 1 || argv)
-		return (ms_error(ARGC_ERR));
-	env_init(&ms, envp);
-	disable_control_chars_echo();
-	signal_handler();
-	if (readline_loop(&ms))
-		return (FAILURE);
-	restore_terminal_settings();
-	exit(EXIT_SUCCESS);
-	return (0);
-}
+// 	i = 0;
+// 	while (env)
+// 	{
+// 		if (env->name)
+// 			free(env->name);
+// 		if (env->content)
+// 			free(env->content);
+// 		// if (env->prev) // idk
+// 			// free(env->prev);
+// 		if (env->next)
+// 		{
+// 			aux = env;
+// 			env = env->next;
+// 			free(aux);
+// 		}
+// 	}
+// 	free(env); // creo
+// }

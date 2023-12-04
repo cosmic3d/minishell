@@ -25,7 +25,7 @@ LFT_DIR = $(LIB_DIR)libft/
 
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
-SANS		= -fsanitize=address -g
+# SANS		= -fsanitize=address -g
 CFLAGS		= -Wall -Werror -Wextra
 AR			= ar -rcs
 RM			= rm -f
@@ -35,7 +35,7 @@ MAKE		= make -s
 MUTE		= &> /dev/null
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
-HDRS		+= $(INC_DIR)minishell.h
+HDRS		+= $(INC_DIR)*.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
 SRCS		:= $(shell find src -name "*.c")

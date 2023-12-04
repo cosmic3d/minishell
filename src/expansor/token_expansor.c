@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expansor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/22 20:25:43 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:09:04 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static t_token	*token_splitter(t_token *token)
 
 	if (!ft_strlen(token->content))
 		return (NULL);
-	printf("LLEGA: %s\n", token->content);
+	// printf("LLEGA: %s\n", token->content);
 	num_tokens = token_count(token, 0);
 	//printf("NUM OF TOKENS: %i\n", num_tokens);
 	if (num_tokens == 1)
