@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:53:48 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/01 12:24:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:09:39 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,25 +69,25 @@
 // }
 
 // /* Edita el content de una variable de entorno */
-// int	env_edit(t_env *var, char *content)
-// {
-// 	if (!var)
-// 		return (FAILURE);
-// 	if (var->content)
-// 		free(var->content);
-// 	if (content)
-// 	{
-// 		var->content = ft_strdup(content);
-// 		if (!var->content)
-// 		{
-// 			ms_perror("malloc", strerror(errno), NULL, NULL);
-// 			return (FAILURE);
-// 		}
-// 	}
-// 	else
-// 		var->content = NULL;
-// 	return (SUCCESS);
-// }
+int	env_edit(t_env *var, char *content)
+{
+	if (!var)
+		return (FAILURE);
+	if (var->content)
+		free(var->content);
+	if (content)
+	{
+		var->content = ft_strdup(content);
+		if (!var->content)
+		{
+			ms_perror("malloc", strerror(errno), NULL, NULL);
+			return (FAILURE);
+		}
+	}
+	else
+		var->content = NULL;
+	return (SUCCESS);
+}
 
 // void	env_remove2(t_env *remove)
 // {

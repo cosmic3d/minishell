@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:57:02 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/27 17:34:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:20:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ms_unset(t_ms *ms, char **argv)
 	while (argv[i])
 	{
 		if (unset_verify_name(argv[i]) == SUCCESS)
-			env_remove(argv[i], ms->env);
+			env_remove(env_find(argv[i], ms->env));
 		else
 			exit_status = unset_error(argv[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/29 12:05:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/04 16:52:13 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	ms_env(t_ms *ms)
 	{
 		if (var->name && var->content)
 		{
-			write(STDOUT_FILENO, var->name, ft_strlen(var->name));
-			write(STDOUT_FILENO, "=", 1);
-			write(STDOUT_FILENO, var->content, ft_strlen(var->content));
-			write(STDOUT_FILENO, "\n", 1);
+			write(STDOUT, var->name, ft_strlen(var->name));
+			write(STDOUT, "=", 1);
+			write(STDOUT, var->content, ft_strlen(var->content));
+			write(STDOUT, "\n", 1);
 		}
 		var = var->next;
 	}

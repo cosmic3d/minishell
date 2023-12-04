@@ -229,7 +229,7 @@ void			env_init(t_ms *ms, char **envp);
 int				env_add(char *name, char *content, t_env **head);
 int				env_add_content(char *name, char *content, t_env *new);
 t_env			*env_find(char *name, t_env *head);
-int				env_remove(char *name, t_env *env);
+// int				env_remove(char *name, t_env *env);
 int				env_update(char *name, char *content, t_env *env);
 char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
 
@@ -375,5 +375,14 @@ int				ms_env(t_ms *ms);
 
 // llamar_builtins.c
 int				llamar_builtins(t_ms *ms);
+
+// testing new env init
+int	env_list_init(t_ms *ms, char **envp);
+void	env_remove(t_env *var);
+void	free_env_list(t_ms *ms);
+int	update_env(t_env *var, char *content);
+t_env	*env_new(t_env **head);
+int	env_edit(t_env *var, char *content);
+
 
 #endif
