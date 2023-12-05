@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/04 13:21:29 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/05 11:36:18 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@
 // 	//Duplicamos stdin y stdout para no perderlos y
 // 	if (ms_dup(STDIN, -1, &tmp[STDIN], &ms->exit_status) == FAILURE)
 // 		return ;
-// 	if (ms_dup(STDOUT, -1, &tmp[STDOUT], &ms->exit_status) == FAILURE && \
-// 	close(tmp[STDIN]) <= 0)
+// 	if (ms_dup(STDOUT, -1, &tmp[STDOUT], &ms->exit_status) == FAILURE && close(tmp[STDIN]) <= 0)
 // 		return ;
 // 	if (!ms->cmd[0].rd_in)
 // 	{
@@ -76,8 +75,7 @@
 
 
 // 	 //restore in/out defaults
-// 	 if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
-// 	 close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+// 	 if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 // 	 	return ;
 // 	//HACER LA OTRA QUE QUEDA DE DUP2 PARA TMPOUT
 // 	 dup2(tmpin,0);

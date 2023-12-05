@@ -166,9 +166,8 @@ typedef struct s_minishell
 	char		*pwd;
 	int			num_cmd;
 	char		**envp;
-	char		*prev_wd; // Previous working directory
 	int			shlvl;
-	int			exit_status; // para $?
+	int			exit_status;
 }				t_ms;
 
 typedef struct s_export

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:35:07 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 18:15:42 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/05 11:46:37 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	update_pwd(t_ms *ms, char *pwd);
 
 int	env_list_init(t_ms *ms, char **envp)
 {
+	ms->env = NULL;
 	if (envp_to_t_env(ms, envp) == FAILURE)
 	{
 		free_env_list(ms);
