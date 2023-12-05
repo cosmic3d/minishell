@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/30 21:02:59 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/05 11:32:28 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ms_dup(int fd, int fd2, int *newfd, int *xs)
 int	ms_open(t_redirection *rd, int *fd, int *xs)
 {
 	*fd = open(rd->str, rd->oflag, D_PERMS);
-	if (fd < 0)
+	if (*fd < 0)
 	{
 		ms_perror(rd->str, ": ", strerror(errno), NULL);
 		*xs = 1;
