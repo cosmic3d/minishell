@@ -7,3 +7,6 @@ libs/readline/
 *.a
 /obj
 minishell
+Makefile
+Makefile_Albert
+Makefile_Mac
