@@ -152,14 +152,16 @@ typedef struct s_generic_list
 	struct s_generic_list	*next;
 }				t_lst;
 
-// typedef struct s_memory
-// {
-	// void	*ptr;
-	// t_mem	*next;
-// }				t_mem;
+typedef struct s_memory
+{
+	struct s_memory	*prev;
+	struct s_memory	*next;
+	void			*ptr;
+}				t_mem;
 
 typedef struct s_minishell
 {
+	t_mem		*mem;
 	t_env		*env;
 	t_token		*token;
 	t_cmdinfo	*cmd;

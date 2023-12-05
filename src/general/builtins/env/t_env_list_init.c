@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 13:35:07 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/05 11:46:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:17:16 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	update_pwd(t_ms *ms, char *pwd);
 
 int	env_list_init(t_ms *ms, char **envp)
 {
-	ms->env = NULL;
 	if (envp_to_t_env(ms, envp) == FAILURE)
 	{
 		free_env_list(ms);
@@ -60,19 +59,12 @@ static int	envp_to_t_env(t_ms *ms, char **envp)
 
 static int	update_env_list(t_ms *ms)
 {
-	char	*pwd;
-
 	if (update_shlvl(ms) == FAILURE)
 		return (FAILURE);
-	pwd = getcwd(NULL, 0);
-	if (errno)
-		return (ms_perror("getcwd", strerror(errno), NULL, NULL));
-	if (update_pwd(ms, pwd) == FAILURE)
+	if (update_pwd(ms, ms->pwd) == FAILURE)
 	{
-		free(pwd);
 		return (FAILURE);
 	}
-	ms->pwd = pwd;
 	return (SUCCESS); // hay que testear bien todo esto
 }
 
@@ -84,7 +76,7 @@ static int	update_shlvl(t_ms *ms)
 	var = env_find("SHLVL", ms->env);
 	if (!var)
 		return (env_add("SHLVL", "1", &ms->env));
-	// Hay que comprobar si SHLVL contiene caracteres no numericos, entonces SHLVL=1!
+	if (var->content)
 	shlvl = ft_atoi(var->content) + 1;
 	if (shlvl == 1000)
 		return (env_edit(var, ""));

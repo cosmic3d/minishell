@@ -1,0 +1,27 @@
+Funcionamiento de SHLVL:
+
+SHLVL puede tener cualquier valor siempre y cuanto este sea asignado manualmente
+por el usuario. Pero dejando esto de lado, estos son los valores que usará bash:
+
+Todo lo siguiente se plantea desde el siguiente angulo:
+SHLVL tiene un valor y al lanzar bash, SHLVL obtiene un nuevo valor.
+
+If SHLVL NO existe
+SHLVL="1"
+
+If SHLVL="caracteres inválidos", then
+SHLVL="1"
+
+If SHLVL="valor > INT && < LONG"
+	bash: warning: tal...
+	Pero new SHLVL mostrado es (SHLVL % 2147483648) + 1 (O más fácil: & 0x80000000 (creo))
+	new SHLVL = 1
+
+If SHLVL="valor que representa un int válido", then:
+	If SHLVL < 0, then
+		new SHLVL="0"
+	If SHLVL >= 0 && < 999, then (Esto puede que cambie entre mac y linux)
+		new SHLVL="old SHLVL + 1"
+	If SHLVL >= 999
+		bash: warning: shell level (new SHLVL) too high, reseting to 1
+		new SHLVL="1"

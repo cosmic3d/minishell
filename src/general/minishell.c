@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/05 12:18:13 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:00:29 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,84 @@ int	main(int argc, char **argv, char **envp)
 
 static int	ms_struct_init(t_ms *ms)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
+	// si añado ms->mem hay que ponerlo a NULL
+	ms->pwd = getcwd(NULL, 0);
 	if (errno)
 	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
+		ms_perror("getcwd", strerror(errno), NULL, NULL);
 		return (FAILURE);
 	}
 	ms->env = NULL;
 	ms->token = NULL;
 	ms->cmd = NULL;
-	ms->pwd = pwd;
 	ms->num_cmd = 0;
 	ms->envp = NULL;
 	ms->shlvl = 0;
 	ms->exit_status = 0;
 	return (SUCCESS);
 }
+
+// void	*ms_malloc(size_t size, t_ms *ms)
+// {
+// 	void	*memory;
+
+// 	memory = malloc(size);
+// 	if (!memory)
+// 	{
+// 		ms_perror("malloc", strerror(errno), NULL, NULL);
+// 		return (NULL);
+// 	}
+// 	if (add_mem(memory, &ms->mem) == FAILURE)
+// 	{
+// 		free(memory);
+// 		return (NULL);
+// 	}
+// 	return (memory);
+// }
+
+// int	add_mem(void *ptr, t_mem **mem)
+// {
+// 	t_mem	*new;
+// 	t_mem	*last;
+
+// 	new = malloc(sizeof(t_mem));
+// 	if (!new)
+// 	{
+// 		ms_perror("malloc", strerror(errno), NULL, NULL);
+// 		return (FAILURE);
+// 	}
+// 	new->prev = NULL;
+// 	new->next = NULL;
+// 	if (*mem == NULL)
+// 		*mem = new;
+// 	else
+// 	{
+// 		last = tail(*mem);
+// 		last->next = new;
+// 		new->prev = last;
+// 	}
+// 	return (SUCCESS);
+// }
+
+// void	rm_mem(void *rm, t_mem **mem)
+// {
+// 	t_mem	*current;
+
+// 	if (!rm)
+// 		return ;
+// 	current = *mem;
+// 	while (current)
+// 	{
+// 		if (current->ptr == rm)
+// 		{
+// 			if (current->prev)
+// 				current->prev->next = current->next;
+// 			if (current->next)
+// 				current->next->prev = current->prev;
+// 			free(current->ptr);
+// 			free(current);
+// 		}
+// 		current = current->next;
+// 	}
+// 	return ;
+// }
