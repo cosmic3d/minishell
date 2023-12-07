@@ -3,94 +3,122 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/04 13:21:29 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/07 01:52:50 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	execution_loop(t_ms *ms, int fd[2])
-// {
-// 	for(i=0;i<numsimplecommands; i++) {
-// 	  //redirect input
-// 	  dup2(fdin, 0);
-// 	  close(fdin);
-// 	  //setup output
-// 	  if (i == numsimplecommands){
-// 		// Last simple command
-// 		if(outfile){
-// 		  fdout=open(outfile,â€¦â€¦);
-// 		}
-// 		else {
-// 		  // Use default output
-// 		  fdout=dup(tmpout);
-// 		}
-// 	  }
+/* Se escoge cuál será el stdin del siguiente comando y el stdout del
+comando actual. Para esto, primero comprobamos si no somos el último
+comando. En tal caso, por defecto el stdin y el stdout serán el de la pipe.
+Si somos el último, por defecto el stdin será el de la pipe y el stdout será
+la propia terminal.
+Después de asignar las pipes, comprobamos las redirecciones ya que priorizan
+sobre estas, las cuales serán sobreescritas.
+*/
+static int get_cmd_inout(t_cmdinfo *cmd, int **fd, int tmp[2], int *xs)
+{
+	if (cmd->next_cmd)
+	{
+		if (cmd->next_cmd->rd_in && \
+		ms_open(cmd->rd_in, &(*fd[STDIN]), xs) == FAILURE)
+			return (FAILURE);
+		else if (!cmd->next_cmd->rd_in)
+	}
+}
 
-// 	   else {
-// 		  // Not last
-// 		  //simple command
-// 		  //create pipe
-// 		  int fdpipe[2];
-// 		  pipe(fdpipe);
-// 		  fdout=fdpipe[1];
-// 		  fdin=fdpipe[0]; //FUNDAMENTAL
-// 	   }// if/else
+static int	execution_loop(t_ms *ms, int fd[2])
+{
+	int	i;
 
-// 	   // Redirect output
-// 	   dup2(fdout,1);
-// 	   close(fdout);
+	i = -1;
+	while (++i < ms->num_cmd)
+	{
+		//REALIZAR FUNCIÓN QUE ESTABLEZCA EL FD CORRECTO PARA STDIN Y STDOUT
+		if (ms_dup(fd[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
+		close(fd[STDIN]) <= 0)
+			return (FAILURE);
 
-// 	   // Create child process
-// 	   ret=fork();
-// 	   if(ret==0) {
-// 		 execvp(scmd[i].args[0], scmd[i].args);
-// 		 perror("Execvp");
-// 		 _exit(1);
-// 	   }
-// 	 } //  for
-// }
+	}
+ 	for(i=0;i<numsimplecommands; i++) {
+ 	  //redirect input
+ 	  dup2(fdin, 0);
+ 	  close(fdin);
+ 	  //setup output
+ 	  if (i == numsimplecommands){
+ 		// Last simple command
+ 		if(outfile){
+ 		  fdout=open(outfile,â€¦â€¦);
+ 		}
+ 		else {
+ 		  // Use default output
+ 		  fdout=dup(tmpout);
+ 		}
+ 	  }
 
-// static void	init_execution(t_ms *ms)
-// {
-// 	int	tmp[2];
-// 	int	fd[2];
+ 	   else {
+ 		  // Not last
+ 		  //simple command
+ 		  //create pipe
+ 		  int fdpipe[2];
+ 		  pipe(fdpipe);
+ 		  fdout=fdpipe[1];
+ 		  fdin=fdpipe[0]; //FUNDAMENTAL
+ 	   }// if/else
 
-// 	//Duplicamos stdin y stdout para no perderlos y
-// 	if (ms_dup(STDIN, -1, &tmp[STDIN], &ms->exit_status) == FAILURE)
-// 		return ;
-// 	if (ms_dup(STDOUT, -1, &tmp[STDOUT], &ms->exit_status) == FAILURE && \
-// 	close(tmp[STDIN]) <= 0)
-// 		return ;
-// 	if (!ms->cmd[0].rd_in)
-// 	{
-// 		if (ms_dup(tmp[STDIN], -1, &fd[STDIN], &ms->exit_status) == FAILURE)
-// 			return ;
-// 	}
-// 	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) == FAILURE)
-// 		return ;
-// 	execution_loop(ms, fd);
+ 	   // Redirect output
+ 	   dup2(fdout,1);
+ 	   close(fdout);
 
+ 	   // Create child process
+ 	   ret=fork();
+ 	   if(ret==0) {
+ 		 execvp(scmd[i].args[0], scmd[i].args);
+ 		 perror("Execvp");
+ 		 _exit(1);
+}
+	 } //  for
+	waitpid(ret, NULL);
+}
 
-// 	 //restore in/out defaults
-// 	 if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
-// 	 close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
-// 	 	return ;
-// 	//HACER LA OTRA QUE QUEDA DE DUP2 PARA TMPOUT
-// 	 dup2(tmpin,0);
-// 	 dup2(tmpout,1);
-// 	 close(tmpin);
-// 	 close(tmpout);
-
-// 	 if (!background) {
-// 		// Wait for last command
-// 		waitpid(ret, NULL);
-// 	}
-// } // execute
-
+static void	init_execution(t_ms *ms)
+{
+	int	tmp[2];
+	int	fd[2];
+	//Duplicamos stdin y stdout para no perderlos
+	if (ms_dup(STDIN, -1, &tmp[STDIN], &ms->exit_status) == FAILURE)
+		return ;
+	if (ms_dup(STDOUT, -1, &tmp[STDOUT], &ms->exit_status) == FAILURE && \
+	close(tmp[STDIN]) <= 0)
+		return ;
+	//Duplicar el stdin en caso de que exista un archivo
+	if (!ms->cmd[0].rd_in)
+	{
+		//Si no existe una redirección de input para el primer comando,
+		//quiere decir que por defecto fd[STDIN] es STDIN
+		if (ms_dup(tmp[STDIN], -1, &fd[STDIN], &ms->exit_status) == FAILURE && \
+		close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+			return ;
+	}
+	//Si existe una redirección de input, abrimos ese archivo en fd[STDIN]
+	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) == FAILURE \
+	&& close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+		return ;
+	//Llamamos al bucle de ejecución de los comandos para que los ejecute todos
+	//ASEGURATE DE QUE TENGAS EL PATH CORRECTO PARA LOS COMANDOS ANTES DE LLAMAR AQUÍ (/bin/ls)
+	execution_loop(ms, fd);
+	//Restauramos stdin y stdout para que apunten de nuevo a la terminal
+	if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
+	close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+		return ;
+	if (ms_dup(tmp[STDOUT], STDOUT, NULL, &ms->exit_status) == FAILURE && \
+	close(tmp[STDOUT]) <= 0)
+		return ;
+}// execute
 /* Función que llama a otras para realizar todo el proceso
 a seguir en la ejecución de los comandos. Devuelve SUCCESS si los
 comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE

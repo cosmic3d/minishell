@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/05 11:34:12 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:26:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ms_dup(int fd, int fd2, int *newfd, int *xs)
 			*newfd = retfd;
 		return (SUCCESS);
 	}
-	ms_perror("dup error: ", strerror(errno), NULL, NULL);
+	ms_perror("dup error", strerror(errno), NULL, NULL);
 	*xs = 1;
 	return (FAILURE);
 }
@@ -42,7 +42,7 @@ int	ms_open(t_redirection *rd, int *fd, int *xs)
 	*fd = open(rd->str, rd->oflag, D_PERMS);
 	if (*fd < 0)
 	{
-		ms_perror(rd->str, ": ", strerror(errno), NULL);
+		ms_perror(rd->str, strerror(errno), NULL, NULL);
 		*xs = 1;
 		return (FAILURE);
 	}

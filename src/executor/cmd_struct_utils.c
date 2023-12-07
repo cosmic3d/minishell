@@ -66,7 +66,8 @@ void	get_rd_oflag(t_redirection *rd)
 	if (rd->type == REDIRECT_IN || rd->type == REDIRECT_HEARDOC)
 		rd->oflag = O_RDONLY;
 	else if (rd->type == REDIRECT_OUT)
-		rd->oflag = O_WRONLY | O_TRUNC;
-	else
-		rd->oflag = O_WRONLY | O_APPEND;
+		rd->oflag = O_CREAT | O_WRONLY | O_TRUNC;
+	else if (rd->type == REDIRECT_APPEND)
+		rd->oflag = O_CREAT | O_WRONLY | O_APPEND;
+	return ;
 }
