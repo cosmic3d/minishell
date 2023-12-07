@@ -75,20 +75,20 @@ variables de entorno. */
 // 	return (SUCCESS);
 // }
 
-/* Retorna el puntero al nodo de la lista de variables de entorno cuyo nombre 
-es name. Si no lo encuentra, devuelve NULL */
-t_env	*env_find(char *name, t_env *head)
-{
-	while (head)
-	{
-		if (!ft_strcmp(head->name, name))
-		{
-			return (head);
-		}
-		head = head->next;
-	}
-	return (NULL);
-}
+// /* Retorna el puntero al nodo de la lista de variables de entorno cuyo nombre 
+// es name. Si no lo encuentra, devuelve NULL */
+// t_env	*env_find(char *name, t_env *head)
+// {
+// 	while (head)
+// 	{
+// 		if (!ft_strcmp(head->name, name))
+// 		{
+// 			return (head);
+// 		}
+// 		head = head->next;
+// 	}
+// 	return (NULL);
+// }
 
 /* Elimina la variable de entorno de nombre name de la lista t_env de forma 
 limpia. Si en la lista no hay variable de entorno con este nombre, retorna 1. */
@@ -125,25 +125,25 @@ int	env_update(char *name, char *content, t_env *env)
 	return (SUCCESS);
 }
 
-/* Obtiene el contenido de una variable de entorno de nombre name.
-Si la variable no existe, retorna el contenido ""
-Retorna un puntero nuevo, de esta forma no hay riesgo de sobreescribir el 
-contenido de la variable accidentalmente. */
-char	*get_env_content(char *name, t_env *env)
-{
-	t_env	*variable;
-	char	*content;
+// /* Obtiene el contenido de una variable de entorno de nombre name.
+// Si la variable no existe, retorna el contenido ""
+// Retorna un puntero nuevo, de esta forma no hay riesgo de sobreescribir el 
+// contenido de la variable accidentalmente. */
+// char	*get_env_content(char *name, t_env *env)
+// {
+// 	t_env	*variable;
+// 	char	*content;
 
-	variable = env_find(name, env);
-	if (!variable)
-	{
-		content = ft_strdup("");
-		if (!content)
-			ms_quit(MALLOC_ERR);
-		return (content);
-	}
-	content = ft_strdup(variable->content);
-	if (!content)
-		ms_quit(MALLOC_ERR);
-	return (content);
-}
+// 	variable = env_find(name, env);
+// 	if (!variable)
+// 	{
+// 		content = ft_strdup("");
+// 		if (!content)
+// 			ms_quit(MALLOC_ERR);
+// 		return (content);
+// 	}
+// 	content = ft_strdup(variable->content);
+// 	if (!content)
+// 		ms_quit(MALLOC_ERR);
+// 	return (content);
+// }

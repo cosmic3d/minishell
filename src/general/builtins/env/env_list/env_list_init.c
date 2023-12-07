@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 15:17:52 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/05 19:17:29 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:17:03 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,22 @@ int	env_list_init(t_ms *ms, char **envp)
 {
 	if (envp_to_env_list(ms, envp) == FAILURE)
 	{
-		// free list? or just exit?
+		env_free(ms);
 		return (FAILURE);
 	}
 	if (update_shlvl(ms) == FAILURE)
 	{
+		env_free(ms);
 		return (FAILURE);
 	}
 	if (update_pwd(ms) == FAILURE)
 	{
+		env_free(ms);
 		return (FAILURE);
 	}
 	if (update_oldpwd(ms) == FAILURE)
 	{
+		env_free(ms);
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -78,17 +81,17 @@ static int	update_shlvl(t_ms *ms)
 	var = env_find("SHLVL", ms->env);
 	if (!var)
 		return (env_add("SHLVL", "1", &ms->env));
-	if (!ft_isint(var->content))
+	if (!ft_isint(var->content)) // comprobar si esto funciona en 42
 		return (env_edit(var, "1"));
-	shlvl = ft_atoi(var->content);
+	shlvl = ft_atoi(var->content) + 1;
 	if (shlvl < 0)
 		return (env_edit(var, "0"));
-	else if (shlvl > 998)
+	else if (shlvl > 999)
 	{
-		printf(SHLVL_WARNING, shlvl); // ESTO VA EN STDOUT
+		printf(SHLVL_WARNING, shlvl); // ESTO VA EN STDERR!!
 		return (env_edit(var, "1"));
 	}
-	shlvl_str = ft_itoa(shlvl + 1);
+	shlvl_str = ft_itoa(shlvl);
 	if (!shlvl_str)
 		return (ms_perror("malloc", strerror(errno), NULL, NULL));
 	free(var->content);
@@ -103,6 +106,8 @@ static int	update_pwd(t_ms *ms)
 	var = env_find("PWD", ms->env);
 	if (!var)
 		return (env_add("PWD", ms->pwd, &ms->env));
+	if (var->content)
+		free(var->content);
 	var->content = ft_strdup(ms->pwd);
 	if (!var->content)
 		return (ms_perror("malloc", strerror(errno), NULL, NULL));

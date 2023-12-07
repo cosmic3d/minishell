@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 17:11:36 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/07 17:31:12 by apresas-         ###   ########.fr       */
+/*   Created: 2023/12/07 12:16:05 by apresas-          #+#    #+#             */
+/*   Updated: 2023/12/07 12:39:25 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "libft.h"
 
-/* función que emula el builtin env */
-int	ms_env(t_ms *ms)
+double	ft_sqrt(double x)
 {
-	t_env	*var;
+	double	result;
+	double	guess;
 
-	var = ms->env;
-	while (var)
+	if (x == 0.0 || x == 1.0)
+		return (x);
+	result = x / 2.0;
+	while (1)
 	{
-		if (var->name && var->content)
-		{
-			write(STDOUT, var->name, ft_strlen(var->name));
-			write(STDOUT, "=", 1);
-			write(STDOUT, var->content, ft_strlen(var->content));
-			write(STDOUT, "\n", 1);
-		}
-		var = var->next;
+		guess = 0.5 * (result + x / result);
+		if (guess == result)
+			break ;
+		result = guess;
 	}
-	return (SUCCESS);
+	return (result);
+}
+
+double	ft_rsqrt(double x)
+{
+	return (1.0 / ft_sqrt(x));
 }

@@ -14,9 +14,14 @@
 # define LIBFT_H
 # include <stdlib.h>
 
-typedef unsigned int t_uint;
+typedef unsigned int	t_uint;
 
 int		ft_abs(int num);
+long	ft_absl(long num);
+float	ft_absf(float num);
+double	ft_absd(double num);
+double	ft_sqrt(double x);
+double	ft_rsqrt(double x);
 int		ft_isint(char *str);
 int		ft_isuint(char *str);
 int		ft_islong(char *str);

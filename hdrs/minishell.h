@@ -378,12 +378,20 @@ int				ms_env(t_ms *ms);
 int				llamar_builtins(t_ms *ms);
 
 // testing new env init
+// int	env_list_init(t_ms *ms, char **envp);
+// void	env_remove(t_env *var);
+// void	free_env_list(t_ms *ms);
+// int	update_env(t_env *var, char *content);
+// t_env	*env_new(t_env **head);
+// int	env_edit(t_env *var, char *content);
+
+// new new new new env tal
 int	env_list_init(t_ms *ms, char **envp);
-void	env_remove(t_env *var);
-void	free_env_list(t_ms *ms);
-int	update_env(t_env *var, char *content);
+int	env_add(char *name, char *content, t_env **head);
 t_env	*env_new(t_env **head);
 int	env_edit(t_env *var, char *content);
-
+void	env_remove(t_env *var);
+void	env_free(t_ms *ms);
+t_env	*env_find(char *name, t_env *head);
 
 #endif

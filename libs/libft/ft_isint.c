@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:13:35 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/05 18:10:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/07 11:27:42 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #define INTMAX 2147483647
 #define IMAX_10 214748364
 
+// Returns 1 if the str provided represents a valid integer, returns 0 otherwise
 int	ft_isint(char *str)
 {
 	int		i;
@@ -50,6 +51,8 @@ int	ft_isint(char *str)
 	return (i > 0);
 }
 
+// Returns 1 if the str provided represents a valid unsigned integer, 
+// returns 0 otherwise
 int	ft_isuint(char *str)
 {
 	int				i;
@@ -72,6 +75,8 @@ int	ft_isuint(char *str)
 	return (i > 0);
 }
 
+// Returns 1 if the str provided represents a valid long integer, 
+// returns 0 otherwise
 int	ft_islong(char *str)
 {
 	int		i;
@@ -101,6 +106,8 @@ int	ft_islong(char *str)
 	return (i > 0);
 }
 
+// Returns 1 if the str provided represents a valid unsigned long integer, 
+// returns 0 otherwise
 int	ft_isulong(char *str)
 {
 	int				i;

@@ -51,6 +51,12 @@ INCLUDE 	= -I$(INC_DIR)
 
 all: $(NAME)
 
+# debugging Albert ######
+test: $(NAME)
+	gcc test.c -o tester
+	./tester
+#########################
+
 $(NAME):: $(LIBS) $(OBJS)
 	$(CC) $(CFLAGS) $(SANS) -L$(LFT_DIR) -L$(RDL_DIR) $(INCLUDE) $(OBJS) -o $(NAME) -lft -lreadline -lhistory -ltermcap
 	echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"

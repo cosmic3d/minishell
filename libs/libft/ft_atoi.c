@@ -6,12 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:53:12 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/05 18:35:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:00:58 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_atoi(const char *str)
 {
