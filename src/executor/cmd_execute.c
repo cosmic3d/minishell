@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/07 01:52:50 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/09 04:42:42 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,36 @@ la propia terminal.
 Después de asignar las pipes, comprobamos las redirecciones ya que priorizan
 sobre estas, las cuales serán sobreescritas.
 */
-static int get_cmd_inout(t_cmdinfo *cmd, int **fd, int tmp[2], int *xs)
+static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 {
+	int	pipefd[2];
+
 	if (cmd->next_cmd)
 	{
 		if (cmd->next_cmd->rd_in && \
-		ms_open(cmd->rd_in, &(*fd[STDIN]), xs) == FAILURE)
+		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) == FAILURE)
 			return (FAILURE);
 		else if (!cmd->next_cmd->rd_in)
+		{
+			if (pipe(pipefd) != SUCCESS)
+				return (FAILURE);
+			fd[STDIN] = pipefd[STDIN];
+			if (!cmd->rd_out)
+				fd[STDOUT] = pipefd[STDOUT];
+			else if (ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE && \
+			close(pipefd[STDOUT]) <= 0) /* Si hay un archivo, cerramos el extremo de escritura del pipe para que el siguiente
+			comando reciba un EOF y no lea nada de la pipe de lectura */
+				return (FAILURE);
+		}
+		return (SUCCESS);
 	}
+	if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
+		return (FAILURE);
+	if (cmd->rd_out && \
+	ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE)
+		return (FAILURE);
 }
+
 
 static int	execution_loop(t_ms *ms, int fd[2])
 {
@@ -45,8 +65,8 @@ static int	execution_loop(t_ms *ms, int fd[2])
 
 	}
  	for(i=0;i<numsimplecommands; i++) {
- 	  //redirect input
- 	  dup2(fdin, 0);
+ 	  //redirect inpu
+	  dup2(fdin, 0);
  	  close(fdin);
  	  //setup output
  	  if (i == numsimplecommands){
