@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/09 04:42:42 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/11 05:43:07 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Si somos el último, por defecto el stdin será el de la pipe y el stdout será
 la propia terminal.
 Después de asignar las pipes, comprobamos las redirecciones ya que priorizan
 sobre estas, las cuales serán sobreescritas.
+SI HAY ALGÚN ERROR, LOS FILE DESCRIPTORS DISPONIBLES SE CIERRAN
 */
 static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 {
@@ -26,21 +27,19 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 
 	if (cmd->next_cmd)
 	{
-		if (cmd->next_cmd->rd_in && \
-		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) == FAILURE)
+		if (ms_pipe(fd, xs) == FAILURE)
 			return (FAILURE);
-		else if (!cmd->next_cmd->rd_in)
-		{
-			if (pipe(pipefd) != SUCCESS)
-				return (FAILURE);
-			fd[STDIN] = pipefd[STDIN];
-			if (!cmd->rd_out)
-				fd[STDOUT] = pipefd[STDOUT];
-			else if (ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE && \
-			close(pipefd[STDOUT]) <= 0) /* Si hay un archivo, cerramos el extremo de escritura del pipe para que el siguiente
+		fd[STDIN] = pipefd[STDIN];
+		if (!cmd->rd_out)
+			fd[STDOUT] = pipefd[STDOUT];
+		else if (close(pipefd[STDOUT]) <= 0 && ms_open(cmd->rd_out, \
+		&fd[STDOUT], xs) == FAILURE && close(pipefd[STDIN]) <= 0) /* Si hay un archivo, cerramos el extremo de escritura del pipe para que el siguiente
 			comando reciba un EOF y no lea nada de la pipe de lectura */
-				return (FAILURE);
-		}
+			return (FAILURE);
+		if (cmd->next_cmd->rd_in && close(fd[STDIN]) <= 0 && \
+		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) == FAILURE && \
+		close(fd[STDOUT]) <= 0)
+			return (FAILURE);
 		return (SUCCESS);
 	}
 	if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
@@ -72,7 +71,7 @@ static int	execution_loop(t_ms *ms, int fd[2])
  	  if (i == numsimplecommands){
  		// Last simple command
  		if(outfile){
- 		  fdout=open(outfile,â€¦â€¦);
+ 		  fdout=open(outfile,giggity);
  		}
  		else {
  		  // Use default output

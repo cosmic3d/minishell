@@ -302,6 +302,7 @@ int				execute_cmds(t_ms *ms);
 //cmd_execute_utils.c
 int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
+int				ms_pipe(int fd[2], int *xs);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
