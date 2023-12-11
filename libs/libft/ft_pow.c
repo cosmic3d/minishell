@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:43:35 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/07 13:53:17 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:53:13 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ long	ft_pow(long base, long exp)
 	}
 	if (exp < 0)
 		result = 1 / result;
+	return (result);
 }
 
 // STILL IN DEVELOPMENT, NOT READY
