@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/12 18:04:14 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/12 20:58:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 
 	if (cmd->next_cmd) //No es el último comando
 	{
-		if (ms_pipe(fd, xs) == FAILURE)
+		if (ms_pipe(pipefd, xs) == FAILURE)
 			return (FAILURE);
 		fd[STDIN] = pipefd[STDIN];
+		printf("pipefd[STDIN]: %i\n", pipefd[STDIN]);
+		printf("fd[STDIN]: %i\n", fd[STDIN]);
 		if (!cmd->rd_out)
 			fd[STDOUT] = pipefd[STDOUT];
 		else if (close(pipefd[STDOUT]) <= 0 && ms_open(cmd->rd_out, \
@@ -40,6 +42,7 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) == FAILURE && \
 		close(fd[STDOUT]) <= 0)
 			return (FAILURE);
+		printf("fd[STDIN] 2: %i\n", fd[STDIN]);
 		return (SUCCESS);
 	}
 	if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
@@ -67,7 +70,7 @@ static int	manage_child(int forkret, t_cmdinfo *cmd, t_ms *ms)
 		return (FAILURE);
 	}
 	if (waitpid(forkret, &child_status, 0) == -1 && \
-	ms_perror("waitpid", strerror(errno), NULL, NULL))
+	ms_perror("waitpid", strerror(errno), NULL, NULL)) // WAITPID DEVUELVE ERROR CUANDO SE INTERRUMPE POR UNA SEÑAL ARREGLAR XD
 		return (FAILURE);
 	else if (WIFEXITED(child_status)) //Terminó correctamente
 		ms->exit_status = WEXITSTATUS(child_status);
@@ -94,6 +97,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
+		printf("%i\n", fd[STDIN]);
 		if (ms_dup(fd[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
 		close(fd[STDIN]) <= 0)
 			return (FAILURE);
@@ -176,13 +180,13 @@ static int	init_execution(t_ms *ms)
 		if (ms_dup(tmp[STDIN], -1, &fd[STDIN], &ms->exit_status) == FAILURE && \
 		close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 			return (FAILURE);
+		printf("fd[STDIN] = %i\n", fd[STDIN]);
 	}
 	//Si existe una redirección de input, abrimos ese archivo en fd[STDIN]
 	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) == FAILURE \
 	&& close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
 	//Llamamos al bucle de ejecución de los comandos para que los ejecute todos
-	//ASEGURATE DE QUE TENGAS EL PATH CORRECTO PARA LOS COMANDOS ANTES DE LLAMAR AQUÍ (/bin/ls)
 	execution_loop(ms, fd, tmp);
 	//Restauramos stdin y stdout para que apunten de nuevo a la terminal
 	if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \

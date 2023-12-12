@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 13:17:44 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:28:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ int	readline_loop(t_ms *ms)
 		// debug, para llamar builtins
 		ms->exit_status = llamar_builtins(ms);
 		//// debugging find path coso
-		if (ms->exit_status == -1)
+		/* if (ms->exit_status == -1)
 		{
 			char *path = command_to_file_path(ms->token->content, &ms->exit_status, ms);
 			printf("path: = %s\n", path);
-		}
+		} */
+		execute_cmds(ms);
 		////
+		free(buffer);
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO
 	}
