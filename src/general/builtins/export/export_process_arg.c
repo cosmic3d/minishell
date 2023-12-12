@@ -6,11 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:00:43 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/11 17:05:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:03:19 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
 static int	export_new(char *name, char *arg, t_ms *ms);
 static int	export_equal(t_env *var, char *arg);
@@ -38,47 +38,6 @@ int	process_argument(char *arg, t_ms *ms)
 	else if (var && (op == '+' && export_add(var, arg) == FAILURE))
 		return (FAILURE);
 	return (SUCCESS);
-}
-
-static char	*get_name(char *arg)
-{
-	char	*name;
-	int		len;
-	int		i;
-
-	len = 0;
-	while (arg[len] && arg[len] != '+' && arg[len] != '=')
-		len++;
-	name = malloc(sizeof(char) * (len + 1));
-	if (!name)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		return (NULL);
-	}
-	i = 0;
-	while (i < len)
-	{
-		name[i] = arg[i];
-		i++;
-	}
-	name[i] = '\0';
-	return (name);
-}
-
-static int	get_operation(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i] != '\0' && arg[i] != '=' && arg[i] != '+')
-		i++;
-	if (arg[i] == '+')
-		return ('+');
-	else if (arg[i] == '=')
-		return ('=');
-	else if (arg[i] == '\0')
-		return (0);
-	return (0);
 }
 
 static int	export_new(char *name, char *arg, t_ms *ms)

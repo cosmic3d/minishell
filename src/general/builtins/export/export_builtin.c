@@ -6,11 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:08:42 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/11 17:01:02 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:03:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
 static int	export_print(t_env *env, t_env *node, t_env *abc_min, char *prev);
 static int	argument_syntax(char *arg);

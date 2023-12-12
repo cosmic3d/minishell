@@ -6,18 +6,38 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 16:51:27 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/11 17:04:35 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 13:03:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
-int	export_equal(t_env *var, char *arg);
-int	export_add(t_env *var, char *arg);
-int	export_new(char *name, char *arg, t_ms *ms);
-int	get_operation(char *arg);
+char	*get_name(char *arg)
+{
+	char	*name;
+	int		len;
+	int		i;
 
-static char	*get_content(char *arg)
+	len = 0;
+	while (arg[len] && arg[len] != '+' && arg[len] != '=')
+		len++;
+	name = malloc(sizeof(char) * (len + 1));
+	if (!name)
+	{
+		ms_perror("malloc", strerror(errno), NULL, NULL);
+		return (NULL);
+	}
+	i = 0;
+	while (i < len)
+	{
+		name[i] = arg[i];
+		i++;
+	}
+	name[i] = '\0';
+	return (name);
+}
+
+char	*get_content(char *arg)
 {
 	char	*content;
 	int		i;
@@ -37,3 +57,18 @@ static char	*get_content(char *arg)
 	return (content);
 }
 
+int	get_operation(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i] != '\0' && arg[i] != '=' && arg[i] != '+')
+		i++;
+	if (arg[i] == '+')
+		return ('+');
+	else if (arg[i] == '=')
+		return ('=');
+	else if (arg[i] == '\0')
+		return (0);
+	return (0);
+}

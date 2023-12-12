@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 13:18:38 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:01:54 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms)
 		if (file_check(file_path, IS_FILE) && \
 		(ft_strcmp(".", cmd) && ft_strcmp("..", cmd)))
 		{
-			if (!file_check(file_path, HAS_EXECUTE_PERMISSIONS))
+			if (!file_check(file_path, X_OK))
 				*exit_status = exec_error(cmd, PERM_DENIED, _PERM_DENIED);
 			free_array(directories);
 			return (file_path);
@@ -109,7 +109,7 @@ static char	*find_locally(char *cmd, int *exit_status)
 	{
 		if (file_path[ft_strlen(cmd) - 1] == '/')
 			*exit_status = exec_error(cmd, NOT_DIR, _NOT_DIR);
-		else if (!file_check(file_path, HAS_EXECUTE_PERMISSIONS))
+		else if (!file_check(file_path, X_OK))
 			*exit_status = exec_error(cmd, PERM_DENIED, _PERM_DENIED);
 		else
 			return (file_path);
@@ -130,7 +130,7 @@ static char	*find_as_a_path(char *file_path, int *exit_status)
 	{
 		if (file_path[ft_strlen(file_path) - 1] == '/')
 			*exit_status = exec_error(file_path, NOT_DIR, _NOT_DIR);
-		else if (!file_check(file_path, HAS_EXECUTE_PERMISSIONS))
+		else if (!file_check(file_path, X_OK))
 			*exit_status = exec_error(file_path, PERM_DENIED, _PERM_DENIED);
 		else
 			return (file_path);

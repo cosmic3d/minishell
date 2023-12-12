@@ -6,15 +6,14 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/27 17:27:55 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/12 15:57:55 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
 static int	check_arg_errors(char *arg);
-static void	cd_error(char *arg, char *error_str);
-static void	update_environment(t_ms *ms, char *new_pwd);
+static int	update_environment(t_ms *ms, char *new_pwd);
 
 /* Función que emula el builtin cd */
 int	ms_cd(t_ms *ms, char **argv)
@@ -26,26 +25,35 @@ int	ms_cd(t_ms *ms, char **argv)
 	if (check_arg_errors(argv[1]) == FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(argv[1]) == -1)
-	{
-		cd_error(argv[1], "unable to change directory"); // for now
-		return (EXIT_FAILURE);
-	}
+		return (ms_perror("cd", "chdir", strerror(errno), NULL));
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-	{
-		cd_error(argv[1], "error retrieving current directory"); // for now
-		return (EXIT_FAILURE);
-	}
-	update_environment(ms, pwd);
+		return (ms_perror("cd", "chdir", strerror(errno), NULL));
+	if (update_environment(ms, pwd) == FAILURE)
+		return (-1);
 	if (ms->pwd)
 		free(ms->pwd);
 	ms->pwd = ft_strdup(pwd);
 	if (!ms->pwd)
-		ms_quit(MALLOC_ERR);
+	{
+		ms_perror("malloc", strerror(errno), NULL, NULL);
+		return (-1);
+	}
 	return (EXIT_SUCCESS);
 }
 
-void	update_environment(t_ms *ms, char *new_pwd)
+static int	check_arg_errors(char *arg)
+{
+	if (file_check(arg, FILE_EXISTS) == FALSE)
+		return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
+	if (file_check(arg, IS_DIRECTORY) == FALSE)
+		return (ms_perror("cd", arg, NOT_DIR, NULL));
+	if (file_check(arg, X_OK) == FALSE)
+		return (ms_perror("cd", arg, PERM_DENIED, NULL));
+	return (SUCCESS);
+}
+
+static int	update_environment(t_ms *ms, char *new_pwd)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;
@@ -53,50 +61,20 @@ void	update_environment(t_ms *ms, char *new_pwd)
 	pwd = env_find("PWD", ms->env);
 	if (!pwd)
 	{
-		if (env_add("PWD", "", &ms->env))
-			ms_quit(MALLOC_ERR);
+		if (env_add("PWD", NULL, &ms->env))
+			return (FAILURE);
 		pwd = env_find("PWD", ms->env);
 	}
 	oldpwd = env_find("OLDPWD", ms->env);
 	if (!oldpwd)
 	{
-		if (env_add("OLDPWD", "", &ms->env))
-			ms_quit(MALLOC_ERR);
+		if (env_add("OLDPWD", NULL, &ms->env))
+			return (FAILURE);
 		oldpwd = env_find("OLDPWD", ms->env);
 	}
-	free(oldpwd->content);
+	if (oldpwd->content)
+		free(oldpwd->content);
 	oldpwd->content = pwd->content;
 	pwd->content = new_pwd;
-}
-
-static int	check_arg_errors(char *arg)
-{
-	struct stat	file;
-
-	if (access(arg, FILE_EXISTS) != SUCCESS)
-	{
-		cd_error(arg, NO_SUCH_FILE);
-		return (FAILURE);
-	}
-	lstat(arg, &file);
-	if (!S_ISDIR(file.st_mode))
-	{
-		cd_error(arg, NOT_DIR);
-		return (FAILURE);
-	}
-	if (access(arg, HAS_EXECUTE_PERMISSIONS) != SUCCESS)
-	{
-		cd_error(arg, PERM_DENIED);
-		return (FAILURE);
-	}
 	return (SUCCESS);
-}
-
-static void	cd_error(char *arg, char *error_str)
-{
-	write(2, "minishell: cd: ", 15);
-	write(2, arg, ft_strlen(arg));
-	write(2, ": ", 2);
-	write(2, error_str, ft_strlen(error_str));
-	write(2, "\n", 1);
 }

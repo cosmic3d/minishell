@@ -53,3 +53,9 @@ pela.
 	NOTA: Ocurre lo MISMO con el Builtin "pwd".
 
 - Cuando PWD no existe por que han borrado el directorio local:
+
+SOBRE ERRORES:
+
+Ahora mismo, he hecho que si cd encuentra un fatal error, devuelva -1.
+Así el executor puede distinguir un fatal error que requiera cerrar todos los
+fd, etc.
