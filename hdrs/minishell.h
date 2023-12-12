@@ -27,6 +27,7 @@
 # include <sys/stat.h>
 # include <curses.h>
 # include <dirent.h>
+# include <sys/wait.h>
 # include "../libs/libft/libft.h"
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
@@ -303,6 +304,7 @@ int				execute_cmds(t_ms *ms);
 int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
 int				ms_pipe(int fd[2], int *xs);
+int				ms_fork(int *forkret, int *xs);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
