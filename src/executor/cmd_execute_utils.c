@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/12 20:54:53 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:38:24 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ int	ms_pipe(int *fd, int *xs)
 	}
 	fd[STDIN] = pipefd[STDIN];
 	fd[STDOUT] = pipefd[STDOUT];
-	printf("Aqui dentro fd 0 es: %i\n", fd[0]);
-	printf("Aqui dentro fd 1 es: %i\n", fd[1]);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/12 02:49:14 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:52:37 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*command_to_file_path(char *cmd, int *exit_status, t_ms *ms)
 {
 	char	*file_path;
 
+	if (!cmd)
+		return (NULL);
 	if (!ft_strchr(cmd, '/'))
 	{
 		file_path = find_as_command(cmd, exit_status, ms);
