@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:13:35 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/07 11:27:42 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 13:20:06 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_isuint(char *str)
 		if (ft_isdigit(str[i]) == 0)
 			return (0);
 		if (UIMAX_10 < num || (num == UIMAX_10 && (str[i] - '0') > 5))
-		num = (num * 10) + str[i] - '0';
+			num = (num * 10) + str[i] - '0';
 		i++;
 	}
 	return (i > 0);

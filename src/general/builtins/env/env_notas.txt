@@ -1,0 +1,28 @@
+Notas sobre env:
+
+-Env tal y como nos lo piden es irreleante de argumentos.
+-Por ahora, env ignora los argumentos y actua de igual forma tanto si recibe argumentos como si no.
+
+-Nuestro env tiene que replicar el env de bash sin argumentos que hace lo siguiente:
+	-Imprime la lista de variables de entorno en un orden arbitrario que ni conozco ni creo que tenga que
+	replicar.
+	-Los imprime con el formato siguiente:
+		Nombre=Contenido\n
+	-Las variables de entorno que no tienen contenido no se deben imprimir.
+		-Una string vacía cuenta como contenido.
+-Env bajo estas condiciones siempre retorna 0
+	- Para hacer que env retorne otra cosa (que ni siquiera sé si es posible), parece que habría que
+	forzar la máquina muchísimo y ponerla en condiciones forzadas y extravagantes que ni siquiera creo
+	que puedan ser impuestas a minishell, solo a bash. Y ni siquiera así sé si podría retornar 0.
+
+-Una característica de env en bash es que al ejecutarlo, se setea el valor de _, por lo tanto, aunque
+hagas un unset de todas las variables que puedas, env siempre muestra _ como variable, de hecho siempre
+muestra este valor:
+	_=/usr/bin/env
+	Al menos en los mac de 42, por que esa es la ubicación de env.
+
+En nuestro caso, por ahora, lo que he hecho es que muestre la variable _ heredada por minishell.
+Si minishell no recibe la variable _ por que es lanzada con execve o lo que sea, entonces pasa.
+Y si haces unset de la variable, entonces no la muestra. Pero como _ es una variable interna de bash y
+no una variable de entorno, entonces minishell no necesita gestionarla. Así que env la muestra si la
+tiene y ya. Como _ sigue el syntax de una variable de entorno, minishell la tratará como tal y ya.

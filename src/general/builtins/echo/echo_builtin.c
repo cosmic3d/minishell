@@ -6,13 +6,13 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:39:20 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 18:15:33 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 12:27:37 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
-int	parse_flags(char **arg, int *index);
+static int	parse_flags(char **arg, int *index);
 
 int	ms_echo(char **argv)
 {
@@ -37,7 +37,7 @@ int	ms_echo(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-int	parse_flags(char **arg, int *index)
+static int	parse_flags(char **arg, int *index)
 {
 	int	flag;
 	int	i;

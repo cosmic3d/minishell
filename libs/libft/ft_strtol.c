@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 12:16:51 by apresas-          #+#    #+#             */
-/*   Updated: 2023/02/09 12:53:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 13:47:46 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,25 @@ long	ft_strtol(const char *str)
 		i++;
 	}
 	number *= sign;
+	return (number);
+}
+
+t_ulong	ft_strtoul(const char *str)
+{
+	t_ulong	number;
+	int		i;
+
+	number = 0;
+	i = 0;
+	while (ft_isspace(str[i]) == 1)
+		i++;
+	if (str[i] == '+')
+		i++;
+	while (ft_isdigit(str[i]) == 1)
+	{
+		number = number * 10;
+		number = number + str[i] - '0';
+		i++;
+	}
 	return (number);
 }

@@ -6,14 +6,15 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/12 14:01:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 12:28:05 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* TO-DO:
-
+	- Elegir mejores nombres para variables y funciones
+	- Revisar si hay que cambiar cosas
 */
 
 // static char	*find_as_path(char *cmd, int *exit_status);
