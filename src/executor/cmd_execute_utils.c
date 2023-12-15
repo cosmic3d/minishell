@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/13 18:38:24 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:28:19 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ms_open(t_redirection *rd, int *fd, int *xs)
 	return (SUCCESS);
 }
 
-int	ms_pipe(int *fd, int *xs)
+int	ms_pipe(int fd[2], int *xs)
 {
 	int	pipefd[2];
 

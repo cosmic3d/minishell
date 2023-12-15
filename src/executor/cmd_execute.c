@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/13 19:01:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/15 05:24:28 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,11 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 			return (FAILURE);
 		return (SUCCESS);
 	}
-	if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
+	if (tmp[STDOUT] == -1)
+		fd[STDOUT] = STDOUT;
+	else if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
 		return (FAILURE);
-	else if (cmd->rd_out && \
-	ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE)
+	else if (cmd->rd_out && ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
@@ -67,7 +68,6 @@ static int	manage_child(int forkret, t_cmdinfo *cmd, t_ms *ms)
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
-		free(cmd->cmd);
 		ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
 		ms_quit("Execve failed\n"); //ms quit no me gusta, hay que adaptarla a ms_perror
 		return (FAILURE);
@@ -168,21 +168,17 @@ static int	init_execution(t_ms *ms)
 	int	tmp[2];
 	int	fd[2];
 	//Duplicamos stdin y stdout para no perderlos
-	if (ms_dup(STDIN, -1, &tmp[STDIN], &ms->exit_status) == FAILURE) // ms->num_cmd != 1 egmsbms
+	tmp[STDIN] = -1;
+	tmp[STDOUT] = -1;
+	if ((ms->num_cmd > 1 || ms->cmd[0].rd_in) && ms_dup(STDIN, -1, \
+	&tmp[STDIN], &ms->exit_status) == FAILURE)
 		return (FAILURE);
-	if (ms_dup(STDOUT, -1, &tmp[STDOUT], &ms->exit_status) == FAILURE && \
-	close(tmp[STDIN]) <= 0)
+	if ((ms->num_cmd > 1 || ms->cmd[0].rd_out) && ms_dup(STDOUT, -1, \
+	&tmp[STDOUT], &ms->exit_status) == FAILURE && close(tmp[STDIN]) <= 0)
 		return (FAILURE);
 	//Duplicar el stdin en caso de que exista un archivo
 	if (!ms->cmd[0].rd_in)
-	{
-		//Si no existe una redirección de input para el primer comando,
-		//quiere decir que por defecto fd[STDIN] es STDIN
-		/* if (ms_dup(tmp[STDIN], -1, &fd[STDIN], &ms->exit_status) == FAILURE && \
-		close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
-			return (FAILURE); */
 		fd[STDIN] = STDIN;
-	}
 	//Si existe una redirección de input, abrimos ese archivo en fd[STDIN]
 	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) == FAILURE \
 	&& close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
@@ -190,11 +186,11 @@ static int	init_execution(t_ms *ms)
 	//Llamamos al bucle de ejecución de los comandos para que los ejecute todos
 	execution_loop(ms, fd, tmp);
 	//Restauramos stdin y stdout para que apunten de nuevo a la terminal
-	if (ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
-	close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+	if (tmp[STDIN] != -1 && ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) \
+	== FAILURE && close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
-	if (ms_dup(tmp[STDOUT], STDOUT, NULL, &ms->exit_status) == FAILURE && \
-	close(tmp[STDOUT]) <= 0)
+	if (tmp[STDOUT] != -1 && ms_dup(tmp[STDOUT], STDOUT, \
+	NULL, &ms->exit_status) == FAILURE && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
 	return (SUCCESS);
 }
