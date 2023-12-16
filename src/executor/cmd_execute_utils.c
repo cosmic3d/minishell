@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/14 20:28:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/16 04:09:31 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ int	ms_fork(int *forkret, int *xs)
 		return (FAILURE);
 	}
 	return (SUCCESS);
+}
+
+void	set_exit_status(int child_status, int *xs, char *cmdname)
+{
+	if (WIFEXITED(child_status)) //Terminó correctamente
+		*xs = WEXITSTATUS(child_status);
+	else if (WIFSIGNALED(child_status)) //Terminó por una señal
+		*xs = 128 + WTERMSIG(child_status);
+	else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
+		*xs = 128 + WSTOPSIG(child_status);
+	else // Es raro que entre aquí, pero puede pasar. Hay algún que otro caso en que se puede reanudar un hijo con SIGCONT y otras cosas raras.
+		ms_perror(cmdname, "Child process error", NULL, NULL);
+	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
+	pero la hay y en cualquiera de los casos guardamos el exit status*/
 }

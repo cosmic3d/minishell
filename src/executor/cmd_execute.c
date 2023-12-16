@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/15 05:24:28 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/16 04:55:04 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,15 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 el comando en cuestión y esperamos a que acabe con waitpid.
 Cuando el proceso haya terminado o sido detenido de cualquier forma
 guardamos su exit status / señal con el que terminó en nuestro exit status*/
-static int	manage_child(int forkret, t_cmdinfo *cmd, t_ms *ms)
+static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
 	int	child_status;
 
-	if (forkret == 0) //Es el proceso hijo
+	if (ms->forkret == 0) //Es el proceso hijo
 	{
+		close(tmp[STDIN]);
+		close(tmp[STDOUT]);
+		close(STDIN);
 		cmd->cmd = command_to_file_path(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(1);
@@ -70,20 +73,11 @@ static int	manage_child(int forkret, t_cmdinfo *cmd, t_ms *ms)
 		execve(cmd->cmd, cmd->args, ms->envp);
 		ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
 		ms_quit("Execve failed\n"); //ms quit no me gusta, hay que adaptarla a ms_perror
-		return (FAILURE);
 	}
-	if (waitpid(forkret, &child_status, 0) <= -1) // WAITPID DEVUELVE ERROR CUANDO SE INTERRUMPE POR UNA SEÑAL ARREGLAR XD
-		return (FAILURE);
-	else if (WIFEXITED(child_status)) //Terminó correctamente
-		ms->exit_status = WEXITSTATUS(child_status);
-	else if (WIFSIGNALED(child_status)) //Terminó por una señal
-		ms->exit_status = 128 + WTERMSIG(child_status);
-	else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
-		ms->exit_status = 128 + WSTOPSIG(child_status);
-	else // Es raro que entre aquí, pero puede pasar. Hay algún que otro caso en que se puede reanudar un hijo con SIGCONT y otras cosas raras.
-		ms_perror(cmd->cmd, "Child process error\n", NULL, NULL);
-	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
-	pero la hay y en cualquiera de los casos guardamos el exit status*/
+	if (isatty(STDOUT) == FALSE)
+		close(STDOUT);
+	waitpid(ms->forkret, &child_status, 0);
+	set_exit_status(child_status, &ms->exit_status, cmd->cmd);
 	return (SUCCESS);
 }
 
@@ -94,64 +88,24 @@ el mensaje de error de turno es impreso. */
 static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 {
 	int	i;
-	int	forkret;
 
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
-		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, NULL, &ms->exit_status) == FAILURE && \
-		close(fd[STDIN]) <= 0)
+		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \
+		NULL, &ms->exit_status) == FAILURE && close(fd[STDIN]) <= 0)
 			return (FAILURE);
 		if (get_cmd_inout(&ms->cmd[i], fd, tmp, &ms->exit_status) == FAILURE)
 			return (FAILURE);
-		if (fd[STDOUT] != STDOUT && ms_dup(fd[STDOUT], STDOUT, NULL, &ms->exit_status) == FAILURE && \
-		close(fd[STDOUT]) <= 0)
+		if (fd[STDOUT] != STDOUT && ms_dup(fd[STDOUT], STDOUT, \
+		NULL, &ms->exit_status) == FAILURE && close(fd[STDOUT]) <= 0)
 			return (FAILURE);
-		if (ms_fork(&forkret, &ms->exit_status) == FAILURE)
+		if (ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
 			return (FAILURE);
-		if (manage_child(forkret, &ms->cmd[i], ms) == FAILURE)
+		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);
- 	/* for(i=0;i<numsimplecommands; i++) {
- 	  //redirect input
-	  dup2(fdin, 0);
- 	  close(fdin);
- 	  //setup output
- 	  if (i == numsimplecommands){
- 		// Last simple command
- 		if(outfile){
- 		  fdout=open(outfile,giggity);
- 		}
- 		else {
- 		  // Use default output
- 		  fdout=dup(tmpout);
- 		}
- 	  }
-
- 	   else {
- 		  // Not last
- 		  //simple command
- 		  //create pipe
- 		  int fdpipe[2];
- 		  pipe(fdpipe);
- 		  fdout=fdpipe[1];
- 		  fdin=fdpipe[0]; //FUNDAMENTAL
- 	   }// if/else
-
- 	   // Redirect output
- 	   dup2(fdout,1);
- 	   close(fdout);
-
- 	   // Create child process
- 	   ret=fork();
- 	   if(ret==0) {
- 		 execvp(scmd[i].args[0], scmd[i].args);
- 		 perror("Execvp");
- 		 _exit(1);
-}
-	 } //  for
-	waitpid(ret, NULL); */
 }
 
 /* Función previa al bucle de ejecución de los comandos. Se encarga de guardar

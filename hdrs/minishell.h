@@ -169,6 +169,7 @@ typedef struct s_minishell
 	char		**envp;
 	char		*prev_wd; // Previous working directory
 	int			shlvl;
+	int			forkret; //Lo que devuelve fork (para el executor)
 	int			exit_status; // para $?
 }				t_ms;
 
@@ -270,6 +271,7 @@ int				ms_unset(t_ms *ms, char **argv);
 // utils.c
 int				ms_arraylen(char **array);
 void			check_fds(void);
+void			clearTerm(void);
 
 //cmd_parse.c
 int				tokenize(char *cmd_line, t_ms *ms);
@@ -317,6 +319,7 @@ int				get_num_arguments(t_token *token);
 int				get_num_redirections(t_token *token);
 int				get_num_cmds(t_token *token);
 void			get_rd_oflag(t_redirection *rd);
+void			set_exit_status(int child_status, int *xs, char *cmdname);
 
 //cmd_expansor.c
 int				expansor(t_ms *ms, t_token *token);
