@@ -39,6 +39,9 @@
 # define CTRL_C SIGINT
 # define CTRL_BACKSLASH SIGQUIT
 
+# define INTERACTIVE 0
+# define HEREDOC 1
+//other?
 # define CMDPROMPT "minishell 🐌🐚 "
 # define ENV 0
 # define EXPORT 1
@@ -261,7 +264,9 @@ int				readline_loop(t_ms *ms);
 char			*terminal_entry(void);
 
 // signal_handler.c
-int				signal_handler(void);
+int				signal_handler(int mode);
+
+//echo_chars.c
 void			disable_control_chars_echo(void);
 void			restore_terminal_settings(void);
 
@@ -307,6 +312,7 @@ int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
 int				ms_pipe(int fd[2], int *xs);
 int				ms_fork(int *forkret, int *xs);
+int				set_exit_status(int forkret, char *cmdname);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
@@ -319,7 +325,6 @@ int				get_num_arguments(t_token *token);
 int				get_num_redirections(t_token *token);
 int				get_num_cmds(t_token *token);
 void			get_rd_oflag(t_redirection *rd);
-void			set_exit_status(int child_status, int *xs, char *cmdname);
 
 //cmd_expansor.c
 int				expansor(t_ms *ms, t_token *token);

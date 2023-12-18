@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/16 04:55:04 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/18 03:42:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ Cuando el proceso haya terminado o sido detenido de cualquier forma
 guardamos su exit status / señal con el que terminó en nuestro exit status*/
 static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
-	int	child_status;
-
 	if (ms->forkret == 0) //Es el proceso hijo
 	{
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
-		close(STDIN);
+		if (isatty(STDIN) == FALSE)
+			close(STDIN);
+		//signal_handler(HEREDOC);
 		cmd->cmd = command_to_file_path(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(1);
@@ -76,8 +76,7 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 	}
 	if (isatty(STDOUT) == FALSE)
 		close(STDOUT);
-	waitpid(ms->forkret, &child_status, 0);
-	set_exit_status(child_status, &ms->exit_status, cmd->cmd);
+	ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
 	return (SUCCESS);
 }
 

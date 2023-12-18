@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/16 04:09:31 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/18 03:32:47 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,41 @@ int	ms_fork(int *forkret, int *xs)
 	return (SUCCESS);
 }
 
-void	set_exit_status(int child_status, int *xs, char *cmdname)
+int	set_exit_status(int forkret, char *cmdname)
 {
+	int	child_status;
+	int	xs;
+	int	tmp_debug;
+
+	xs = 1;
+	tmp_debug = 0;
+	while (waitpid(forkret, &child_status, 0) == -1)
+	{
+		/* ms_perror("waitpid", strerror(errno), NULL, NULL);
+		ms_quit("waitpid error"); */
+	}
 	if (WIFEXITED(child_status)) //Terminó correctamente
-		*xs = WEXITSTATUS(child_status);
+	{
+		xs = WEXITSTATUS(child_status);
+		printf("1: EXIT STATUS: %i\n", xs);
+	}
 	else if (WIFSIGNALED(child_status)) //Terminó por una señal
-		*xs = 128 + WTERMSIG(child_status);
+	{
+		xs = 128 + WTERMSIG(child_status);
+		tmp_debug = xs - 128;
+		printf("2: EXIT STATUS: 128 + %i\n", tmp_debug);
+		printf("2: EXIT STATUS: %i\n", xs);
+	}
 	else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
-		*xs = 128 + WSTOPSIG(child_status);
+	{
+		xs = 128 + WSTOPSIG(child_status);
+		tmp_debug = xs - 128;
+		printf("2: EXIT STATUS: 128 + %i\n", tmp_debug);
+		printf("3: EXIT STATUS: %i\n", xs);
+	}
 	else // Es raro que entre aquí, pero puede pasar. Hay algún que otro caso en que se puede reanudar un hijo con SIGCONT y otras cosas raras.
 		ms_perror(cmdname, "Child process error", NULL, NULL);
 	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
 	pero la hay y en cualquiera de los casos guardamos el exit status*/
+	return (xs);
 }

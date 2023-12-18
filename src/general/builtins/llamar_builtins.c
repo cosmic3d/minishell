@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   llamar_builtins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/29 12:04:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 02:43:06 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // provisional
-int	llamar_builtins(t_ms *ms)
+int	exec_builtin(t_ms *ms)
 {
 	if (!ft_strcmp(ms->token->content, "exit"))
 	{
@@ -43,5 +43,5 @@ int	llamar_builtins(t_ms *ms)
 	{
 		return (ms_unset(ms, ms->cmd->args));
 	}
-	return (-1); // debugging	
+	return (-1); // debugging
 }
