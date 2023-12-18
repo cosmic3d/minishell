@@ -1,17 +1,16 @@
 {
   "configurations": [
     {
-      "name": "C/C++: clang build and debug active file",
+      "name": "(lldb) Launch",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "program": "${cwd}/minishell",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${fileDirname}",
+      "cwd": "/System/Volumes/Data/sgoinfre/Perso/jenavarr/projects/private/minishell",
       "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb",
-      "preLaunchTask": "C/C++: clang build active file",
+      "externalConsole": true,
+      "MIMode": "lldb"
     }
   ],
   "version": "2.0.0"

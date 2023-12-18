@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 18:54:28 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:28:30 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,14 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
 	if (ms->forkret == 0) //Es el proceso hijo
 	{
-		//close(tmp[STDIN]);
-		//close(tmp[STDOUT]);
-		if (isatty(STDIN) == FALSE)
-			close(STDIN);
+		close(tmp[STDIN]);
+		close(tmp[STDOUT]);
+		// close(STDIN);
 		signal_handler(HEREDOC); //QUITAR
 		tmp[0] = exec_builtin(ms, cmd);
 		if (tmp[0] != -1)
 			exit(tmp[0]);
-		write(2, "No es builtin\n", 14);
+		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(1);
@@ -80,8 +79,8 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 	}
 	else if (ms->forkret == -2)
 		ms->exit_status = exec_builtin(ms, cmd);
-	if (isatty(STDOUT) == FALSE)
-		close(STDOUT);
+	/* if (isatty(STDOUT) == FALSE)
+		close(STDOUT); */
 	if (ms->forkret != -2)
 		ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
 	return (SUCCESS);
@@ -107,7 +106,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if (fd[STDOUT] != STDOUT && ms_dup(fd[STDOUT], STDOUT, \
 		NULL, &ms->exit_status) == FAILURE && close(fd[STDOUT]) <= 0)
 			return (FAILURE);
-		if ((ms->num_cmd > 1 || is_builtin(ms->cmd[i].cmd) == FALSE) &&\
+		if ((ms->num_cmd > 1 || is_builtin(ms->cmd[i].cmd) == FALSE) && \
 		ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
 			return (FAILURE);
 		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
