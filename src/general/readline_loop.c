@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 13:17:44 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:10:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	readline_loop(t_ms *ms)
 		//// debugging find path coso
 		if (ms->exit_status == -1)
 		{
-			char *path = command_to_file_path(ms->token->content, &ms->exit_status, ms);
+			ms->exit_status = 0;
+			char *path = get_pathname(ms->token->content, &ms->exit_status, ms);
 			printf("path: = %s\n", path);
 		}
 		////

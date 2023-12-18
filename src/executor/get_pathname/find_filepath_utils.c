@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/12 14:03:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:56:27 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,52 +40,23 @@ int	file_check(char *file_path, int check)
 {
 	struct stat	file;
 
-	if (check == IS_DIRECTORY)
+	if ((check == IS_FILE || check == IS_DIRECTORY || check == IS_LINK))
 	{
-		if (access(file_path, FILE_EXISTS) != SUCCESS)
+		if (access(file_path, FILE_EXISTS) == FAILURE)
 			return (FALSE);
 		lstat(file_path, &file);
-		if (S_ISDIR(file.st_mode))
+		if (check == IS_DIRECTORY && S_ISDIR(file.st_mode))
 			return (TRUE);
-	}
-	else if (check == IS_FILE)
-	{
-		if (access(file_path, FILE_EXISTS) != SUCCESS)
-			return (FALSE);
-		lstat(file_path, &file);
-		if (S_ISREG(file.st_mode))
+		else if (check == IS_FILE && S_ISREG(file.st_mode))
 			return (TRUE);
-	}
-	else
-	{
-		if (access(file_path, check) == SUCCESS)
+		else if (check == IS_LINK && S_ISLNK(file.st_mode))
 			return (TRUE);
+		return (FALSE);
 	}
+	else if (access(file_path, check) == SUCCESS)
+		return (TRUE);
 	return (FALSE);
-} // nueva version a continuacion
-
-// nueva version en pruebas:
-// int	file_check(char *file_path, int check)
-// {
-// 	struct stat	file;
-
-// 	if (check == IS_FILE || check == IS_DIRECTORY)
-// 	{
-// 		if (access(file_path, FILE_EXISTS) != SUCCESS)
-// 			return (FALSE);
-// 		lstat(file_path, &file);
-// 	}
-// 	if (check == IS_DIRECTORY)
-// 		return (S_ISDIR(file.st_mode));
-// 	else if (check == IS_FILE)
-// 		return (S_ISREG(file.st_mode));
-// 	else
-// 	{
-// 		if (access(file_path, check) == SUCCESS)
-// 			return (TRUE);
-// 	}
-// 	return (FALSE);
-// }
+}
 
 /* Libera un char **array */ // meter en libft?
 void	free_array(char **array)

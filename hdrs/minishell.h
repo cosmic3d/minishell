@@ -101,6 +101,7 @@ vwxyz0123456789_"
 # define FILE_EXISTS F_OK
 # define IS_FILE 1001
 # define IS_DIRECTORY 1002
+# define IS_LINK 1003
 
 // For open(), better readability of its macros
 # define D_PERMS 0644
@@ -337,10 +338,6 @@ char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
 //cmd_env_creation.c
 char			**env_list_to_envp(t_env *head);
 
-// find_filepath.c
-// char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
-char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
-
 // find_filepath_utils.c
 int				exec_error(char *cmd, char *error_str, int errnum);
 void			free_array(char **array);
@@ -350,7 +347,9 @@ char			*safe_getcwd(char *cmd, int *exit_status);
 
 // find_filepath.c
 // char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
-char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);
+// char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);// old
+char	*get_pathname(char *cmd, int *exit_status, t_ms *ms);
+
 
 // find_filepath_utils.c
 int				exec_error(char *cmd, char *error_str, int errnum);

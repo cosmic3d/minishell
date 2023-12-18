@@ -60,7 +60,8 @@ void	export_perror(char *argument)
 // Printea el error y usa exit(EXIT_FAILURE); // necesitará t_ms *ms?
 void	ms_quit(char *error_message)
 {
-	ms_error(error_message);
+	if (error_message)
+		ms_error(error_message);
 	restore_terminal_settings();
 	rl_clear_history(); // ?
 	exit(EXIT_FAILURE);

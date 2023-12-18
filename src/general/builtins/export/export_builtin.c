@@ -6,13 +6,13 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:08:42 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/12 13:03:17 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:30:32 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-static int	export_print(t_env *env, t_env *node, t_env *abc_min, char *prev);
+static int	export_print(t_env *env, t_env *abc_min, char *prev);
 static int	argument_syntax(char *arg);
 static void	print_error_export(char *arg);
 
@@ -24,7 +24,7 @@ int	ms_export(t_ms *ms, char **argv)
 	i = 1;
 	exit_status = SUCCESS;
 	if (!argv[1])
-		return (export_print(ms->env, ms->env, NULL, NULL));
+		return (export_print(ms->env, NULL, NULL));
 	while (argv[i])
 	{
 		if (argument_syntax(argv[i]) == FAILURE)
@@ -39,22 +39,25 @@ int	ms_export(t_ms *ms, char **argv)
 	return (exit_status);
 }
 
-static int	export_print(t_env *env, t_env *node, t_env *abc_min, char *prev)
+static int	export_print(t_env *env, t_env *abc_min, char *prev)
 {
+	t_env	*current;
+
 	if (!env)
 		return (SUCCESS);
-	while (node)
+	current = env;
+	while (current)
 	{
-		if (!prev || ft_strlcmp(node->name, prev) < 0)
+		if (!prev || ft_strlcmp(current->name, prev) < 0)
 		{
-			if (!abc_min || ft_strlcmp(node->name, abc_min->name) > 0)
-				abc_min = node;
+			if (!abc_min || ft_strlcmp(current->name, abc_min->name) > 0)
+				abc_min = current;
 		}
-		node = node->next;
+		current = current->next;
 	}
 	if (abc_min)
 	{
-		export_print(env, env, NULL, abc_min->name);
+		export_print(env, NULL, abc_min->name);
 		if (ft_strcmp(abc_min->name, "_") == 0)
 			return (SUCCESS);
 		printf("declare -x %s", abc_min->name);

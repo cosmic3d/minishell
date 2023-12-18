@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:57:02 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/04 16:20:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/13 15:40:26 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ms_unset(t_ms *ms, char **argv)
 			exit_status = unset_error(argv[i]);
 		i++;
 	}
-	if (exit_status == EXIT_SUCCESS)
+	if (exit_status == EXIT_SUCCESS && argv[1])
 		write(1, "\n", 1);
 	return (exit_status);
 }
@@ -60,8 +60,8 @@ static int	unset_verify_name(char *arg)
 formato apropiado. */
 static int	unset_error(char *argument)
 {
-	write(2, "minishell: unset: `", 19);
-	write(2, &argument, ft_strlen(argument));
-	write(2, "\': not a valid identifier\n", 26);
+	write(STDERR, "minishell: unset: `", 19);
+	write(STDERR, &argument, ft_strlen(argument));
+	write(STDERR, "\': not a valid identifier\n", 26);
 	return (EXIT_FAILURE);
 }
