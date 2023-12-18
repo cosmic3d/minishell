@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 17:19:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:35:11 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ms_dup(int fd, int fd2, int *newfd, int *xs)
 			*newfd = retfd;
 		return (SUCCESS);
 	}
-	ms_perror("dup error", strerror(errno), NULL, NULL);
+	ms_perror("dup", strerror(errno), NULL, NULL);
 	*xs = 1;
 	return (FAILURE);
 }
@@ -55,7 +55,7 @@ int	ms_pipe(int fd[2], int *xs)
 
 	if (pipe(pipefd) != SUCCESS)
 	{
-		ms_perror(strerror(errno), NULL, NULL, NULL);
+		ms_perror("pipe", strerror(errno), NULL, NULL);
 		*xs = 1;
 		return (FAILURE);
 	}
@@ -69,7 +69,7 @@ int	ms_fork(int *forkret, int *xs)
 	*forkret = fork();
 	if (*forkret == -1)
 	{
-		ms_perror(strerror(errno), NULL, NULL, NULL);
+		ms_perror("fork", strerror(errno), NULL, NULL);
 		*xs = 1;
 		return (FAILURE);
 	}
@@ -84,8 +84,10 @@ int	set_exit_status(int forkret, char *cmdname)
 
 	xs = 1;
 	tmp_debug = 0;
+	child_status = 0;
 	while (waitpid(forkret, &child_status, 0) == -1)
 	{
+		tmp_debug+=0;
 		/* ms_perror("waitpid", strerror(errno), NULL, NULL);
 		ms_quit("waitpid error"); */
 	}

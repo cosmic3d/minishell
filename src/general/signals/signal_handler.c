@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 03:03:55 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:03:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	signal_action_interactive(int signum)
 /* Función para las señales cuando estamos en modo heredoc */
 static void	signal_action_heredoc(int signum)
 {
-	printf("SALIENDO\n");
-	rl_replace_line("", 1);
+	printf("SALIENDO\n"); //ELIMINAR
+	/* rl_replace_line("", 1);
 	rl_on_new_line();
-	rl_redisplay();
+	rl_redisplay(); */
 	exit(signum);
 	return ;
 }
@@ -53,16 +53,11 @@ int	signal_handler(int mode)
 	sigemptyset(&sa_bs.sa_mask);
 	sa_c.sa_flags = 0;
 	sa_bs.sa_flags = 0;
-	if (mode == HEREDOC)
-	{
-		sa_c.sa_flags = SA_RESTART;
-		sa_bs.sa_flags = SA_RESTART;
-	}
 	if (sigaction(CTRL_C, &sa_c, NULL) == -1 || \
 	sigaction(CTRL_BACKSLASH, &sa_bs, NULL) == -1)
 	{
 		ms_perror("sigaction", strerror(errno), NULL, NULL);
-		ms_quit("Sigaction error");
+		ms_quit(NULL);
 	}
 	return (1);
 }

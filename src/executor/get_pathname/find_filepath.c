@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 17:20:18 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:30:42 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*get_pathname(char *cmd, int *exit_status, t_ms *ms)
 	pathname = find_as_pathname(cmd, exit_status);
 	if (pathname || *exit_status != 0)
 		return (pathname);
-	check();
 	pathname = find_locally(cmd, exit_status); // Puede que esto sea totalmente innecesario
 	if (pathname || *exit_status != 0)
 		return (pathname);

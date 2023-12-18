@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 17:19:57 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:54:28 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,16 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
 	if (ms->forkret == 0) //Es el proceso hijo
 	{
-		close(tmp[STDIN]);
-		close(tmp[STDOUT]);
+		//close(tmp[STDIN]);
+		//close(tmp[STDOUT]);
 		if (isatty(STDIN) == FALSE)
 			close(STDIN);
-		//signal_handler(HEREDOC);
-		cmd->cmd = command_to_file_path(cmd->cmd, &ms->exit_status, ms);
+		signal_handler(HEREDOC); //QUITAR
+		tmp[0] = exec_builtin(ms, cmd);
+		if (tmp[0] != -1)
+			exit(tmp[0]);
+		write(2, "No es builtin\n", 14);
+		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(1);
 		ms->envp = env_list_to_envp(ms->env);
@@ -72,11 +76,14 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
 		ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
-		ms_quit("Execve failed\n"); //ms quit no me gusta, hay que adaptarla a ms_perror
+		ms_quit(NULL);
 	}
+	else if (ms->forkret == -2)
+		ms->exit_status = exec_builtin(ms, cmd);
 	if (isatty(STDOUT) == FALSE)
 		close(STDOUT);
-	ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
+	if (ms->forkret != -2)
+		ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
 	return (SUCCESS);
 }
 
@@ -91,6 +98,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
+		ms->forkret = -2;
 		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \
 		NULL, &ms->exit_status) == FAILURE && close(fd[STDIN]) <= 0)
 			return (FAILURE);
@@ -99,7 +107,8 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if (fd[STDOUT] != STDOUT && ms_dup(fd[STDOUT], STDOUT, \
 		NULL, &ms->exit_status) == FAILURE && close(fd[STDOUT]) <= 0)
 			return (FAILURE);
-		if (ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
+		if ((ms->num_cmd > 1 || is_builtin(ms->cmd[i].cmd) == FALSE) &&\
+		ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
 			return (FAILURE);
 		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
 			return (FAILURE);

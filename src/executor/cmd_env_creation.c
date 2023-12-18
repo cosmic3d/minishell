@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:57:12 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 15:06:00 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:51:20 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ char	**env_list_to_envp(t_env *head)
 		aux = ft_strjoin(head->name, "=");
 		if (!aux)
 			ms_quit(MALLOC_ERR);
+		// printf("name = %s\ncontent = %s\n",head->name, head->content);
+		if (!head->content)
+		{
+			envp[i] = aux;
+			head = head->next;
+			i++;
+			continue;
+		}
 		envp[i] = ft_strjoin(aux, head->content);
 		if (!envp[i])
 			ms_quit(MALLOC_ERR); // mejorar?

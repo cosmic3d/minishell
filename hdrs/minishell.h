@@ -385,7 +385,8 @@ int				ms_exit(char **argv);
 int				ms_env(t_ms *ms);
 
 // llamar_builtins.c
-int				llamar_builtins(t_ms *ms);
+int				is_builtin(char *str);
+int				exec_builtin(t_ms *ms, t_cmdinfo *cmd);
 
 // testing new env init
 // int	env_list_init(t_ms *ms, char **envp);
