@@ -1,0 +1,9 @@
+{
+	"C_Cpp.errorSquiggles": "enabled",
+	"files.associations": {
+		"*.js": "javascriptreact",
+		"*.hbs": "handlebars",
+		"*.c": "c",
+		"minishell.h": "c"
+	}
+}

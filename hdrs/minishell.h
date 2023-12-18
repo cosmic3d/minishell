@@ -27,6 +27,7 @@
 # include <sys/stat.h>
 # include <curses.h>
 # include <dirent.h>
+# include <sys/wait.h>
 # include "../libs/libft/libft.h"
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
@@ -38,6 +39,9 @@
 # define CTRL_C SIGINT
 # define CTRL_BACKSLASH SIGQUIT
 
+# define INTERACTIVE 0
+# define HEREDOC 1
+//other?
 # define CMDPROMPT "minishell 🐌🐚 "
 # define ENV 0
 # define EXPORT 1
@@ -170,7 +174,8 @@ typedef struct s_minishell
 	int			num_cmd;
 	char		**envp;
 	int			shlvl;
-	int			exit_status;
+	int			forkret; //Lo que devuelve fork (para el executor)
+	int			exit_status; // para $?
 }				t_ms;
 
 typedef struct s_export
@@ -261,7 +266,9 @@ int				readline_loop(t_ms *ms);
 char			*terminal_entry(void);
 
 // signal_handler.c
-int				signal_handler(void);
+int				signal_handler(int mode);
+
+//echo_chars.c
 void			disable_control_chars_echo(void);
 void			restore_terminal_settings(void);
 
@@ -271,6 +278,7 @@ int				ms_unset(t_ms *ms, char **argv);
 // utils.c
 int				ms_arraylen(char **array);
 void			check_fds(void);
+void			clearTerm(void);
 
 //cmd_parse.c
 int				tokenize(char *cmd_line, t_ms *ms);
@@ -304,6 +312,9 @@ int				execute_cmds(t_ms *ms);
 //cmd_execute_utils.c
 int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
+int				ms_pipe(int fd[2], int *xs);
+int				ms_fork(int *forkret, int *xs);
+int				set_exit_status(int forkret, char *cmdname);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);

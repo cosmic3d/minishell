@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/07 17:59:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:21:20 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	main(int argc, char **argv, char **envp)
 
 	argv[0] = NULL;
 	argv = NULL;
-	if (argc != 1)
+	clearTerm();
+	if (argc != 1 || argv)
 		return (ms_error(ARGC_ERR));
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
@@ -30,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
 	// free(ms.pwd);
 	// return (0);//
 	disable_control_chars_echo();
-	signal_handler();
+	signal_handler(INTERACTIVE);
 	if (readline_loop(&ms))
 		return (FAILURE);
 	restore_terminal_settings();

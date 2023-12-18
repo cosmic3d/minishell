@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 14:10:48 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:22:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,19 @@ int	readline_loop(t_ms *ms)
 		if (iterate_cmds(ms) == FAILURE)
 			continue ;
 		// execute_cmds(ms);
-		// print_cmd_structs(ms->cmd, ms->num_cmd);
 		// exit(ms->exit_status);
 		// debug, para llamar builtins
-		ms->exit_status = llamar_builtins(ms);
+		//ms->exit_status = llamar_builtins(ms);
 		//// debugging find path coso
-		if (ms->exit_status == -1)
+		/* if (ms->exit_status == -1)
 		{
 			ms->exit_status = 0;
 			char *path = get_pathname(ms->token->content, &ms->exit_status, ms);
 			printf("path: = %s\n", path);
-		}
+		} */
+		execute_cmds(ms);
 		////
+		free(buffer);
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO
 	}
@@ -63,11 +64,11 @@ char	*terminal_entry(void)
 		// Una de dos:
 		// Error de readline
 		// NULL enviado a readline
-
 		//Al recibir Ctrl+D (eof), volvemos a la línea anterior y la eliminamos para luego imprimir exit
 		if (rl_eof_found)
 		{
-			printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
+			if (isatty(STDIN))
+				printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
 			restore_terminal_settings();
 			exit(SUCCESS);
 		}
