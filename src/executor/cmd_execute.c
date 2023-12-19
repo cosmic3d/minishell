@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 21:28:30 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:42:20 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
+		if (!ms->cmd[i].cmd)
+			continue ;
 		ms->forkret = -2;
 		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \
 		NULL, &ms->exit_status) == FAILURE && close(fd[STDIN]) <= 0)
