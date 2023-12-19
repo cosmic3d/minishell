@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/13 14:21:12 by apresas-         ###   ########.fr       */
+/*   Updated: 2023/12/19 18:24:35 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ms_exit(char **argv)
 	long		arg_long;
 	int			exit_status;
 
-	write(STDOUT, "exit\n", 5);
+	// write(STDERR, "exit\n", 5);
 	if (!argv[1])
 		exit_quit(EXIT_SUCCESS);
 	if (ft_islong(argv[1]) == FALSE)

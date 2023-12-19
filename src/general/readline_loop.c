@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 20:49:14 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:29:01 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*terminal_entry(void)
 {
 	char	*buffer;
 
+	signal_handler(INTERACTIVE);
 	buffer = readline(CMDPROMPT);
 	if (!buffer)
 	{
@@ -74,6 +75,9 @@ char	*terminal_entry(void)
 		}
 		ms_quit(MALLOC_ERR);
 	}
+	signal(SIGINT, SIG_IGN);
+	//signal(SIGQUIT, SIG_IGN);
+	restore_terminal_settings();
 	if (buffer[0] != '\0')
 		add_history(buffer);
 	return (buffer);

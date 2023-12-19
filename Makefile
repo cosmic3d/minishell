@@ -52,12 +52,24 @@ LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		+= $(INC_DIR)*.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= $(shell find src -name "*.c")
+SRCS		:= token_expansor  cmd_expansor_utils  token_expansor_utils  cmd_expansor  signal_handler  echo_chars\
+unset_builtin cd_builtin  env_builtin export_utils  \
+export_process_arg  export_builtin  echo_builtin  pwd_builtin  llamar_builtins\
+exit_builtin  error  utils  minishell  debug  readline_loop  \
+token_list_utils  env_list_utils_2  env_list_utils   env_list_init  generic_list_utils  cmd_parse_checker  \
+cmd_parse  cmd_parse_brackets  cmd_env_creation  cmd_execute  cmd_struct  cmd_execute_utils  \
+cmd_struct_utils  cmd_execute_redirections  find_filepath find_filepath_utils
+
+SRCS		:=	$(addsuffix .c,$(SRCS))
+
+vpath %.c src src/expansor src/general src/general/signals src/general/builtins src/general/builtins/unset src/general/builtins/cd \
+src/general/builtins/env src/general/builtins/export src/general/builtins/echo src/general/builtins/pwd src/general/builtins/exit src/general/utils \
+src/general/debug src/general/lists src/general/lists/env_list src/parser src/executor src/executor/get_pathname
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-#OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
-OBJS		:= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+
+OBJS		:= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
@@ -78,7 +90,7 @@ $(LIBS):
 	@make -sC $(RDL_DIR) $(MUTE)
 	@make -sC $(LFT_DIR) $(MUTE)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
+$(OBJ_DIR)%.o: %.c $(MK) $(HDRS)
 	@$(hide_cursor)
 	@$(MKDIR) $(dir $@)
 	@printf "$(MAGENTA)Compiling: $(notdir $<)$(RESET)$(CR)"

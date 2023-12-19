@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 20:41:03 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:21:55 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,32 @@ int	ms_fork(int *forkret, int *xs)
 	return (SUCCESS);
 }
 
-int	set_exit_status(int forkret, char *cmdname)
+int	set_exit_status(int forkret, int num_cmd)
 {
 	int	child_status;
 	int	xs;
-	int	tmp_debug;
+	int	i;
 
 	xs = 1;
-	tmp_debug = 0;
 	child_status = 0;
-	while (waitpid(forkret, &child_status, 0) == -1)
-		xs += 0;
-	if (WIFEXITED(child_status)) //Terminó correctamente
-		xs = WEXITSTATUS(child_status);
-	else if (WIFSIGNALED(child_status)) //Terminó por una señal
-		xs = 128 + WTERMSIG(child_status);
-	else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
-		xs = 128 + WSTOPSIG(child_status);
-	else // Es raro que entre aquí, pero puede pasar. Hay algún que otro caso en que se puede reanudar un hijo con SIGCONT y otras cosas raras.
-		ms_perror(cmdname, "Child process error", NULL, NULL);
+	i = -1;
+	while (++i < num_cmd)
+	{
+		if (waitpid(-1, &child_status, 0) == forkret)
+		{
+			if (WIFEXITED(child_status)) //Terminó correctamente
+				xs = WEXITSTATUS(child_status);
+			else if (WIFSIGNALED(child_status)) //Terminó por una señal
+				xs = 128 + WTERMSIG(child_status);
+			else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
+				xs = 128 + WSTOPSIG(child_status);
+			if (xs - SIGQUIT == 128)
+				write(1, "Quit: 3\n", 7);
+		}
+		if (WIFSIGNALED(child_status) && WTERMSIG(child_status) == SIGINT)
+			write(1, "\n", 1);
+	}
+
 	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
 	pero la hay y en cualquiera de los casos guardamos el exit status*/
 	return (xs);

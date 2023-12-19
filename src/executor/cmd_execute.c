@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/19 14:42:20 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:00:32 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
-			exit(1);
+			exit(127);
 		ms->envp = env_list_to_envp(ms->env);
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
@@ -81,8 +81,8 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		ms->exit_status = exec_builtin(ms, cmd);
 	/* if (isatty(STDOUT) == FALSE)
 		close(STDOUT); */
-	if (ms->forkret != -2)
-		ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
+	// if (ms->forkret != -2)
+	// 	ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
 	return (SUCCESS);
 }
 
@@ -114,6 +114,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
 			return (FAILURE);
 	}
+	ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
 	return (SUCCESS);
 }
 
