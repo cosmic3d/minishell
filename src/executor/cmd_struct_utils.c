@@ -63,8 +63,10 @@ int	get_num_cmds(t_token *token)
 útil para más tarde al hacer open */
 void	get_rd_oflag(t_redirection *rd)
 {
-	if (rd->type == REDIRECT_IN || rd->type == REDIRECT_HEARDOC)
+	if (rd->type == REDIRECT_IN)
 		rd->oflag = O_RDONLY;
+	else if (rd->type == REDIRECT_HEREDOC)
+		rd->oflag = O_CREAT | O_RDONLY;
 	else if (rd->type == REDIRECT_OUT)
 		rd->oflag = O_CREAT | O_WRONLY | O_TRUNC;
 	else if (rd->type == REDIRECT_APPEND)

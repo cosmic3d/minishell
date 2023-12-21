@@ -64,7 +64,7 @@ looking for matching `%c\'\n"
 # define REDIRECT_OUT 2
 # define REDIRECT_APPEND 3
 # define REDIRECT_IN 4
-# define REDIRECT_HEARDOC 5
+# define REDIRECT_HEREDOC 5
 
 // Return status
 # define SUCCESS 0
@@ -305,6 +305,9 @@ int				in_x(char *str, char c);
 
 //cmd_execute_redirections.c
 void			iterate_rds(t_cmdinfo	*cmd, int num_cmds, int *exit_status);
+
+//cmd_execute_redirections_utils.c
+int				get_mshtmp_str(char **result, int i);
 
 //cmd_execute.c
 int				execute_cmds(t_ms *ms);

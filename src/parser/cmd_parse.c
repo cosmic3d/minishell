@@ -83,7 +83,7 @@ int	get_token_type(char *str)
 	else if (!ft_strncmp(str, "<", 2))
 		return (REDIRECT_IN);
 	else if (!ft_strncmp(str, "<<", 3))
-		return (REDIRECT_HEARDOC);
+		return (REDIRECT_HEREDOC);
 	return (TEXT);
 }
 

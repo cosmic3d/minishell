@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/19 19:00:32 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:26:26 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 			comando reciba un EOF y no lea nada de la pipe de lectura */
 			return (FAILURE);
 		if (cmd->next_cmd->rd_in && close(fd[STDIN]) <= 0 && \
-		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) == FAILURE && \
-		close(fd[STDOUT]) <= 0)
+		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) \
+		== FAILURE && close(fd[STDOUT]) <= 0)
 			return (FAILURE);
 		return (SUCCESS);
 	}
@@ -144,8 +144,8 @@ static int	init_execution(t_ms *ms)
 	if (!ms->cmd[0].rd_in)
 		fd[STDIN] = STDIN;
 	//Si existe una redirección de input, abrimos ese archivo en fd[STDIN]
-	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) == FAILURE \
-	&& close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
+	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) \
+	== FAILURE && close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
 	//Llamamos al bucle de ejecución de los comandos para que los ejecute todos
 	execution_loop(ms, fd, tmp);

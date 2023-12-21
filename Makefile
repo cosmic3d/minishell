@@ -58,7 +58,7 @@ export_process_arg  export_builtin  echo_builtin  pwd_builtin  llamar_builtins\
 exit_builtin  error  utils  minishell  debug  readline_loop  \
 token_list_utils  env_list_utils_2  env_list_utils   env_list_init  generic_list_utils  cmd_parse_checker  \
 cmd_parse  cmd_parse_brackets  cmd_env_creation  cmd_execute  cmd_struct  cmd_execute_utils  \
-cmd_struct_utils  cmd_execute_redirections  find_filepath find_filepath_utils
+cmd_struct_utils  cmd_execute_redirections  find_filepath find_filepath_utils  cmd_execute_redirections_utils
 
 SRCS		:=	$(addsuffix .c,$(SRCS))
 
