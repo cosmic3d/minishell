@@ -6,11 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/19 15:39:41 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/22 20:42:41 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_received_signal = 0; //Se puede inicializar una global con un valor o norminette se queja?
 
 /* Función para las señales cuando estamos en modo interactivo */
 static void	signal_action_interactive(int signum)
@@ -28,11 +30,17 @@ static void	signal_action_interactive(int signum)
 /* Función para las señales cuando estamos en modo heredoc */
 static void	signal_action_heredoc(int signum)
 {
-	printf("SALIENDO\n"); //ELIMINAR
-	/* rl_replace_line("", 1);
-	rl_on_new_line();
-	rl_redisplay(); */
-	exit(signum);
+	g_received_signal = signum;
+	close(STDIN); //HAY FE
+	/* int	tmp;
+
+	tmp = dup(STDIN);
+	if (tmp < 0)
+		ms_quit("Dup error");
+	write(STDIN, "\n", 1); */
+	/* if (dup2(tmp, STDIN) == -1)
+		ms_quit("Dup error");
+	close(tmp); */
 	return ;
 }
 

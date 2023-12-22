@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/21 21:34:28 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/22 20:43:46 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 		}
 		if (file_check(rd_i->str, HAS_READ_PERMISSIONS) == TRUE)
 		{
+			if (rd_i->type == REDIRECT_HEREDOC)
+				rd_i->oflag = O_RDONLY;
 			*rd_in = rd_i;
 			return ;
 		}
@@ -64,9 +66,10 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 	return ;
 }
 
-static void	do_hrdc(t_redirection *rd_i, int *xs, int i)
+static int	do_hrdc(t_redirection *rd_i, int *xs, int i) //SNJKDFNBJKDFNBJKDFNBHJ
 {
 	int		tmp_fd;
+	int		tmp_stdin;
 	char	*tmp_eof;
 	char	*tmp_str;
 
@@ -74,26 +77,25 @@ static void	do_hrdc(t_redirection *rd_i, int *xs, int i)
 	if (!tmp_eof || get_mshtmp_str(&rd_i->str, i) == FAILURE)
 		ms_quit(MALLOC_ERR);
 	if (ms_open(rd_i, &tmp_fd, xs) == FAILURE)
-		return ;
-	tmp_str = readline("> ");
-	while (tmp_str && ft_strncmp(tmp_str, tmp_eof, ft_strlen(tmp_str)))
 	{
-		if (write(tmp_fd, tmp_str, ft_strlen(tmp_str)) < 0 && close(tmp_fd) < 1)
-		{
-			ms_perror(strerror(errno), NULL, NULL, NULL);
-			*xs = 1;
-			free(tmp_str);
-			free(tmp_eof);
-			return ;
-		}
-		free(tmp_str);
-		tmp_str = readline("> ");
+		free(tmp_eof);
+		return (FAILURE);
 	}
-	free(tmp_eof);
-	close(tmp_fd);
+	tmp_stdin = dup(STDIN);
+	if (tmp_stdin < 0 && close(tmp_fd) <= 0)
+		ms_quit("Dup error");
+	signal_handler(HEREDOC);
+	tmp_str = readline("> ");
+	tmp_fd = do_hrdc_loop(tmp_fd, tmp_str, tmp_eof, xs);
+	//printf("tmp_fd es: %i\n", tmp_fd);
+	if (dup2(tmp_stdin, STDIN) < 0 && close(tmp_stdin) <= 0)
+		ms_quit("Dup error");
+	close(tmp_stdin);
+	signal(SIGINT, SIG_IGN);
+	return (tmp_fd);
 }
 
-static void	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
+static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;
 	int	j;
@@ -106,24 +108,27 @@ static void	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
-				do_hrdc(&cmd[i].rd[j], exit_status, i);
+				if (do_hrdc(&cmd[i].rd[j], exit_status, i) == FAILURE)
+					return (FAILURE);
 			if (*exit_status)
 				break ;
 		}
 	}
+	return (SUCCESS);
 }
 
 /* Iteramos a través de todas las redirecciones de todos los comandos
 y las evaluamos de izquierda a derecha. Si en alguna de ellas sucede
 algún error, la función setea exit status a 1 y continua con el
 siguiente comando en cuestión. */
-void	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
+int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	iterate_hrdcs(cmd, num_cmds, exit_status);
+	if (iterate_hrdcs(cmd, num_cmds, exit_status) == FAILURE)
+		return (FAILURE);
 	while (++i < num_cmds)
 	{
 		j = -1;
@@ -138,5 +143,5 @@ void	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 				break ;
 		}
 	}
-	return ;
+	return (SUCCESS);
 }

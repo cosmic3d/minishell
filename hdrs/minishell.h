@@ -32,7 +32,8 @@
 # include "../libs/readline/readline.h"
 # include "../libs/readline/history.h"
 # include <errno.h>
-
+/* -------------------------------- GLOBAL -------------------------------- */
+extern int	g_received_signal;
 /* --------------------------------- MACROS --------------------------------- */
 
 // signals
@@ -279,6 +280,7 @@ int				ms_unset(t_ms *ms, char **argv);
 int				ms_arraylen(char **array);
 void			check_fds(void);
 void			clearTerm(void);
+int				reset_received_signal(void);
 
 //cmd_parse.c
 int				tokenize(char *cmd_line, t_ms *ms);
@@ -304,10 +306,11 @@ int				token_append(t_token **token);
 int				in_x(char *str, char c);
 
 //cmd_execute_redirections.c
-void			iterate_rds(t_cmdinfo	*cmd, int num_cmds, int *exit_status);
+int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
 
 //cmd_execute_redirections_utils.c
 int				get_mshtmp_str(char **result, int i);
+int				do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs);
 
 //cmd_execute.c
 int				execute_cmds(t_ms *ms);

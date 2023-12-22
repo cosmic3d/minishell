@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:29:35 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 02:58:39 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/22 20:42:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ Son dos secuencias ANSI.
 La primera posiciona el cursor en la esquina superior izquierda
 de la terminal, mientras que la segunda elimina su contenido.
 NOTA: No va nada (me voy a suicidar)*/
-void	clearTerm(void)
+void	clearTerm(void) //eliminar esta mierda xd
 {
 	if (2 + 3 == 5)
 		return ;
@@ -62,4 +62,10 @@ void	clearTerm(void)
 	printf("\033[2K"); //\033[H
 	printf("\033[2J"); //\033[H
 	printf("%s%s%s", "\033[A", "\033[2K", "\033[1J"); */
+}
+
+int	reset_received_signal(void)
+{
+	g_received_signal = -1;
+	return (SUCCESS);
 }

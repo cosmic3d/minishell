@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/21 21:26:26 by jenavarr         ###   ########.fr       */
+/*   Updated: 2023/12/22 20:39:44 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
 		// close(STDIN);
-		signal_handler(HEREDOC); //QUITAR
+		signal_handler(HEREDOC);
 		tmp[0] = exec_builtin(ms, cmd);
 		if (tmp[0] != -1)
 			exit(tmp[0]);
 		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
-			exit(127);
+			exit(_CMD_NOT_FOUND);
 		ms->envp = env_list_to_envp(ms->env);
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
@@ -165,7 +165,8 @@ comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
 EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
-	iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status); //DEBERÍA DE PARAR LA EJECUCIÓN DE LOS COMANDOS SI ALGO DE AQUÍ FALLA? COMPRUEBALO EN LOS MACS DEL CAMPUS
+	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
+		return (FAILURE);
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
