@@ -58,6 +58,7 @@ extern int	g_received_signal;
 # define BRACKS_ERROR "minishell: unexpected EOF while \
 looking for matching `%c\'\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
+# define DEVICE_ERROR "Cannot handle character device input"
 
 //Token types
 # define TEXT 0
@@ -246,6 +247,7 @@ int				ms_perror(char *s1, char *s2, char *s3, char *s4);
 int				ms_error(char *error_message);
 void			export_perror(char *argument);
 void			ms_quit(char *error_message);
+void			is_stdin_char_device(void);
 
 // export_init.c
 void			export_init(t_export *data, char *arg);

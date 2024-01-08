@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/08 12:28:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:23:02 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,19 @@ int	main(int argc, char **argv, char **envp)
 	argv[0] = NULL;
 	argv = NULL;
 	clearTerm();
-	if (argc > 1 || !isatty(STDIN))
+	if (argc > 1)
 		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
+/* 	int urandom_fd = open("/dev/urandom", O_RDONLY);
+if (urandom_fd == -1) {
+    perror("open");
+    exit(EXIT_FAILURE);
+}
+if (dup2(urandom_fd, STDIN_FILENO) == -1) {
+    perror("dup2");
+    close(urandom_fd);
+    exit(EXIT_FAILURE);
+} */
+	is_stdin_char_device();
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)

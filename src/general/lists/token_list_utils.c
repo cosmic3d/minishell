@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/11/21 21:13:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:13:06 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ int	token_append(t_token **token)
 	}
 	new->prev = NULL;
 	new->next = NULL;
+	new->quotes = NULL;
+	new->content = NULL;
+	new->type = TEXT;
 	if (*token == NULL)
 		*token = new;
 	else
