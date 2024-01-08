@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expansor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/22 20:25:51 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:02:31 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	expansor(t_ms *ms, t_token *token)
 /* Inicializa la struct para la gestión de las comillas. */
 static void	init_quote_struct(t_token *token)
 {
+	token->quotes = NULL;
 	token->quotes = malloc(sizeof(t_quotes));
 	if (!token->quotes)
 		ms_quit(MALLOC_ERR);
