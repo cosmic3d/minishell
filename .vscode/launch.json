@@ -7,7 +7,7 @@
       "program": "${cwd}/minishell",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "/System/Volumes/Data/sgoinfre/Perso/jenavarr/projects/private/minishell",
+      "cwd": "/Users/jenavarr/Documents/minishell",
       "environment": [],
       "externalConsole": true,
       "MIMode": "lldb"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/18 17:21:20 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:28:36 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(int argc, char **argv, char **envp)
 	argv[0] = NULL;
 	argv = NULL;
 	clearTerm();
-	if (argc != 1 || argv)
-		return (ms_error(ARGC_ERR));
+	if (argc > 1 || !isatty(STDIN))
+		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)
