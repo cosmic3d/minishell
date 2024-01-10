@@ -6,12 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/08 17:07:39 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:47:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Libera todas las estructuras de los comandos. */
 void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 {
 	int	i;
@@ -21,8 +22,6 @@ void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 	while (++i < cmd_num)
 	{
 		j = -1;
-		/* if (cmdinfo[i].cmd)
-			free(cmdinfo[i].cmd); */
 		while (cmdinfo[i].args && cmdinfo[i].args[++j])
 		{
 			free(cmdinfo[i].args[j]);
@@ -153,6 +152,5 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	// print_cmd_structs(ms->cmd, ms->num_cmd); // debugging
 	return (SUCCESS);
 }
