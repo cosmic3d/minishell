@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/22 20:43:46 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:12:49 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 	return ;
 }
 
+/* Preparamos el terreno para poder realizar el heredoc.
+Entre otras cosas abrimos el archivo para poder escribir en él y el
+manejador de señales pasa a ser el de heredoc */
 static int	do_hrdc(t_redirection *rd_i, int *xs, int i) //SNJKDFNBJKDFNBJKDFNBHJ
 {
 	int		tmp_fd;
@@ -95,6 +98,9 @@ static int	do_hrdc(t_redirection *rd_i, int *xs, int i) //SNJKDFNBJKDFNBJKDFNBHJ
 	return (tmp_fd);
 }
 
+/* Iteramos a través de todos los heredocs de todos los comandos,
+ya que aunque solo queremos el último de cada comando, todos los demás
+se deben de realizar igualmente */
 static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;

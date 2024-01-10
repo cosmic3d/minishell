@@ -58,7 +58,6 @@ extern int	g_received_signal;
 # define BRACKS_ERROR "minishell: unexpected EOF while \
 looking for matching `%c\'\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
-# define DEVICE_ERROR "Cannot handle character device input"
 
 //Token types
 # define TEXT 0
