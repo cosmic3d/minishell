@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/08 16:46:18 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:37:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	readline_loop(t_ms *ms)
 		} */
 		execute_cmds(ms);
 		////
+		erase_hrdc_files(ms->cmd, ms->num_cmd);
 		free(buffer);
 		free_tokens(&ms->token);
 		free_cmd_structs(ms->cmd, ms->num_cmd); //EN EL FUTURO CERCANO

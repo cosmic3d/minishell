@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/08 17:23:02 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:16:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ if (dup2(urandom_fd, STDIN_FILENO) == -1) {
     close(urandom_fd);
     exit(EXIT_FAILURE);
 } */
-	is_stdin_char_device();
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:44:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/22 20:43:06 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:58:57 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,30 @@ int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs) //PONER A IN
 	close(tmp_fd);
 	if (g_received_signal == SIGINT && reset_received_signal() == SUCCESS)
 		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	erase_hrdc_files(t_cmdinfo *cmd, int num_cmd)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < num_cmd)
+	{
+		j = -1;
+		while (++j < cmd[i].num_rd)
+		{
+			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
+			{
+				if (unlink(cmd[i].rd[j].str) < 0)
+				{
+					ms_perror(strerror(errno), NULL, NULL, NULL);
+					return (FAILURE);
+				}
+				break ;
+			}
+		}
+	}
 	return (SUCCESS);
 }

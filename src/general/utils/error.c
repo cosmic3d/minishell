@@ -67,16 +67,6 @@ void	ms_quit(char *error_message)
 	exit(EXIT_FAILURE);
 }
 
-void	is_stdin_char_device(void)
-{
-	/* if (!isatty(STDIN_FILENO) && 2 + 2 == 5) //El mpanic no va a funcionar pero me la peta
-	{
-		ms_perror(DEVICE_ERROR, NULL, NULL, NULL);
-		exit(EXIT_FAILURE);
-	} */
-	return ;
-}
-
 // void	ms_perror(t_ms *ms, char *program, char *error)
 // {
 // 	write(STDERR, "minishell: ", 12);
