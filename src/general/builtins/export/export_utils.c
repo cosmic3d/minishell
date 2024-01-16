@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 16:51:27 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/13 12:25:33 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:45:30 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*get_content(char *arg)
 	if (!content)
 	{
 		ms_perror("malloc", strerror(errno), NULL, NULL);
+		ms_quit(NULL); // fixed???
 		return (NULL);
 	}
 	return (content);

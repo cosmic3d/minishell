@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/21 20:56:09 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:19:08 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	set_exit_status(int forkret, int num_cmd)
 	int	i;
 
 	xs = 1;
-	child_status = 0;
+	child_status = -1; //Cambio provisional Albert, antes esto era = 0, ahora = -1
 	i = -1;
 	while (++i < num_cmd)
 	{
@@ -101,7 +101,8 @@ int	set_exit_status(int forkret, int num_cmd)
 		if (WIFSIGNALED(child_status) && WTERMSIG(child_status) == SIGINT)
 			write(1, "\n", 1);
 	}
-
+	if (child_status == -1) // Cambio provisional Albert, esto no estaba
+		return (-1);
 	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
 	pero la hay y en cualquiera de los casos guardamos el exit status*/
 	return (xs);

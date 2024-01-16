@@ -4,6 +4,7 @@
 		"*.js": "javascriptreact",
 		"*.hbs": "handlebars",
 		"*.c": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"builtins.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2023/11/15 15:16:15 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:11:06 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,16 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	char	*aux_str;
 	char	*new_str;
 
-	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?')
+	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?' \
+	&& str[*i + 1] != '\'' && str[*i + 1] != '"')
 		return (str);
+	// añadir ~ si queremos más adelante
+	// Si hay comillas al inicio del nombre: al menos en mi casa:
+	// - Ignorar ESAS comillas en particular y retornar:
+	// $"VAR" ==> VAR
+	// $'VAR' ==> VAR
+	// $'V"AR' ==> V"AR
+	// MENUDO COÑAZO
 	variable = get_variable_data(ms, str, *i);
 	aux_str = ft_strljoin(str, *i, variable->content, -1);
 	if (!aux_str)
@@ -85,14 +93,14 @@ static void	update_quote_positions(t_quotes *quote, t_var *var)
 	while (quote->d[i] != -1)
 	{
 		if (quote->d[i] > var->index)
-			quote->d[i] += ft_abs(var->c_len - var->n_len) - 1;
+			quote->d[i] += var->c_len - var->n_len - 1;
 		i++;
 	}
 	i = 0;
 	while (quote->s[i] != -1)
 	{
 		if (quote->s[i] > var->index)
-			quote->s[i] += ft_abs(var->c_len - var->n_len) - 1;
+			quote->s[i] += var->c_len - var->n_len - 1;
 		i++;
 	}
 	return ;

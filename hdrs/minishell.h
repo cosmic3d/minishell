@@ -264,7 +264,8 @@ int				list_len(void *head);
 
 // readline_loop.c
 int				readline_loop(t_ms *ms);
-char			*terminal_entry(void);
+char			*terminal_entry(int exit_status); // new, testing
+// char			*terminal_entry(void); // original
 
 // signal_handler.c
 int				signal_handler(int mode);
@@ -385,7 +386,8 @@ int				ms_pwd(t_ms *ms);
 int				ms_echo(char **argv);
 
 // exit_builtin.c
-int				ms_exit(char **argv);
+// int				ms_exit(char **argv);
+int				ms_exit(char **argv, int exit_status); // version 2
 
 // env_builtin.c
 int				ms_env(t_ms *ms);

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:39:20 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/13 12:27:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 15:34:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ms_echo(char **argv)
 	}
 	if (!n_flag)
 		write(1, "\n", 1);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 static int	parse_flags(char **arg, int *index)

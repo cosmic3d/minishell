@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:08:42 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/13 15:30:32 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:02:53 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static int	export_print(t_env *env, t_env *abc_min, char *prev)
 	current = env;
 	while (current)
 	{
-		if (!prev || ft_strlcmp(current->name, prev) < 0)
+		if (!prev || ft_strcmp(current->name, prev) < 0)
 		{
-			if (!abc_min || ft_strlcmp(current->name, abc_min->name) > 0)
+			if (!abc_min || ft_strcmp(current->name, abc_min->name) > 0)
 				abc_min = current;
 		}
 		current = current->next;

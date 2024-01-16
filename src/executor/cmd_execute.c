@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/22 21:28:32 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:49:05 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,14 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
 			return (FAILURE);
 	}
-	ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
+	// provisional Albert
+	int aux = set_exit_status(ms->forkret, ms->num_cmd);
+	if (aux != -1)
+		ms->exit_status = aux;
+	//
+	// Original:
+	// ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
+	//
 	return (SUCCESS);
 }
 
@@ -165,8 +172,10 @@ comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
 EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
+	// printf("exit_status = %d\n", ms->exit_status); //debugging
 	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
+	// printf("exit_status = %d\n", ms->exit_status); //debugging
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);

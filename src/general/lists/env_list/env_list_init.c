@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 15:17:52 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/07 17:17:03 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:58:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ static int	update_shlvl(t_ms *ms)
 		return (env_edit(var, "0"));
 	else if (shlvl > 999)
 	{
-		printf(SHLVL_WARNING, shlvl); // ESTO VA EN STDERR!!
+		write(2, "minishell: warning: shell level (", 33);
+		ft_putnbr_fd(shlvl, 2);
+		write(2, ") too high, resetting to 1\n", 27);
 		return (env_edit(var, "1"));
 	}
 	shlvl_str = ft_itoa(shlvl);

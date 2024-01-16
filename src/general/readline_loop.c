@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/22 20:34:07 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:52:54 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	readline_loop(t_ms *ms)
 
 	while (42)
 	{
-		buffer = terminal_entry();
+		buffer = terminal_entry(ms->exit_status);
 		if (!buffer)
 			return (1);
 		if (tokenize(buffer, ms) == FAILURE)
@@ -54,7 +54,7 @@ int	readline_loop(t_ms *ms)
 }
 
 // Prototipo provisional // Nombre provisional
-char	*terminal_entry(void)
+char	*terminal_entry(int exit_status)
 {
 	char	*buffer;
 
@@ -62,6 +62,13 @@ char	*terminal_entry(void)
 	buffer = readline(CMDPROMPT);
 	if (!buffer)
 	{
+		// Para usar mpanic:
+		if (isatty(STDIN_FILENO))
+		{
+			write(2, "exit\n", 6);
+			exit(exit_status);
+		}
+		////
 		// Una de dos:
 		// Error de readline
 		// NULL enviado a readline
@@ -71,7 +78,8 @@ char	*terminal_entry(void)
 			if (isatty(STDIN))
 				printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
 			restore_terminal_settings();
-			exit(SUCCESS);
+			// testing
+			exit(exit_status);
 		}
 		ms_quit(MALLOC_ERR);
 	}

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/08 15:02:31 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:19:41 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	expansor(t_ms *ms, t_token *token)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
-			//printf("Content: %s\n", token->content);
+			// printf("Content: %s\n", token->content);
 			//token->content = erase_brackets(token->content);
 			token = retokenizer(token, ms, NULL, NULL);
 		}
 		token = token->next;
 	}
 	//printf("first token content: %s\n", ms->token->content);
-	//print_tokens(ms->token);
+	// print_tokens(ms->token);
 	//exit(1);
 	return (SUCCESS);
 }

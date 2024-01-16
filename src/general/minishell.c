@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/08 12:28:36 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:53:38 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ int	main(int argc, char **argv, char **envp)
 	argv[0] = NULL;
 	argv = NULL;
 	clearTerm();
-	if (argc > 1 || !isatty(STDIN))
-		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
+	if (argc == 0) // debug
+		exit(1); // 
+	// if (argc > 1 || !isatty(STDIN))
+		// return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)
@@ -43,7 +45,7 @@ static int	ms_struct_init(t_ms *ms)
 {
 	// si añado ms->mem hay que ponerlo a NULL
 	ms->pwd = getcwd(NULL, 0);
-	if (errno)
+	if (!ms->pwd) // antes if (errno)
 	{
 		ms_perror("getcwd", strerror(errno), NULL, NULL);
 		return (FAILURE);
