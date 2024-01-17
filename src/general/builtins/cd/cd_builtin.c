@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 19:52:44 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:57:58 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ms_cd(t_ms *ms, char **argv)
 	if (argv[1] == NULL || !argv[1][0])
 		return (EXIT_SUCCESS);
 	if (ft_strlen(argv[1]) >= 256)
-		return (ms_perror("cd", argv[1], "File name too long", NULL)); // hacer macro
+		return (ms_perror("cd", argv[1], TOO_LONG, NULL)); // hacer macro
 	if (check_arg_errors(argv[1]) == FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(argv[1]) == -1)
