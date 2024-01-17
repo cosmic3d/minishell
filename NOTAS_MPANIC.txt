@@ -321,6 +321,30 @@ Dan un exit_status de 258
 Esta es la versión de bash que se utiliza en 42, pero no sé si por ser de mac
 cambia esto.
 
+---COSAS QUE MPANIC TESTEA QUE ME PARECE QUE NO SON OBLIGATORIAS---
+
+cd ~
+cd -
+cd (sin argumentos)
+
+Redirecciones tipo
+2>
+&>
+3<
+
+exit --
+(No sé qué hace pero lo he visto en los tests)
+
+\t
+\r
+\n
+Y dem'as caracteres especiales con el uso de \
+
+\ como caracter de escape en general
+
+faltan cosas imagino.
+
+
 
 
 
