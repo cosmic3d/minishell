@@ -2,6 +2,8 @@ TESTS MPANIC, SUS RESULTADOS Y QUÉ SIGNIFICAN:
 
 ECHO:
 FULL OK!!!
+	O CASI!
+	El test 18 a veces falla. Hay que averiguar por qué.
 
 EXPORT:
 FULL OK!!
@@ -302,6 +304,22 @@ Cosas importantisimas a revisar:
 - El funcionamiento de $
 Parece que $"VAR" es viable, no me había planteado eso en ningún momento.
 Y tiene todo tipo de comportamientos raros.
+
+- Hay que comprobar en 42 si exit sin argumentos retorna el actual exit_status
+de bash.
+También comprobar si bash retorna el exit_status al enviar un EOF siempre o si
+solo lo hace cuando el input se lee de un archivo.
+En este caso habría que dejar el check de if STDIN no es una terminal para
+que se retorne el exit_status
+
+-En bash-3.2.57 parece ser, que el comando:
+hola |
+hola <
+etc. Errores de tipo syntax error, al menos estos dos.
+Dan un exit_status de 258
+
+Esta es la versión de bash que se utiliza en 42, pero no sé si por ser de mac
+cambia esto.
 
 
 

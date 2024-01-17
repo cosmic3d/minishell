@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 18:55:09 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:20:59 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,16 @@ static void	exit_quit(int exit_status);
 // VERSION B, HABRÁ QUE VER EN 42 CUAL MANDA
 int	ms_exit(char **argv, int exit_status)
 {
-	long		arg_long;
-	int			err;
-
-	err = 0;
+	exit_status %= 256; // A ver en 42
 	if (!argv[1])
 		exit_quit(exit_status);
-	if (is_long(argv[1]) == FALSE)
+	exit_status = ft_strtol(argv[1]) % 256;
+	if (is_long(argv[1]) == FALSE || !argv[1][0])
 	{
 		ms_perror("exit", argv[1], NUMERIC_ARG, NULL);
-		// exit_status = 255; // así es en 42
-		exit_status = 2; // bash 5.1.4(1) // testing en casa
-		err = 1;
+		exit_status = 255;
 	}
-	else
-	{
-		arg_long = ft_strtol(argv[1]);
-		exit_status = arg_long % 256;
-	}
-	if (argv[2] && !err)
+	else if (argv[2])
 	{
 		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
 		return (1);
@@ -85,23 +76,25 @@ static int	is_long(char *str)
 	long	num;
 	int		sign;
 
-	i = 0;
+	i = -1;
 	num = 0;
 	sign = 1;
-	while (ft_isspace(*str) == 1)
+	while (ft_isspace(*str))
 		str++;
+	if (*str == '\0')
+		return (TRUE);
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
 			sign = 0;
 		str++;
 	}
-	while (ft_isdigit(str[i]))
+	while (ft_isdigit(str[++i]))
 	{
 		if (num > LMAX_10 || (num == LMAX_10 && (str[i] - '0') > 8 - sign))
 			return (0);
 		num = (num * 10) + str[i] - '0';
-		i++;
+		// i++;
 	}
 	while (ft_isspace(str[i]))
 		i++;

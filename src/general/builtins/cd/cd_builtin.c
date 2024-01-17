@@ -6,13 +6,14 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/12 15:57:55 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:52:44 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 static int	check_arg_errors(char *arg);
+static char	*crop_pathname(char *oldpath);
 static int	update_environment(t_ms *ms, char *new_pwd);
 
 /* Función que emula el builtin cd */
@@ -22,6 +23,8 @@ int	ms_cd(t_ms *ms, char **argv)
 
 	if (argv[1] == NULL || !argv[1][0])
 		return (EXIT_SUCCESS);
+	if (ft_strlen(argv[1]) >= 256)
+		return (ms_perror("cd", argv[1], "File name too long", NULL)); // hacer macro
 	if (check_arg_errors(argv[1]) == FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(argv[1]) == -1)
@@ -44,13 +47,46 @@ int	ms_cd(t_ms *ms, char **argv)
 
 static int	check_arg_errors(char *arg)
 {
-	if (file_check(arg, FILE_EXISTS) == FALSE)
-		return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
-	if (file_check(arg, IS_DIRECTORY) == FALSE)
-		return (ms_perror("cd", arg, NOT_DIR, NULL));
-	if (file_check(arg, X_OK) == FALSE)
-		return (ms_perror("cd", arg, PERM_DENIED, NULL));
-	return (SUCCESS);
+	char	*pathname;
+
+	if (file_check(arg, F_OK) == TRUE)
+	{
+		if (file_check(arg, F_DIR) == FALSE)
+			return (ms_perror("cd", arg, NOT_DIR, NULL));
+		if (file_check(arg, X_OK) == FALSE)
+			return (ms_perror("cd", arg, PERM_DENIED, NULL));
+		return (SUCCESS);
+	}
+	pathname = ft_strdup(arg);
+	if (!pathname)
+		ms_quit(MALLOC_ERR);
+	while (1)
+	{
+		pathname = crop_pathname(pathname);
+		if (file_check(pathname, F_OK) == TRUE)
+		{
+			if (file_check(pathname, F_DIR) == FALSE)
+				return (ms_perror("cd", arg, NOT_DIR, NULL));
+			return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
+		}
+		if (ft_strchr(pathname, '/') == NULL) // no quedan '/'
+			return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
+	}
+}
+
+static char	*crop_pathname(char *oldpath)
+{
+	char	*newpath;
+	int		newlen;
+
+	if (ft_strrchr(oldpath, '/') == NULL)
+		return (oldpath);
+	newlen = ft_strrchr(oldpath, '/') - oldpath;
+	newpath = ft_strndup(oldpath, newlen);
+	if (!newpath)
+		ms_quit(MALLOC_ERR);
+	free(oldpath);
+	return (newpath);
 }
 
 static int	update_environment(t_ms *ms, char *new_pwd)

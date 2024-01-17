@@ -100,13 +100,16 @@ vwxyz0123456789_"
 # define CMD_NOT_FOUND "command not found"
 
 // For access(), better readability of its macros
-# define HAS_READ_PERMISSIONS R_OK
-# define HAS_WRITE_PERMISSIONS W_OK
-# define HAS_EXECUTE_PERMISSIONS X_OK
-# define FILE_EXISTS F_OK
-# define IS_FILE 1001
-# define IS_DIRECTORY 1002
-# define IS_LINK 1003
+# define HAS_READ_PERMISSIONS R_OK // muy largo
+# define HAS_WRITE_PERMISSIONS W_OK // muy largo
+# define HAS_EXECUTE_PERMISSIONS X_OK // muy largo
+# define FILE_EXISTS F_OK // muy largo
+# define IS_FILE 8
+# define IS_DIRECTORY 16
+# define IS_LINK 32
+# define F_FILE 8 // alternativa
+# define F_DIR 16 // alternativa me lo estoy pensando por ser cute
+# define F_LINK 32 // alternativa
 
 // For open(), better readability of its macros
 # define D_PERMS 0644
