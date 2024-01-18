@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 17:09:33 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:27:31 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int	set_exit_status(int forkret, int num_cmd)
 
 	xs = 1;
 	child_status = -1; //Cambio provisional Albert, antes esto era = 0, ahora = -1
+	// child_status = 0;
 	i = -1;
 	while (++i < num_cmd)
 	{

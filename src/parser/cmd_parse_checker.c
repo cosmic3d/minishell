@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+static int	ms_syntax_error(char *str);
+
 /*Esta función se encargará de comprobar que no existan erorres de sintaxis,
 parejas de comillas incompletas... Entre otras cosas feas.
 
@@ -48,16 +50,16 @@ int	check_token(t_token *token)
 	if (token->type == PIPE)
 	{
 		if (!token->next || token->next->type == PIPE || !token->prev)
-			return (printf(SYNTAX_ERROR, "|") * FALSE);
+			return (ms_syntax_error("|"));
 	}
 	else if (token->type != TEXT)
 	{
 		if (!token->next || token->next->type != TEXT)
 		{
 			if (!token->next)
-				return (printf(SYNTAX_ERROR, "newline") * FALSE);
+				return (ms_syntax_error("newline"));
 			else
-				return (printf(SYNTAX_ERROR, token->next->content) * FALSE);
+				return (ms_syntax_error(token->next->content));
 			return (FALSE);
 		}
 	}
@@ -79,4 +81,12 @@ int	is_empty(char *str)
 		if (!in_x(" \t", str[i]))
 			return (FALSE);
 	return (TRUE);
+}
+
+static int	ms_syntax_error(char *str)
+{
+	write(2, "minishell: syntax error near unexpected token `", 47);
+	write(2, str, ft_strlen(str));
+	write(2, "\'\n", 2);
+	return (FALSE);
 }

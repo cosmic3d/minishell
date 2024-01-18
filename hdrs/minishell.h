@@ -267,7 +267,7 @@ int				list_len(void *head);
 
 // readline_loop.c
 int				readline_loop(t_ms *ms);
-char			*terminal_entry(int exit_status); // new, testing
+// char			*terminal_entry(int exit_status); // new, testing
 // char			*terminal_entry(void); // original
 
 // signal_handler.c

@@ -6,11 +6,13 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/18 17:16:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:22:08 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*terminal_entry(int exit_status);
 
 // Loop principal del minishell
 int	readline_loop(t_ms *ms)
@@ -22,7 +24,7 @@ int	readline_loop(t_ms *ms)
 	{
 		if (buffer)
 			free(buffer);
-		buffer = terminal_entry();
+		buffer = terminal_entry(ms->exit_status);
 		if (!buffer)
 			return (1);
 		if (!(tokenize(buffer, ms) == SUCCESS && \
@@ -41,7 +43,7 @@ int	readline_loop(t_ms *ms)
 En el caso de que se encuentre NULL puede deberse a dos motivos:
 1- Readline ha recibido un eof (Ctrl+D)
 2- Error interno de readline */
-char	*terminal_entry(void)
+static char	*terminal_entry(int exit_status)
 {
 	char	*buffer;
 
