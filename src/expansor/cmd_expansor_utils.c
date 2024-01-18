@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 20:16:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:37:40 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,9 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?' \
 	&& str[*i + 1] != '\'' && str[*i + 1] != '"')
 		return (str);
-	// añadir ~ si queremos más adelante
-	// Si hay comillas al inicio del nombre: al menos en mi casa:
-	// - Ignorar ESAS comillas en particular y retornar:
-	// $"VAR" ==> VAR
-	// $'VAR' ==> VAR
-	// $'V"AR' ==> V"AR
-	// MENUDO COÑAZO
 	variable = get_variable_data(ms, str, *i);
+	if (!variable->content)
+		return (str); //? para variables que no existen o están vacias
 	aux_str = ft_strljoin(str, *i, variable->content, -1);
 	if (!aux_str)
 		ms_quit(MALLOC_ERR);
@@ -64,6 +59,8 @@ static t_var	*get_variable_data(t_ms *ms, char *str, int index)
 	var = malloc(sizeof(t_var));
 	if (!var)
 		ms_quit(MALLOC_ERR);
+	var->index = index;
+	var->c_len = 0;
 	var->n_len = 0;
 	if (str[0] == '?')
 		var->n_len = 1;
@@ -79,7 +76,8 @@ static t_var	*get_variable_data(t_ms *ms, char *str, int index)
 	if (!var->content)
 		ms_quit(MALLOC_ERR);
 	var->c_len = ft_strlen(var->content);
-	var->index = index;
+	// if (var->content)
+		// var->c_len = ft_strlen(var->content);
 	return (var);
 }
 

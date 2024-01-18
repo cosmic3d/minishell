@@ -30,7 +30,10 @@ int	check_tokens(t_ms *ms)
 	while (tmp)
 	{
 		if (!check_token(tmp))
+		{
+			ms->exit_status = 258;
 			return (FAILURE);
+		}
 		tmp = tmp->next;
 	}
 	return (SUCCESS);

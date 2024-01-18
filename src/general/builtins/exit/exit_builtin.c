@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 16:20:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:26:22 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	exit_quit(int exit_status);
 int	ms_exit(char **argv, int exit_status)
 {
 	exit_status %= 256; // A ver en 42
+
 	if (!argv[1])
 		exit_quit(exit_status);
 	exit_status = ft_strtol(argv[1]) % 256;
@@ -82,7 +83,7 @@ static int	is_long(char *str)
 	while (ft_isspace(*str))
 		str++;
 	if (*str == '\0')
-		return (TRUE);
+		return (FALSE);
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
@@ -94,7 +95,6 @@ static int	is_long(char *str)
 		if (num > LMAX_10 || (num == LMAX_10 && (str[i] - '0') > 8 - sign))
 			return (0);
 		num = (num * 10) + str[i] - '0';
-		// i++;
 	}
 	while (ft_isspace(str[i]))
 		i++;

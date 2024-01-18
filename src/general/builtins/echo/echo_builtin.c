@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:39:20 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 21:00:04 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:08:37 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,6 @@ static int	parse_flags(char **arg, int *index);
 
 int	ms_echo(char **argv)
 {
-	// IMPORTANTISIMO!
-	// Hay que comprobar si el echo de 42 puede interpretar flags aunque
-	// vayan despues del contenido a printear
-	// Ejemplo:
-	// echo "Hola!" -n
-	// En algunas versiones de bash esto es válido, hay que ver en 42
 	int	n_flag;
 	int	i;
 
