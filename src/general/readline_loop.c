@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/10 18:42:37 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:25:14 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	readline_loop(t_ms *ms)
 		buffer = terminal_entry();
 		if (!buffer)
 			return (1);
-		if (tokenize(buffer, ms) == SUCCESS && \
-		expansor(ms, ms->token) == SUCCESS && iterate_cmds(ms) == SUCCESS) //SE LIBERA MAL
+		if (!(tokenize(buffer, ms) == SUCCESS && \
+		expansor(ms, ms->token) == SUCCESS && iterate_cmds(ms) == SUCCESS)) //SE LIBERA MAL
 			continue ;
 		execute_cmds(ms);
 		erase_hrdc_files(ms->cmd, ms->num_cmd);
