@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/04 13:18:40 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:47:59 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Libera todas las estructuras de los comandos. */
 void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 {
 	int	i;
@@ -118,6 +119,7 @@ static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
 	cmdinfo->fdout = STDOUT_FILENO;
 	cmdinfo->rd_in = NULL;
 	cmdinfo->rd_out = NULL;
+	cmdinfo->cmd = NULL;
 	if (cmdinfo->args)
 		cmdinfo->cmd = cmdinfo->args[0];
 	while (token && token->type != PIPE)
@@ -150,6 +152,5 @@ int	iterate_cmds(t_ms *ms)
 		if (tmp)
 			ms->cmd[i].next_cmd = &ms->cmd[i + 1];
 	}
-	// print_cmd_structs(ms->cmd, ms->num_cmd); // debugging
 	return (SUCCESS);
 }

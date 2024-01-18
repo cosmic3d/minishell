@@ -315,6 +315,7 @@ int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
 //cmd_execute_redirections_utils.c
 int				get_mshtmp_str(char **result, int i);
 int				do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs);
+int				erase_hrdc_files(t_cmdinfo *cmd, int num_cmd);
 
 //cmd_execute.c
 int				execute_cmds(t_ms *ms);

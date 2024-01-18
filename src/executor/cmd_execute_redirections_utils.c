@@ -6,12 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:44:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/22 20:43:06 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:36:40 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Obtenemos el string del nombre que representará al archivo del heredoc.*/
 int	get_mshtmp_str(char **result, int i)
 {
 	char	*tmp_str;
@@ -30,6 +31,8 @@ int	get_mshtmp_str(char **result, int i)
 	return (SUCCESS);
 }
 
+/* Entramos en el bucle de un heredoc y leemos hasta que encontremos
+la palabra especificada o hasta que sea interrumpido mediante una señal. */
 int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs) //PONER A INT
 {
 	int	eof_len;
@@ -56,5 +59,33 @@ int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs) //PONER A IN
 	close(tmp_fd);
 	if (g_received_signal == SIGINT && reset_received_signal() == SUCCESS)
 		return (FAILURE);
+	return (SUCCESS);
+}
+
+/* Se encarga de eliminar los archivos temporales creados por heredoc,
+si es que existen*/
+int	erase_hrdc_files(t_cmdinfo *cmd, int num_cmd)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < num_cmd)
+	{
+		j = -1;
+		while (++j < cmd[i].num_rd)
+		{
+			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
+			{
+				if (file_check(cmd[i].rd[j].str, F_OK) == TRUE && \
+				unlink(cmd[i].rd[j].str) < 0)
+				{
+					ms_perror(strerror(errno), NULL, NULL, NULL);
+					return (FAILURE);
+				}
+				break ;
+			}
+		}
+	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/17 19:56:35 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:13:17 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,18 @@ int	main(int argc, char **argv, char **envp)
 	argv[0] = NULL;
 	argv = NULL;
 	clearTerm();
-	if (argc == 0) // debug
-		exit(1); // 
-	// if (argc > 1 || !isatty(STDIN))
-		// return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
+	if (argc > 1)
+		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
+/* 	int urandom_fd = open("/dev/urandom", O_RDONLY);
+if (urandom_fd == -1) {
+    perror("open");
+    exit(EXIT_FAILURE);
+}
+if (dup2(urandom_fd, STDIN_FILENO) == -1) {
+    perror("dup2");
+    close(urandom_fd);
+    exit(EXIT_FAILURE);
+} */
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)

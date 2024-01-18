@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 15:05:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:11:41 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	**token_splitter_helper(char **strs, t_token *t, int tkn_count)
 	return (strs);
 }
 
-/* Esta función devuelve unos strings de los tokens
+/* Esta función devuelve unos strings de los tokens ARREGLAR ESTA MIERDA DE DEFINICION
 que deberán de ser tokenizados.
 Si devuelve NULL, quiere decir que únicamente
 había un token, y que por lo tanto

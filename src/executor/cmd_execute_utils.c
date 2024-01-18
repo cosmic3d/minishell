@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/16 17:19:08 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:09:33 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ int	ms_dup(int fd, int fd2, int *newfd, int *xs)
 	return (FAILURE);
 }
 
+/* Es un open pero de una redirección. Abre el archivo al que apunta
+esa redirección con las flags especificadas y con los permisos default.
+Si algo falla entonces errorcito, cambiamos exit status y devolvemos.*/
 int	ms_open(t_redirection *rd, int *fd, int *xs)
 {
 	*fd = open(rd->str, rd->oflag, D_PERMS);
@@ -49,6 +52,10 @@ int	ms_open(t_redirection *rd, int *fd, int *xs)
 	return (SUCCESS);
 }
 
+/* ¿Cansado de pasarte de 25 líneas porque estás acostumbrado a programar
+como un ser humano normal? ¡No te preocupes! Esta función hace exactamente lo
+mismo que la de pipe pero aquí para que no ocupe líneas en tu importante
+función principal :) */
 int	ms_pipe(int fd[2], int *xs)
 {
 	int	pipefd[2];
@@ -64,6 +71,9 @@ int	ms_pipe(int fd[2], int *xs)
 	return (SUCCESS);
 }
 
+/* Adivina :3. Sí, esta función también hace exactamente lo mismo que fork
+pero así ahorramos líneas y de paso manejamos errores. (Gracias 42 por
+limitarme a expresar la voluntad de mi alma en menos de 25 líneas) */
 int	ms_fork(int *forkret, int *xs)
 {
 	*forkret = fork();
@@ -76,6 +86,8 @@ int	ms_fork(int *forkret, int *xs)
 	return (SUCCESS);
 }
 
+/* Seteamos el exit status de cualquier hijo que termine.
+Además también imprimimos el mensajito que da SIGQUIT.*/
 int	set_exit_status(int forkret, int num_cmd)
 {
 	int	child_status;
@@ -96,7 +108,7 @@ int	set_exit_status(int forkret, int num_cmd)
 			else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
 				xs = 128 + WSTOPSIG(child_status);
 			if (xs - SIGQUIT == 128)
-				write(1, "Quit: 3\n", 7);
+				write(1, "Quit: 3\n", 8);
 		}
 		if (WIFSIGNALED(child_status) && WTERMSIG(child_status) == SIGINT)
 			write(1, "\n", 1);

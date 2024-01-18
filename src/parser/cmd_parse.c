@@ -96,17 +96,11 @@ void	add_token(char *cmd_line, int *i, int *nt, t_ms *ms)
 	if (get_token(i, cmd_line))
 	{
 		if (token_append(&ms->token) == FAILURE)
-		{
-			ms_error(MALLOC_ERR);
-			exit(1);
-		}
+			ms_quit(MALLOC_ERR);
 		last = token_tail(ms->token);
 		last->content = ft_substr(cmd_line, *nt, *i - *nt + 1);
 		if (!last->content)
-		{
-			ms_error(MALLOC_ERR);
-			exit(1);
-		}
+			ms_quit(MALLOC_ERR);
 		last->type = get_token_type(last->content);
 		*nt = -1;
 	}

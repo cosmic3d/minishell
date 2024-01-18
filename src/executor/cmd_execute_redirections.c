@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2023/12/22 20:43:46 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:00:19 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 	return ;
 }
 
-static int	do_hrdc(t_redirection *rd_i, int *xs, int i) //SNJKDFNBJKDFNBJKDFNBHJ
+/* Preparamos el terreno para poder realizar el heredoc.
+Entre otras cosas abrimos el archivo para poder escribir en él y el
+manejador de señales pasa a ser el de heredoc */
+static int	do_hrdc(t_redirection *rd_i, int *xs, int i)
 {
 	int		tmp_fd;
 	int		tmp_stdin;
@@ -95,6 +98,9 @@ static int	do_hrdc(t_redirection *rd_i, int *xs, int i) //SNJKDFNBJKDFNBJKDFNBHJ
 	return (tmp_fd);
 }
 
+/* Iteramos a través de todos los heredocs de todos los comandos,
+ya que aunque solo queremos el último de cada comando, todos los demás
+se deben de realizar igualmente */
 static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;
@@ -104,12 +110,13 @@ static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 	while (++i < num_cmd)
 	{
 		j = -1;
-		// *exit_status = 0; //Porqué?
+		*exit_status = 0; //Porqué?
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
 				if (do_hrdc(&cmd[i].rd[j], exit_status, i) == FAILURE)
 					return (FAILURE);
+			//printf("\nexit_status es: %i\n", *exit_status);
 			if (*exit_status)
 				break ;
 		}

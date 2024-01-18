@@ -87,9 +87,10 @@ char	*erase_brackets2(char *str, int bracks_count)
 
 	i = -1;
 	j = 0;
-	new_str = (char *)ft_calloc(ft_strlen(str) - bracks_count + 1, sizeof(char));
+	new_str = (char *)ft_calloc(ft_strlen(str) - \
+	bracks_count + 1, sizeof(char));
 	if (!new_str)
-		exit(1); //Aquí llamaríamos a la función que libera todo y hace exit
+		ms_quit(MALLOC_ERR);
 	while (str[++i])
 	{
 		if (str[i] == '"' || str[i] == '\'')
