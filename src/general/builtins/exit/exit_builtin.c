@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/18 14:26:22 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:33:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	exit_quit(int exit_status);
 // VERSION B, HABRÁ QUE VER EN 42 CUAL MANDA
 int	ms_exit(char **argv, int exit_status)
 {
+	// printf("exit_status = %d\n", exit_status);
 	exit_status %= 256; // A ver en 42
 
 	if (!argv[1])

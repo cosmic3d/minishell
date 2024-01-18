@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_redirections.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:00:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:33:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,10 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 	int	j;
 
 	i = -1;
+	// printf("exitstatusaga = %d\n", *exit_status);
 	if (iterate_hrdcs(cmd, num_cmds, exit_status) == FAILURE)
 		return (FAILURE);
+	// printf("exitstatuse = %d\n", *exit_status);
 	while (++i < num_cmds)
 	{
 		j = -1;

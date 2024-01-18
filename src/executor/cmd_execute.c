@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 17:18:47 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:00:41 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,8 @@ comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
 EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
-	// printf("exit_status = %d\n", ms->exit_status); //debugging
 	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
-	// printf("exit_status = %d\n", ms->exit_status); //debugging
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
