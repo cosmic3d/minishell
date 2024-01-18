@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:00:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:36:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,25 @@ static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;
 	int	j;
+	int	aux;
 
 	i = -1;
 	while (++i < num_cmd)
 	{
 		j = -1;
-		*exit_status = 0; //Porqué?
+		aux = 0;
+		//*exit_status = 0; //Porqué?
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
-				if (do_hrdc(&cmd[i].rd[j], exit_status, i) == FAILURE)
+				if (do_hrdc(&cmd[i].rd[j], &aux, i) == FAILURE)
 					return (FAILURE);
 			//printf("\nexit_status es: %i\n", *exit_status);
-			if (*exit_status)
+			if (aux) //A VER SI VA
+			{
+				*exit_status = aux;
 				break ;
+			}
 		}
 	}
 	return (SUCCESS);
@@ -132,6 +137,7 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
+	int	aux;
 
 	i = -1;
 	if (iterate_hrdcs(cmd, num_cmds, exit_status) == FAILURE)
@@ -139,15 +145,18 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 	while (++i < num_cmds)
 	{
 		j = -1;
-		// *exit_status = 0; //Porqué?
+		aux = 0;
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type > REDIRECT_APPEND)
-				in_rds(&cmd[i].rd[j], &cmd[i].rd_in, exit_status);
+				in_rds(&cmd[i].rd[j], &cmd[i].rd_in, &aux);
 			else
-				out_rds(&cmd[i].rd[j], &cmd[i].rd_out, exit_status);
-			if (*exit_status)
+				out_rds(&cmd[i].rd[j], &cmd[i].rd_out, &aux); //SI ES 0 MIRAR DE NO SETEAR EXIT STATUS
+			if (aux)
+			{
+				*exit_status = aux;
 				break ;
+			}
 		}
 	}
 	return (SUCCESS);

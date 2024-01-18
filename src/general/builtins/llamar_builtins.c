@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   llamar_builtins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 18:55:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:05:49 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	is_builtin(char *str)
 // provisional
 int	exec_builtin(t_ms *ms, t_cmdinfo *cmd)
 {
+	if (ms->exit_status)
+		return (ms->exit_status);
 	if (!ft_strcmp(cmd->cmd, "exit"))
 		return (ms_exit(cmd->args, ms->exit_status));
 	else if (!ft_strcmp(cmd->cmd, "echo"))
@@ -48,5 +50,5 @@ int	exec_builtin(t_ms *ms, t_cmdinfo *cmd)
 		return (ms_pwd(ms));
 	else if (!ft_strcmp(cmd->cmd, "unset"))
 		return (ms_unset(ms, cmd->args));
-	return (-1); // para debuguear
+	return (-1);
 }
