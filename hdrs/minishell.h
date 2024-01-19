@@ -343,6 +343,7 @@ void			get_rd_oflag(t_redirection *rd);
 int				expansor(t_ms *ms, t_token *token);
 //int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
 int				is_valid_quote(int index, int *quote_array);
+int				is_active_quote(char *str, int index, t_quotes *q);
 
 //token_expansor.c
 t_token			*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp);

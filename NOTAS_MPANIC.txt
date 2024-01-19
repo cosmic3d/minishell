@@ -1,14 +1,9 @@
 ECHO:
 
-	echo "-n -n -n" -n hi
-Esto falla por que "-n -n -n" no se está retokenizando correcectamente.
-Debería ser un solo argumento completo, pero echo lo recibe como tres argumentos -n
-
 	eCho what u execute bro?
 	cat ~/echo
 Esto falla por que no gestionamos ~
 En principio no nos lo pide el subject.
-Medio OK
 
 EXPORT OK
 ENV OK
@@ -21,20 +16,44 @@ DIRECTORY:
 
 	El primer caso es por que no nos piden gestionar cd cuando no tiene argumentos
 	Los otros dos son por que no gestionamos ~, pero no nos lo piden
-Medio OK
+	Todos dependen de gestionar el tema de HOME
 
 PARSE:
 	DOLLARS:
-		Tests:
-		1, 15, 
-			Fallo por comillas
-		Tests
-		7, 8, 9,
-			No gestionamos casos tipo $'\n'
-		Tests:
-		18, 19, 20
-			Gestiono mal las expansiones de variables que no existen o están vacias.
+	6:
+		->echo "'$'"<-
+	Este falla por que nosotros intentamos expandir el $.
+	Hay que solucionarlo.
+	7, 8, 9:
+		->echo $'\n'<- etc.
+		Todos dependen de usar el caracter \ y el subject dice que no hay que hacerlo.
+	18:
+		->$NONEXIST<-
+	Minishell trata esto como un argumento vacío que hay que usar como comando.
+	Hay que arreglarlo.
+	19:
+		Igual que 18 pero tiene dos argumentos, más complicado de gestionar. Hay que tener esto en cuenta.
+	20:
+		Lo mismo que 18, y por ende 19, pero con variables que SI existen pero no tienen contenido
+		Creo que si arreglamos 18 y 19 esto se arregla también.
 
+	27:
+		Este es más complicado. No sé decir de dónde sale el problema.
+		Si hacemos
+		export A='foo   ' B='bar   ' C='baz   '
+			(los valores se guardan correctamente, no es cosa de export)
+		Pero si hacemos:
+		echo $A'$B'$C'A'
+		A partir de la expansión de $C no hace nada más
 
+		Pero si añadimos un espacio, lo siguiente sí funciona. Entonces, sospecho que
+		O es un problema de ECHO o es un problema del RETOKENIZER y las COMILLAS.
+
+		Pruebo a ver si es ECHO:
+		Tiene pinta que no es ECHO, he printeado sus argumentos enteros y no hay problema en ningun lado.
+
+		CREO QUE LO HE ARREGLADO
+		Habrá que comentarlo con Chus para que quede bien integrado por que he tenido
+		que cambiar alguna cosa suya
 
 

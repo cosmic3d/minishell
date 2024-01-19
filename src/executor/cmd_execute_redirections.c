@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 18:33:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:39:21 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,23 @@ static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;
 	int	j;
+	int	aux;
 
 	i = -1;
 	while (++i < num_cmd)
 	{
+		aux = 0;
 		j = -1;
-		*exit_status = 0; //Porqué?
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
-				if (do_hrdc(&cmd[i].rd[j], exit_status, i) == FAILURE)
+				if (do_hrdc(&cmd[i].rd[j], &aux, i) == FAILURE)
 					return (FAILURE);
-			//printf("\nexit_status es: %i\n", *exit_status);
-			if (*exit_status)
+			if (aux)
+			{
+				*exit_status = aux;
 				break ;
+			}
 		}
 	}
 	return (SUCCESS);
@@ -132,24 +135,26 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
+	int	aux;
 
 	i = -1;
-	// printf("exitstatusaga = %d\n", *exit_status);
 	if (iterate_hrdcs(cmd, num_cmds, exit_status) == FAILURE)
 		return (FAILURE);
-	// printf("exitstatuse = %d\n", *exit_status);
 	while (++i < num_cmds)
 	{
 		j = -1;
-		// *exit_status = 0; //Porqué?
+		aux = 0;
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type > REDIRECT_APPEND)
-				in_rds(&cmd[i].rd[j], &cmd[i].rd_in, exit_status);
+				in_rds(&cmd[i].rd[j], &cmd[i].rd_in, &aux);
 			else
-				out_rds(&cmd[i].rd[j], &cmd[i].rd_out, exit_status);
-			if (*exit_status)
+				out_rds(&cmd[i].rd[j], &cmd[i].rd_out, &aux);
+			if (aux)
+			{
+				*exit_status = aux;
 				break ;
+			}
 		}
 	}
 	return (SUCCESS);

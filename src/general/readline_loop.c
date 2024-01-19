@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/18 17:22:08 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:49:27 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int	readline_loop(t_ms *ms)
 		if (!(tokenize(buffer, ms) == SUCCESS && \
 		expansor(ms, ms->token) == SUCCESS && iterate_cmds(ms) == SUCCESS))
 			continue ;
+		//
+		// print_cmd_structs(ms->cmd, ms->num_cmd);//
+		// exit(0);//
+		//
+		// Aqui salen los commandos ya mal
 		execute_cmds(ms);
 		erase_hrdc_files(ms->cmd, ms->num_cmd);
 		free_tokens(&ms->token);

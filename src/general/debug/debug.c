@@ -193,7 +193,7 @@ void	print_tokens(t_token *token)
 	current = token;
 	while (current)
 	{
-		printf("Content: %s\n", current->content);
+		printf("Content: \"%s\"\n", current->content);
 		printf("Type: %i\n", current->type);
 		current = current->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/18 17:11:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:57:26 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,18 @@ int	expansor(t_ms *ms, t_token *token)
 {
 	while (token)
 	{
+		// printf("Current token \"%s\"\n", token->content);
 		if (token->type == TEXT)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
-			// printf("Content: %s\n", token->content);
-			// token->content = erase_brackets(token->content);
+			// printf("Tras expansión: \"%s\"\n", token->content);
 			token = retokenizer(token, ms, NULL, NULL);
 		}
 		token = token->next;
 	}
-	//printf("first token content: %s\n", ms->token->content);
+	// printf("That was all the tokens\n");
 	// print_tokens(ms->token);
-	//exit(1);
 	return (SUCCESS);
 }
 
@@ -87,6 +86,7 @@ static void	expand(t_ms *ms, t_token *token)
 	i = -1;
 	while (token->content[++i])
 	{
+		// printf("X i = %d\n", i);
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
 		&& is_valid_quote(i, token->quotes->s))
 			token->quotes->s_on *= SWITCH;
@@ -96,6 +96,11 @@ static void	expand(t_ms *ms, t_token *token)
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
 			token->content = expand_and_update(ms, token->content, \
 			&i, token->quotes);
+		if (!token->content[i]) // testing
+			break;
+		// printf("X i = %d\n", i);
+		// printf("X str[i] = '%c'\n", token->content[i]);
+		// printf("X %s\n", token->content);
 	}
 	return ;
 }
@@ -112,6 +117,26 @@ int	is_valid_quote(int index, int *quote_array)
 		if (index == quote_array[i])
 			return (TRUE);
 		i++;
+	}
+	return (FALSE);
+}
+
+int	is_active_quote(char *str, int index, t_quotes *q)
+{
+	if (index == 0) // Para reiniciar los estados de las quotes a OFF por si aca
+	{
+		q->d_on = OFF;
+		q->s_on = OFF;
+	}
+	if (str[index] == '\'' && q->d_on == OFF && is_valid_quote(index, q->s))
+	{
+		q->s_on *= SWITCH;
+		return (TRUE);
+	}
+	else if (str[index] == '"' && q->s_on == OFF && is_valid_quote(index, q->d))
+	{
+		q->d_on *= SWITCH;
+		return (TRUE);
 	}
 	return (FALSE);
 }

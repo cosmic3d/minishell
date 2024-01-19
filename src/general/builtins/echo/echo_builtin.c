@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:39:20 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/18 14:08:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:20:15 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ static int	parse_flags(char **arg, int *index);
 
 int	ms_echo(char **argv)
 {
+	for (int i = 0; argv[i]; i++)
+	{
+		// printf("->%s<-\n", argv[i]);
+	}
 	int	n_flag;
 	int	i;
 
