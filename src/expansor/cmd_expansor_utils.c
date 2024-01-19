@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 18:08:25 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:36:31 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	update_quote_positions(quote, variable);
 	// printf("i = %d\n", *i);
 	// printf("new_str[%i] = %c\n", *i, new_str[*i]);
-	*i += variable->c_len;
+	*i += variable->c_len - 1;
 	// printf("new_str[%i] = %c\n", *i, new_str[*i]);
 	free(variable->name);
 	free(variable->content);
