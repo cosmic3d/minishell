@@ -55,6 +55,22 @@ PARSE:
 		CREO QUE LO HE ARREGLADO
 		Habrá que comentarlo con Chus para que quede bien integrado por que he tenido
 		que cambiar alguna cosa suya
+
+NOTA ANTES DE IRME A CASA:
+Hay que pensar bien cómo solucionar que los comandos con texto vacío se traten como un comando
+Por que "$VARVACIA" o "$VARQUENOEXISTE" si que cuentan como comando "", pero si no usamos las
+comillas y usamos esas mismas variables entonces no cuentan como comando.
+Hay que averiguar como distinguir estos casos, quizá otros.
+
+Hay que tener en cuenta que:
+$VARQUENOEXISTE $VARQUENOEXISTE
+son dos tokens y aun así nos daria el error por "" command not found
+
+Otras cosas:
+Los comados antes de buscar un archivo infile que no existe, por poner un ejemplo,
+no deben ejecutarse. Esto nos falla también.
+Esto creo que a la vez hace que el exit status salga mal por que se conserva el del echo que si
+funciona después.
 	
 	
 

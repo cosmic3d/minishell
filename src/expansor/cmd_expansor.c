@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 18:36:13 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:49:57 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void	expand(t_ms *ms, t_token *token)
 	i = 0;
 	while (token->content[i])
 	{
-		// printf("X i = %d\n", i);
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
 		&& is_valid_quote(i, token->quotes->s))
 			token->quotes->s_on *= SWITCH;
@@ -98,13 +97,7 @@ static void	expand(t_ms *ms, t_token *token)
 			token->content = expand_and_update(ms, token->content, \
 			&i, token->quotes);
 		}
-		// else
-			i++;
-		// if (!token->content[i]) // testing
-		// 	break;
-		// printf("X i = %d\n", i);
-		// printf("X str[i] = '%c'\n", token->content[i]);
-		// printf("X %s\n", token->content);
+		i++;
 	}
 	return ;
 }
