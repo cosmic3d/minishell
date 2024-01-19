@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 18:06:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:08:25 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	free(aux_str);
 	free(str);
 
-	printf("before clear_spaces = \"%s\"\n", new_str);
+	// printf("before clear_spaces = \"%s\"\n", new_str);
 	// printf("c_len before clear_spaces = %d\n", variable->c_len);
 	// printf("content = '%s'\n", new_str);
 	new_str = clear_spaces(new_str, quote, variable); // NUEVO
 	// printf("c_len after clear_spaces = %d\n", variable->c_len);
 	// printf("content = '%s'\n", new_str);
-	printf("after clear_spaces = \"%s\"\n", new_str);
+	// printf("after clear_spaces = \"%s\"\n", new_str);
 
 	update_quote_positions(quote, variable);
 	// printf("i = %d\n", *i);
