@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 17:23:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:21:50 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	argv[0] = NULL;
-	argv = NULL;
-	clearTerm();
+	argv[0] = NULL; // revisar
+	argv = NULL; // revisar
+	clearTerm(); // revisar
 	if (argc > 1)
 		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
 /* 	int urandom_fd = open("/dev/urandom", O_RDONLY);
