@@ -71,7 +71,20 @@ Los comados antes de buscar un archivo infile que no existe, por poner un ejempl
 no deben ejecutarse. Esto nos falla también.
 Esto creo que a la vez hace que el exit status salga mal por que se conserva el del echo que si
 funciona después.
-	
-	
 
+Este caso:
+$NOEXISTE | wc -l
+Hay que hablar de esto con Chus por que tiene que ver con las pipes.
+En bash, al menos en mi casa:
 
+<comando sin contenido> | wc -l
+Hace que se ejecute wc -l y reciba nada. Con lo que su output es 0.
+
+Nuestro minishell, no ejecuta el primer comando y luego el wc -l se 
+queda tal y como está, con STDIN como IN.
+Bash lo hace de tal forma que wc -l no reciba STDIN como IN sino que
+se corta su ejecución, y da su output 0.
+Habrá que ver cómo gestiona esto bash en 42.
+
+-- Leak en echo test 18??
+En 42 lo miro a ver si ocurre

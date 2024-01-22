@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 19:55:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:15:00 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@ static char	**get_path_directories(t_env *env);
 static char	*find_locally(char *cmd, int *exit_status);
 static char	*find_as_pathname(char *pathname, int *exit_status);
 
-// provisionalmente aqui
-char	*remove_slashes(char *pathname);
-
 /* Devuelve el file_path al programa representado por la string cmd y gestiona
 errores de ejecución previos asignando un valor a exit_status */
 char	*get_pathname(char *cmd, int *exit_status, t_ms *ms)
 {
 	char	*pathname;
 
-	if (!ft_strchr(cmd, '/')) // si cmd no contiene '/'
+	if (!cmd)
+		return (NULL);
+	if (!ft_strchr(cmd, '/'))
 	{
 		pathname = find_as_command(cmd, exit_status, ms);
 		if (pathname || *exit_status != 0)
@@ -36,9 +35,10 @@ char	*get_pathname(char *cmd, int *exit_status, t_ms *ms)
 	pathname = find_as_pathname(cmd, exit_status);
 	if (pathname || *exit_status != 0)
 		return (pathname);
-	pathname = find_locally(cmd, exit_status); // Puede que esto sea totalmente innecesario
+	pathname = find_locally(cmd, exit_status); // innecesario??
 	if (pathname || *exit_status != 0)
 		return (pathname);
+	free(pathname);
 	return (NULL);
 }
 
@@ -62,14 +62,14 @@ static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms)
 		{
 			if (file_check(pathname, X_OK) == FALSE)
 				*exit_status = exec_error(cmd, PERM_DENIED, _PERM_DENIED);
-			free_array(pathdirs);
+			ft_free_array(pathdirs);
 			return (pathname);
 		}
 		free(pathname);
 		i++;
 	}
 	*exit_status = exec_error(cmd, CMD_NOT_FOUND, _CMD_NOT_FOUND);
-	free_array(pathdirs);
+	ft_free_array(pathdirs);
 	return (NULL);
 }
 
@@ -84,10 +84,7 @@ static char	**get_path_directories(t_env *env)
 		return (NULL);
 	path_split = ft_split(path_env->content, ':');
 	if (!path_split)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		ms_quit(NULL); // recordatorio para gestionar salidas bien
-	}
+		ms_quit(MALLOC_ERR);
 	return (path_split);
 }
 
@@ -106,10 +103,7 @@ static char	*find_locally(char *cmd, int *exit_status)
 	file_path = join_filename(cmd, pwd);
 	free(pwd);
 	if (file_check(file_path, IS_DIRECTORY))
-	{
 		*exit_status = exec_error(cmd, IS_DIR, _IS_DIR);
-		check();
-	}
 	else if (file_check(file_path, IS_FILE))
 	{
 		if (file_path[ft_strlen(cmd) - 1] == '/')
@@ -138,35 +132,18 @@ static char	*find_as_pathname(char *pathname, int *exit_status)
 	else if (file_check(clean_pathname, IS_FILE) == TRUE || \
 	file_check(clean_pathname, IS_LINK) == TRUE)
 	{
-		if (pathname[ft_strlen(pathname) - 1] == '/') // vigilar casos de root "/"
+		if (pathname[ft_strlen(pathname) - 1] == '/') // vigilar casos de root /
 			*exit_status = exec_error(pathname, NOT_DIR, _NOT_DIR);
 		else if (!file_check(clean_pathname, X_OK))
 			*exit_status = exec_error(pathname, PERM_DENIED, _PERM_DENIED);
 		else
+		{
+			free(clean_pathname);
 			return (pathname);
+		}
 	}
 	else if (file_check(clean_pathname, F_OK) == FALSE)
-		*exit_status = exec_error(pathname, NO_SUCH_FILE, _NO_SUCH_FILE); // correcto
+		*exit_status = exec_error(pathname, NO_SUCH_FILE, _NO_SUCH_FILE);
+	free(clean_pathname);
 	return (NULL);
-}
-
-char	*remove_slashes(char *pathname)
-{
-	// wip
-	char	*result;
-	int		i;
-
-	result = ft_strdup(pathname);
-	if (!result)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		ms_quit(NULL);
-	}
-	i = ft_strlen(result) - 1;
-	while (result[i] == '/' && i > 0)
-	{
-		result[i] = '\0';
-		i--;
-	}
-	return (result);
 }

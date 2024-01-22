@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 18:36:31 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:10:54 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*clear_spaces(char *str, t_quotes *q, t_var *var)
 	char	*cleanstr;
 	int		start;
 	int		end;
+	int		cleanlen;
 
 	start = 0;
 	end = ft_strlen(str) - 1;
@@ -80,9 +81,10 @@ char	*clear_spaces(char *str, t_quotes *q, t_var *var)
 		start++;
 	while (str[end] == ' ')
 		end--;
-	if ((int)ft_strlen(str) == (end - start + 1))
+	cleanlen = end - start + 1;
+	if ((int)ft_strlen(str) == cleanlen)
 		return (str);
-	cleanstr = ft_strndup(str + start, end - start + 1);
+	cleanstr = ft_strndup(str + start, cleanlen);
 	if (!cleanstr)
 		ms_quit(MALLOC_ERR);
 	var->c_len = var->c_len - (ft_strlen(str) - ft_strlen(cleanstr));

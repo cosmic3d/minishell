@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 18:00:41 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:14:34 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,15 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
-			exit(_CMD_NOT_FOUND);
+			exit(ms->exit_status);
 		ms->envp = env_list_to_envp(ms->env);
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
-		ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
-		ms_quit(NULL);
+		/* Fumada del test mandatory de mpanic, a lo mejor ni hace falta */
+		// ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
+		exit(ms->exit_status);
+		// ms_quit(NULL);
 	}
 	else if (ms->forkret == -2)
 		ms->exit_status = exec_builtin(ms, cmd);
@@ -97,7 +99,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
-		if (!ms->cmd[i].cmd)
+		if (!ms->cmd[i].cmd && ms->cmd[i].exists == TRUE)
 			continue ;
 		ms->forkret = -2;
 		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 18:49:57 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 18:03:38 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,15 @@ int	expansor(t_ms *ms, t_token *token)
 {
 	while (token)
 	{
-		// printf("Current token \"%s\"\n", token->content);
 		if (token->type == TEXT)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
-			// printf("Tras expansión: \"%s\"\n", token->content);
+			check_for_token_content(token); // Albert cambio
 			token = retokenizer(token, ms, NULL, NULL);
 		}
 		token = token->next;
 	}
-	// printf("That was all the tokens\n");
 	// print_tokens(ms->token);
 	return (SUCCESS);
 }
@@ -81,11 +79,15 @@ static int	*get_quotes(char *str, char get)
 si detecta un $ */
 static void	expand(t_ms *ms, t_token *token)
 {
+	fflush(stdout);
 	int		i;
 
 	i = 0;
 	while (token->content[i])
 	{
+		// if (token->content[i] == '\'' || token->content[i] == '"')
+		// 	quote_switch(token->content, i, token->quotes);
+		
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
 		&& is_valid_quote(i, token->quotes->s))
 			token->quotes->s_on *= SWITCH;
@@ -94,46 +96,21 @@ static void	expand(t_ms *ms, t_token *token)
 			token->quotes->d_on *= SWITCH;
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
 		{
+			// printf("before: ->%s<-\n", token->content);
 			token->content = expand_and_update(ms, token->content, \
 			&i, token->quotes);
+			// printf("after:  ->%s<-\n", token->content);
 		}
 		i++;
 	}
+
+	// testing:
+	// Check si el token está vacio
+	// printf("checking if ->%s<- token has content\n", token->content);
+	check_for_token_content(token); // Albert cambio
+	// printf("Has content? %d\n", token->hascontent);
+	// fflush(stdout);
+	// esto está en pruebas ahora mismo
+	
 	return ;
-}
-
-/* Comprueba si el index recibido corresponde con uno de los valores
-en el array recibido. Retorna 1 si lo encuentra y 0 si no.*/
-int	is_valid_quote(int index, int *quote_array)
-{
-	int	i;
-
-	i = 0;
-	while (quote_array[i] != -1)
-	{
-		if (index == quote_array[i])
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
-
-int	is_active_quote(char *str, int index, t_quotes *q)
-{
-	if (index == 0) // Para reiniciar los estados de las quotes a OFF por si aca
-	{
-		q->d_on = OFF;
-		q->s_on = OFF;
-	}
-	if (str[index] == '\'' && q->d_on == OFF && is_valid_quote(index, q->s))
-	{
-		q->s_on *= SWITCH;
-		return (TRUE);
-	}
-	else if (str[index] == '"' && q->s_on == OFF && is_valid_quote(index, q->d))
-	{
-		q->d_on *= SWITCH;
-		return (TRUE);
-	}
-	return (FALSE);
 }

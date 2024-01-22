@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/08 16:13:06 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:44:39 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	token_append(t_token **token)
 	new->quotes = NULL;
 	new->content = NULL;
 	new->type = TEXT;
+	new->hascontent = FALSE; // cambio Albert
 	if (*token == NULL)
 		*token = new;
 	else

@@ -136,6 +136,7 @@ typedef struct s_cmdinfo
 	t_redirection		*rd_in;
 	int					fdout;
 	int					fdin;
+	int					exists;
 }				t_cmdinfo;
 
 typedef struct s_env
@@ -153,6 +154,7 @@ typedef struct s_token
 	struct s_quotes	*quotes;
 	char			*content;
 	int				type;
+	int				hascontent; // testing
 }				t_token;
 
 typedef struct s_generic_list
@@ -363,10 +365,10 @@ char			**env_list_to_envp(t_env *head);
 
 // find_filepath_utils.c
 int				exec_error(char *cmd, char *error_str, int errnum);
-void			free_array(char **array);
 char			*join_filename(char *filename, char *directory);
 int				file_check(char *file_path, int check);
 char			*safe_getcwd(char *cmd, int *exit_status);
+char			*remove_slashes(char *str);
 
 // find_filepath.c
 // char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
@@ -376,7 +378,6 @@ char	*get_pathname(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
 int				exec_error(char *cmd, char *error_str, int errnum);
-void			free_array(char **array);
 char			*join_filename(char *filename, char *directory);
 int				file_check(char *file_path, int check);
 char			*safe_getcwd(char *cmd, int *exit_status);
@@ -417,5 +418,8 @@ int	env_edit(t_env *var, char *content);
 void	env_remove(t_env *var);
 void	env_free(t_ms *ms);
 t_env	*env_find(char *name, t_env *head);
+
+// testing albert
+void	check_for_token_content(t_token *token);
 
 #endif

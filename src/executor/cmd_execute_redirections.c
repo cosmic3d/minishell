@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/19 18:47:06 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:37:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 (falta de permisos, el archivo no existe, es una carpeta...) */
 static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 {
+	/* Hay que pasar a return type int para indicar el error por que no
+	queremos que se ejecuten los comandos si la redireccion falla por
+	esto. */
+	if (!rd_i->str[0])
+	{
+		*xs = 1;
+		ms_perror(rd_i->str, "Noseque", NULL, NULL);
+		return ;
+	}
 	if (file_check(rd_i->str, F_OK) == TRUE)
 	{
 		if (file_check(rd_i->str, IS_DIRECTORY) == TRUE)
@@ -47,6 +56,15 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 {
 	int	fd;
 
+	/* Hay que pasar a return type int para indicar el error por que no
+	queremos que se ejecuten los comandos si la redireccion falla por
+	esto. */
+	if (!rd_i->str[0])
+	{
+		*xs = 1;
+		ms_perror(rd_i->str, "Noseque", NULL, NULL);
+		return ;
+	}
 	if (file_check(rd_i->str, F_OK) == TRUE && \
 	file_check(rd_i->str, IS_DIRECTORY) == FALSE)
 	{
@@ -146,6 +164,7 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 		aux = 0;
 		while (++j < cmd[i].num_rd)
 		{
+			// printf("cmd[i] '%c'\n", cmd[i].rd[j].str[0]);
 			if (cmd[i].rd[j].type > REDIRECT_APPEND)
 				in_rds(&cmd[i].rd[j], &cmd[i].rd_in, &aux);
 			else

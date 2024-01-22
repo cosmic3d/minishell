@@ -22,11 +22,22 @@ int	get_num_arguments(t_token *token)
 	tmp = token;
 	while (tmp && tmp->type != PIPE)
 	{
-		if (tmp->type == TEXT)
+		/* En vez de no contarlo si !hascontent, habria que contarlo pero
+		tratarlo de algún modo especial después para que no de problemas
+		con las pipes */
+		//  && tmp->hascontent == TRUE
+		if (tmp->type != TEXT)
+		{
+			tmp = tmp->next->next;
+			continue;
+		}
+		if (tmp->type == TEXT && tmp->hascontent == TRUE)
 			text_count++;
+		// if (tmp->type == TEXT)
+			// text_count++;
 		tmp = tmp->next;
 	}
-	return (text_count - get_num_redirections(token));
+	return (text_count);
 }
 
 /* Devuelve el número de redirecciones detectadas en un comando*/

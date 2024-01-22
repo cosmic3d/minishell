@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/19 17:57:50 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:53:54 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,46 +148,46 @@ al expandir utilizaré un array de enteros que contiene las posiciones de las
 comillas que hay que tener en cuenta. */
 t_token	*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp)
 {
-	// printf("Retokenizando el token: %s\n", token->content);
 	nt = token_splitter(token);
 	if (!nt)
 	{
-		// printf("No hay que retokenizarlo\n");
 		tmp = token->content;
 		token->content = ms_substr(token->content, 0, \
 		ft_strlen(token->content), token);
-		// NECESITAMOS:
-			// Una función o algo que limpie de espacios innecesarios los tokens
-			// que no necesita retokenizado
 		free(tmp);
-		// printf("token: \"%s\"\n", token->content);
 		return (token);
 	}
 	if (token->prev)
 	{
-		// printf("Había un token anterior: %s\n", token->prev->content);
 		token->prev->next = nt;
 		nt->prev = token->prev;
 	}
 	else
-	{
-		// printf("Hay que retokenizarlo, y no tiene token anterior\n");
 		ms->token = nt;
-	}
 	if (token->next)
 	{
-		// printf("Hay un token next: %s\n", token->next->content);
 		token->next->prev = nt;
+		check_for_token_content(nt); // Albert cambio
 		nt = token_tail(ms->token);
 		nt->next = token->next;
+		free_token(token); // bingo
 		return (nt);
 	}
-	/* printf("LO QUE SALE DE LA FUNCIÓN:\n");
-	print_tokens(ms->token);
-	printf("\n");
-	printf("EL ÚLTIMO QUE SE ENVÍA: \n");
-	printf("Content of ultimo: %s\n", nt->content);
-	printf("\n"); */
 	free_token(token);
 	return (token_tail(ms->token));
+}
+
+void	check_for_token_content(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	token->hascontent = FALSE;
+	while (token->content[i])
+	{
+		if (token->content[i] != ' ')
+			token->hascontent = TRUE;
+		i++;
+	}
+	return ;
 }

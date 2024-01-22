@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 19:57:58 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:02:36 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ static int	check_arg_errors(char *arg)
 	pathname = ft_strdup(arg);
 	if (!pathname)
 		ms_quit(MALLOC_ERR);
-	while (1)
+	while (42)
 	{
+		/* LIBERAR PATHNAME */
 		pathname = crop_pathname(pathname);
 		if (file_check(pathname, F_OK) == TRUE)
 		{

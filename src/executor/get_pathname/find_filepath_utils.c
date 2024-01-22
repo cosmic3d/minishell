@@ -6,22 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/17 20:05:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:45:53 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// OLD
-// int	exec_error(char *command, char *error_message)
-// {
-// 	write(2, "minishell: ", 12);
-// 	write(2, command, ft_strlen(command));
-// 	write(2, ": ", 2);
-// 	write(2, error_message, ft_strlen(error_message));
-// 	write(2, "\n", 1);
-// 	return (FAILURE);
-// }
 
 /* Función de printeo de error para el executor, al menos durante los checks
 previos a la ejecución. */ //Chus: No sería mejor utilizar perror?
@@ -38,8 +27,8 @@ int	exec_error(char *cmd, char *error_str, int errnum)
 /* Devuelve TRUE o FALSE respecto al valor de check */
 int	file_check(char *file_path, int check)
 {
-	// struct stat	lfile; // originalmente usabamos este
 	struct stat	file;
+	// struct stat	lfile; // originalmente usabamos este
 
 	if ((check == IS_FILE || check == IS_DIRECTORY || check == IS_LINK))
 	{
@@ -86,21 +75,6 @@ int	file_check(char *file_path, int check)
 // 	return (result);
 // }
 
-/* Libera un char **array */ // meter en libft?
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-	return ;
-}
-
 /* Une un nombre de archivo y el path a su directorio. */
 char	*join_filename(char *filename, char *directory)
 {
@@ -131,4 +105,23 @@ char	*safe_getcwd(char *cmd, int *exit_status)
 		return (NULL);
 	}
 	return (pwd);
+}
+
+char	*remove_slashes(char *str)
+{
+	char	*cleanstr;
+	int		i;
+
+	if (!str)
+		return (NULL);
+	cleanstr = ft_strdup(str);
+	if (!cleanstr)
+		ms_quit(MALLOC_ERR);
+	i = ft_strlen(cleanstr) - 1;
+	while (cleanstr[i] == '/' && i > 0)
+	{
+		cleanstr[i] = '\0';
+		i--;
+	}
+	return (cleanstr);
 }

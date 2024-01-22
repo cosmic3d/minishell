@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_struct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:47:59 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:12:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,15 @@ char	**get_arguments(t_token *token)
 	{
 		if (token->type != TEXT)
 		{
-			token = token->next->next;
+			token = token->next;
+			if (token)
+				token = token->next;
 			continue ;
+		}
+		if (token->hascontent == FALSE)
+		{
+			token = token->next;
+			continue;
 		}
 		args[++i] = ft_strdup(token->content);
 		if (!args[i])
@@ -114,6 +121,9 @@ static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
 	cmdinfo->num_rd = get_num_redirections(token);
 	cmdinfo->rd = get_redirections(token, cmdinfo->num_rd);
 	cmdinfo->args = get_arguments(token);
+	cmdinfo->exists = TRUE;
+	if (!cmdinfo->args)
+		cmdinfo->exists = FALSE;
 	cmdinfo->next_cmd = NULL;
 	cmdinfo->fdin = STDIN_FILENO;
 	cmdinfo->fdout = STDOUT_FILENO;

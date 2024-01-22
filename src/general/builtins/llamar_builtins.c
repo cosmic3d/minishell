@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 18:55:36 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:16:45 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(char *str)
 {
+	if (!str)
+		return (FALSE);
 	if (!ft_strcmp(str, "exit"))
 		return (TRUE);
 	else if (!ft_strcmp(str, "echo"))
@@ -34,6 +36,8 @@ int	is_builtin(char *str)
 // provisional
 int	exec_builtin(t_ms *ms, t_cmdinfo *cmd)
 {
+	if (!cmd->cmd)
+		return (-1);
 	if (!ft_strcmp(cmd->cmd, "exit"))
 		return (ms_exit(cmd->args, ms->exit_status));
 	else if (!ft_strcmp(cmd->cmd, "echo"))
