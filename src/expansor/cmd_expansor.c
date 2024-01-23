@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 17:48:41 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:40:48 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	expand(t_ms *ms, t_token *token)
 		&& is_valid_quote(i, token->quotes->d))
 			token->quotes->d_on *= SWITCH;
 		if (token->content[i] == '~' && token->quotes->d_on == OFF \
-		&& token->quotes->s_on == OFF)
+		&& token->quotes->s_on == OFF && token->content[i])
 			token->content = expand_home(ms, token->content, &i, token->quotes);
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
 		{
