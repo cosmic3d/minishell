@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/22 20:14:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:45:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
-		if (!ms->cmd[i].cmd && ms->cmd[i].exists == TRUE)
+		if ((!ms->cmd[i].cmd && ms->cmd[i].exists == TRUE))
 			continue ;
 		ms->forkret = -2;
 		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \
@@ -143,6 +143,7 @@ static int	init_execution(t_ms *ms)
 	//Duplicamos stdin y stdout para no perderlos
 	tmp[STDIN] = -1;
 	tmp[STDOUT] = -1;
+	fd[STDOUT] = STDOUT;
 	if ((ms->num_cmd > 1 || ms->cmd[0].rd_in) && ms_dup(STDIN, -1, \
 	&tmp[STDIN], &ms->exit_status) == FAILURE)
 		return (FAILURE);

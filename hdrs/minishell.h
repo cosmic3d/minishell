@@ -58,6 +58,7 @@ extern int	g_received_signal;
 # define BRACKS_ERROR "minishell: unexpected EOF while \
 looking for matching `%c\'\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
+# define AMBIGUOUS_REDIRECT "minishell: ambiguous redirect\n"
 
 //Token types
 # define TEXT 0
