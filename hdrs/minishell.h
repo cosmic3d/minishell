@@ -177,6 +177,7 @@ typedef struct s_minishell
 	t_token		*token;
 	t_cmdinfo	*cmd;
 	char		*pwd;
+	char		*oldpwd;
 	int			num_cmd;
 	char		**envp;
 	int			shlvl;
