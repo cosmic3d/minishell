@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 18:03:38 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:48:41 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,37 +79,32 @@ static int	*get_quotes(char *str, char get)
 si detecta un $ */
 static void	expand(t_ms *ms, t_token *token)
 {
-	fflush(stdout);
 	int		i;
 
 	i = 0;
 	while (token->content[i])
 	{
-		// if (token->content[i] == '\'' || token->content[i] == '"')
-		// 	quote_switch(token->content, i, token->quotes);
-		
+		// printf("token : %c\n", token->content[i]);
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
 		&& is_valid_quote(i, token->quotes->s))
 			token->quotes->s_on *= SWITCH;
 		if (token->content[i] == '"' && token->quotes->s_on == OFF \
 		&& is_valid_quote(i, token->quotes->d))
 			token->quotes->d_on *= SWITCH;
+		if (token->content[i] == '~' && token->quotes->d_on == OFF \
+		&& token->quotes->s_on == OFF)
+			token->content = expand_home(ms, token->content, &i, token->quotes);
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
 		{
-			// printf("before: ->%s<-\n", token->content);
 			token->content = expand_and_update(ms, token->content, \
 			&i, token->quotes);
-			// printf("after:  ->%s<-\n", token->content);
 		}
 		i++;
 	}
-
-	// testing:
 	// Check si el token está vacio
 	// printf("checking if ->%s<- token has content\n", token->content);
 	check_for_token_content(token); // Albert cambio
 	// printf("Has content? %d\n", token->hascontent);
-	// fflush(stdout);
 	// esto está en pruebas ahora mismo
 	
 	return ;

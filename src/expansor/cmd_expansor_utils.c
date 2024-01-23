@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 16:10:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:32:01 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	char	*aux_str;
 	char	*new_str;
 
-	// printf("expand_and_update:\n");
-	// printf("ENTRA: %s\n", str);
-	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?' \
-	&& str[*i + 1] != '\'' && str[*i + 1] != '"')
+	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?')
+/* 	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?' \
+	&& str[*i + 1] != '\'' && str[*i + 1] != '"') // Las comillas? */
 		return (str);
 	variable = get_variable_data(ms, str, *i);
 	if (!variable->content)

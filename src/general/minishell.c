@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/23 14:06:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:05:39 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,14 @@ static int	ms_struct_init(t_ms *ms)
 	if (!ms->pwd) // antes if (errno)
 	{
 		ms_perror("getcwd", strerror(errno), NULL, NULL);
+		// podemos printear esto:
+		// shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+		// sh_makepath: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
 		return (FAILURE);
 	}
+	ms->oldpwd = NULL;
+	ms->home = NULL;
+	ms->prevdir = NULL;
 	ms->env = NULL;
 	ms->token = NULL;
 	ms->cmd = NULL;

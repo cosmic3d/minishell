@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/19 13:38:49 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:44:24 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,39 +36,31 @@ int	ms_exit(char **argv, int exit_status)
 	return (0);
 }
 
-// OG:
-// int	ms_exit(char **argv)
-// {
-// 	long		arg_long;
-// 	int			exit_status;
-// 	int			err;
+// Adaptado para --
+/* int	ms_exit(char **argv, int exit_status)
+{
+	int	i;
 
-// 	err = 0;
-// 	if (!argv[1])
-// 		exit_quit(EXIT_SUCCESS);
-// 	if (is_long(argv[1]) == FALSE)
-// 	{
-// 		ms_perror("exit", argv[1], NUMERIC_ARG, NULL);
-// 		// exit_status = 255; // así es en 42
-// 		exit_status = 2; // bash 5.1.4(1) // testing en casa
-// 		err = 1;
-// 	}
-// 	else
-// 	{
-// 		arg_long = ft_strtol(argv[1]);
-// 		exit_status = arg_long % 256;
-// 	}
-// 	if (argv[2] && !err)
-// 	{
-// 		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
-// 		return (1);
-// 	}
-// 	exit_quit(exit_status);
-// 	return (0);
-// }
-// NOTAS:
-// EN CASA, AL MENOS, EXIT RETORNA COMO DEFAULT EL EXIT_STATUS ACTUAL
-// HABRÁ QUE VER CÓMO LO HACE BASH EN 42!
+	i = 1;
+	if (!ft_strcmp(argv[1], "--"))
+		i = 2;
+	exit_status %= 256;
+	if (!argv[i])
+		exit_quit(exit_status);
+	exit_status = ft_strtol(argv[i]) % 256;
+	if (is_long(argv[i]) == FALSE || !argv[i][0])
+	{
+		ms_perror("exit", argv[i], NUMERIC_ARG, NULL);
+		exit_status = 255;
+	}
+	else if (argv[i + 1])
+	{
+		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
+		return (1);
+	}
+	exit_quit(exit_status);
+	return (0);
+} */
 
 static int	is_long(char *str)
 {

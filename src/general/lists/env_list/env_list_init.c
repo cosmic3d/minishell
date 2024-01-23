@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 15:17:52 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 19:58:17 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:49:02 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ static int	envp_to_env_list(t_ms *ms, char **envp);
 static int	update_shlvl(t_ms *ms);
 static int	update_pwd(t_ms *ms);
 static int	update_oldpwd(t_ms *ms);
+
+//
+void	update_home(t_ms *ms);
+//
 
 int	env_list_init(t_ms *ms, char **envp)
 {
@@ -39,7 +43,30 @@ int	env_list_init(t_ms *ms, char **envp)
 		env_free(ms);
 		return (FAILURE);
 	}
+	update_home(ms);
 	return (SUCCESS);
+}
+
+// encontrarle sitio a esto
+void	update_home(t_ms *ms)
+{
+	t_env	*home;
+
+	home = env_find("HOME", ms->env);
+	if (!home || (home && (!home->content || !home->content[0])))
+	{
+		// que hacemos?
+		ms->home = ft_strdup("/Users/apresas-");
+		if (!ms->home)
+			ms_quit(MALLOC_ERR);
+		// printf("Home will be: %s\n", ms->home);
+		return ;
+	}
+	ms->home = ft_strdup(home->content);
+	if (!ms->home)
+		ms_quit(MALLOC_ERR);
+	// printf("Home will be: %s\n", ms->home);
+	return ;
 }
 
 static int	envp_to_env_list(t_ms *ms, char **envp)

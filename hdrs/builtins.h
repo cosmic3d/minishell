@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 11:52:17 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 16:46:35 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:29:51 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # define PERM_DENIED "Permission denied"
 # define TOO_LONG "File name too long"
 # define ERROR_RETRIEVE "error retrieving current directory: getcwd: cannot \
-access parent directories"
-# define TESTERR "ieving current directory: getcwd: cannot \
 access parent directories"
 
 // Long boundaries

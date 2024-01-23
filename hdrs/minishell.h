@@ -178,6 +178,8 @@ typedef struct s_minishell
 	t_cmdinfo	*cmd;
 	char		*pwd;
 	char		*oldpwd;
+	char		*home;
+	char		*prevdir;
 	int			num_cmd;
 	char		**envp;
 	int			shlvl;
@@ -422,5 +424,7 @@ t_env	*env_find(char *name, t_env *head);
 
 // testing albert
 void	check_for_token_content(t_token *token);
+//
+char	*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 #endif
