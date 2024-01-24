@@ -251,8 +251,6 @@ char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archiv
 
 // error.c
 int				ms_perror(char *s1, char *s2, char *s3, char *s4);
-int				ms_error(char *error_message);
-void			export_perror(char *argument);
 void			ms_quit(char *error_message);
 
 // export_init.c

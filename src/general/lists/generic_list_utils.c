@@ -26,6 +26,7 @@ void	*tail(void *node)
 	return (list);
 }
 
+// NO SE USA (?)
 /* Retorna el primer elemento de cualquier lista */
 void	*head(void *node)
 {
@@ -39,6 +40,7 @@ void	*head(void *node)
 	return (list);
 }
 
+// NO SE USA
 /* Crea un nuevo nodo en una lista generica */
 int	append(t_lst **head, size_t size)
 {
@@ -47,10 +49,7 @@ int	append(t_lst **head, size_t size)
 
 	new = malloc(size);
 	if (!new)
-	{
-		ms_error(MALLOC_ERR);
-		return (FAILURE);
-	}
+		ms_quit(MALLOC_ERR);
 	new->prev = NULL;
 	new->next = NULL;
 	if (*head == NULL)
@@ -64,6 +63,7 @@ int	append(t_lst **head, size_t size)
 	return (SUCCESS);
 }
 
+// NO SE USA
 // Swapea dos elementos de una lista
 void	swap(void *ptr_a, void *ptr_b)
 {
