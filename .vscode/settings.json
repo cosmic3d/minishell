@@ -5,6 +5,8 @@
 		"*.hbs": "handlebars",
 		"*.c": "c",
 		"minishell.h": "c",
-		"builtins.h": "c"
+		"builtins.h": "c",
+		"locale": "c",
+		"string": "c"
 	}
 }

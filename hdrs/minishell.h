@@ -58,6 +58,10 @@ extern int	g_received_signal;
 # define BRACKS_ERROR "minishell: unexpected EOF while \
 looking for matching `%c\'\n"
 # define SYNTAX_ERROR "minishell: syntax error near unexpected token `%s\'\n"
+# define SHELL_INIT_ERROR "shell-init: error retrieving current directory: \
+getcwd: cannot access parent directories: No such file or directory"
+# define SH_MAKEPATH_ERROR "sh_makepath: error retrieving current directory: \
+getcwd: cannot access parent directories: No such file or directory"
 
 //Token types
 # define TEXT 0
@@ -235,20 +239,6 @@ void			print_tokens(t_token *token);
 void			print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd);
 //////////////
 
-// env_builtin.c
-int				env_print(t_env *env);
-
-// env_list_init.c
-void			env_init(t_ms *ms, char **envp);
-
-// env_list_utils.c
-int				env_add(char *name, char *content, t_env **head);
-int				env_add_content(char *name, char *content, t_env *new);
-t_env			*env_find(char *name, t_env *head);
-// int				env_remove(char *name, t_env *env);
-int				env_update(char *name, char *content, t_env *env);
-char			*get_env_content(char *name, t_env *env); // tendrá que ir a otro archivo más adelante
-
 // error.c
 int				ms_perror(char *s1, char *s2, char *s3, char *s4);
 void			ms_quit(char *error_message);
@@ -259,7 +249,6 @@ int				export_name_syntax(t_export *data, char *arg);
 
 // export_testing.c
 int				ms_export(t_ms *ms, char **argv);
-// int		export_print(t_env *env, t_env *current, t_env *abc_min, char *prev);
 
 // generic list tools
 void			*tail(void *node);
@@ -270,8 +259,6 @@ int				list_len(void *head);
 
 // readline_loop.c
 int				readline_loop(t_ms *ms);
-// char			*terminal_entry(int exit_status); // new, testing
-// char			*terminal_entry(void); // original
 
 // signal_handler.c
 int				signal_handler(int mode);
@@ -359,7 +346,7 @@ void			token_traverse(t_token *t, int *i);
 
 //cmd_expansor_utils.c
 char			*update_token(t_ms *ms, char *str, int j);
-char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote);
+char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *q);
 
 //cmd_env_creation.c
 char			**env_list_to_envp(t_env *head);
@@ -372,10 +359,7 @@ char			*safe_getcwd(char *cmd, int *exit_status);
 char			*remove_slashes(char *str);
 
 // find_filepath.c
-// char	*find_program(char *cmd, int *exit_status, t_ms *ms); // old
-// char			*command_to_file_path(char *cmd, int *exit_status, t_ms *ms);// old
-char	*get_pathname(char *cmd, int *exit_status, t_ms *ms);
-
+char			*get_pathname(char *cmd, int *exit_status, t_ms *ms);
 
 // find_filepath_utils.c
 int				exec_error(char *cmd, char *error_str, int errnum);
@@ -403,26 +387,24 @@ int				ms_env(t_ms *ms);
 int				is_builtin(char *str);
 int				exec_builtin(t_ms *ms, t_cmdinfo *cmd);
 
-// testing new env init
-// int	env_list_init(t_ms *ms, char **envp);
-// void	env_remove(t_env *var);
-// void	free_env_list(t_ms *ms);
-// int	update_env(t_env *var, char *content);
-// t_env	*env_new(t_env **head);
-// int	env_edit(t_env *var, char *content);
+//// env_list:
+// env_list_init
+int				env_list_init(t_ms *ms, char **envp);
 
-// new new new new env tal
-int	env_list_init(t_ms *ms, char **envp);
-int	env_add(char *name, char *content, t_env **head);
-t_env	*env_new(t_env **head);
-int	env_edit(t_env *var, char *content);
-void	env_remove(t_env *var);
-void	env_free(t_ms *ms);
-t_env	*env_find(char *name, t_env *head);
+// env_list_utils
+int				env_add(char *name, char *content, t_env **head);
+t_env			*env_new(t_env **head);
+int				env_edit(t_env *var, char *content);
+void			env_remove(t_env *var);
+void			env_free(t_ms *ms);
+
+// env_list_utils_2
+t_env			*env_find(char *name, t_env *head);
+char			*get_env_content(char *name, t_env *env);
 
 // testing albert
-void	check_for_token_content(t_token *token);
+void			check_for_token_content(t_token *token);
 //
-char	*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote);
+char			*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 #endif

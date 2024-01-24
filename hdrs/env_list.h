@@ -3,6 +3,4 @@
 
 #include "minishell.h"
 
-
-
 #endif
