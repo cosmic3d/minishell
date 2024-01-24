@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 19:16:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:42:38 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,5 @@ int	exec_builtin(t_ms *ms, t_cmdinfo *cmd)
 		return (ms_pwd(ms));
 	else if (!ft_strcmp(cmd->cmd, "unset"))
 		return (ms_unset(ms, cmd->args));
-	return (-1); // para debuguear
+	return (-1);
 }
