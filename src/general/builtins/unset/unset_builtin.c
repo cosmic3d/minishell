@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 17:57:02 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/18 17:00:56 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:40:32 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ms_unset(t_ms *ms, char **argv)
 
 	i = 1;
 	exit_status = EXIT_SUCCESS;
+	if (argv[1] && ft_strcmp(argv[1], "--") == 0)
+		i++;
 	while (argv[i])
 	{
 		if (unset_verify_name(argv[i]) == SUCCESS)
