@@ -6,15 +6,15 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 16:30:26 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:25:20 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 static int	check_arg_errors(char *arg);
+static int	check_arg_errors_2(char *pathname, char *arg);
 static char	*crop_pathname(char *oldpath);
-static int	update_environment(t_ms *ms, char *new_pwd);
 static int	dumb_error(t_ms *ms, char *arg);
 
 /* Función que emula el builtin cd */
@@ -36,9 +36,8 @@ int	ms_cd(t_ms *ms, char **argv)
 		return (ms_perror("cd", "chdir", strerror(errno), NULL));
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (dumb_error(ms, argv[1]));
-	if (update_environment(ms, pwd) == FAILURE)
-		return (-1);
+		return (dumb_error(ms, dst));
+	update_environment(ms, pwd);
 	if (flag & 1)
 		printf("%s\n", pwd);
 	return (SUCCESS);
@@ -163,19 +162,32 @@ static int	check_arg_errors(char *arg)
 	pathname = ft_strdup(arg);
 	if (!pathname)
 		ms_quit(MALLOC_ERR);
+	return (check_arg_errors_2(pathname, arg));
+}
+
+static int	check_arg_errors_2(char *pathname, char *arg)
+{
 	while (42)
 	{
-		/* FALTA LIBERAR PATHNAME */
 		pathname = crop_pathname(pathname);
 		if (file_check(pathname, F_OK) == TRUE)
 		{
 			if (file_check(pathname, F_DIR) == FALSE)
+			{
+				free(pathname);
 				return (ms_perror("cd", arg, NOT_DIR, NULL));
+			}
+			free(pathname);
 			return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
 		}
-		if (ft_strchr(pathname, '/') == NULL) // no quedan '/'
+		if (ft_strchr(pathname, '/') == NULL)
+		{
+			free(pathname);
 			return (ms_perror("cd", arg, NO_SUCH_FILE, NULL));
+		}
 	}
+	free(pathname);
+	return (SUCCESS);
 }
 
 static char	*crop_pathname(char *oldpath)
@@ -191,28 +203,4 @@ static char	*crop_pathname(char *oldpath)
 		ms_quit(MALLOC_ERR);
 	free(oldpath);
 	return (newpath);
-}
-
-static int	update_environment(t_ms *ms, char *new_pwd)
-{
-	t_env	*pwd;
-	t_env	*oldpwd;
-
-	if (ms->oldpwd)
-		free(ms->oldpwd);
-	ms->oldpwd = ms->pwd;
-	ms->pwd = new_pwd;
-	pwd = env_find("PWD", ms->env);
-	oldpwd = env_find("OLDPWD", ms->env);
-	if (!oldpwd && pwd && env_add("OLDPWD", pwd->content, &ms->env) == FAILURE)
-		return (FAILURE);
-	else if (!oldpwd && !pwd && env_add("OLDPWD", ms->oldpwd, &ms->env) == FAILURE)
-		return (FAILURE);
-	else if (oldpwd && pwd && env_edit(oldpwd, pwd->content) == FAILURE)
-		return (FAILURE);
-	else if (oldpwd && !pwd && env_edit(oldpwd, ms->pwd) == FAILURE)
-		return (FAILURE);
-	if (pwd && env_edit(pwd, ms->pwd) == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 16:29:28 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 16:29:52 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:25:43 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,29 @@ char	*cd_oldpwd(t_ms *ms, int *flag)
 		ms_quit(MALLOC_ERR);
 	*flag |= 1;
 	return (arg);
+}
+
+int	update_environment(t_ms *ms, char *new_pwd)
+{
+	t_env	*pwd;
+	t_env	*oldpwd;
+
+	if (ms->oldpwd)
+		free(ms->oldpwd);
+	ms->oldpwd = ms->pwd;
+	ms->pwd = new_pwd;
+	pwd = env_find("PWD", ms->env);
+	oldpwd = env_find("OLDPWD", ms->env);
+	if (!oldpwd && pwd && env_add("OLDPWD", pwd->content, &ms->env) == FAILURE)
+		ms_quit(MALLOC_ERR);
+	else if (!oldpwd && !pwd \
+	&& env_add("OLDPWD", ms->oldpwd, &ms->env) == FAILURE)
+		ms_quit(MALLOC_ERR);
+	else if (oldpwd && pwd && env_edit(oldpwd, pwd->content) == FAILURE)
+		ms_quit(MALLOC_ERR);
+	else if (oldpwd && !pwd && env_edit(oldpwd, ms->pwd) == FAILURE)
+		ms_quit(MALLOC_ERR);
+	if (pwd && env_edit(pwd, ms->pwd) == FAILURE)
+		ms_quit(MALLOC_ERR);
+	return (SUCCESS);
 }

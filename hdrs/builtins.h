@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 11:52:17 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 16:30:15 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:24:02 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int		get_operation(char *arg);
 char	*set_dst(t_ms *ms, char **argv, int *flag);
 char	*cd_oldpwd(t_ms *ms, int *flag);
 char	*cd_home(t_ms *ms);
+int		update_environment(t_ms *ms, char *new_pwd);
 
 #endif
