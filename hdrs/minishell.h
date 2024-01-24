@@ -48,7 +48,7 @@ extern int	g_received_signal;
 # define EXPORT 1
 
 // Errors
-# define MALLOC_ERR "Memory allocation failed.\n"
+# define MALLOC_ERR "Memory allocation failed.\n" // Cambiar?
 # define ARGC_ERR "Minishell does not accept arguments.\n"
 # define GETCWD_ERR "The function getcwd() failed unexpectedly.\n"
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"

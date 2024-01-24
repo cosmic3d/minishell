@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:00:43 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/16 17:48:08 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:41:10 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static int	export_new(char *name, char *arg, t_ms *ms)
 	char	*content;
 
 	content = get_content(arg);
-	// if (errno) // errno daba problemas ahora get_content hace ms_quit solved?
-	// 	return (FAILURE);
 	if (env_add(name, content, &ms->env) == FAILURE)
 	{
 		free(content);
@@ -62,8 +60,6 @@ static int	export_equal(t_env *var, char *arg)
 	char	*new_content;
 
 	new_content = get_content(arg);
-	// if (errno) // errno daba problemas ahora get_content hace ms_quit solved?
-	// 	return (FAILURE);
 	if (var->content)
 		free(var->content);
 	var->content = new_content;
@@ -76,8 +72,6 @@ static int	export_add(t_env *var, char *arg)
 	char	*joined_content;
 
 	arg_content = get_content(arg);
-	// if (errno) // errno daba problemas ahora get_content hace ms_quit solved?
-	// 	return (FAILURE);
 	if (var->content)
 	{
 		joined_content = ft_strjoin(var->content, arg_content);
