@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 14:50:35 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:05:15 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_ms	ms;
 
-	argv[0] = NULL; // revisar
-	argv = NULL; // revisar
+	argv[0] = NULL;
+	argv = NULL;
 	clearTerm(); // revisar
 	if (argc > 1)
 		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
@@ -44,9 +44,6 @@ if (dup2(urandom_fd, STDIN_FILENO) == -1) {
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)
 		return (FAILURE);
-	// env_free(&ms);// debug
-	// free(ms.pwd);
-	// return (0);//
 	disable_control_chars_echo();
 	signal_handler(INTERACTIVE);
 	if (readline_loop(&ms))
@@ -59,13 +56,10 @@ if (dup2(urandom_fd, STDIN_FILENO) == -1) {
 static int	ms_struct_init(t_ms *ms)
 {
 	ms->pwd = getcwd(NULL, 0);
-	if (!ms->pwd) // antes if (errno)
+	if (!ms->pwd)
 	{
-		ms_perror("getcwd", strerror(errno), NULL, NULL);
-		// podemos printear esto:
-		// shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-		// sh_makepath: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
-		// Esto es para cuando el directorio en el que estás cuando ejecutas bash ha sido eliminado
+		ms_perror(SHELL_INIT_ERROR, NULL, NULL, NULL);
+		ms_perror(SH_MAKEPATH_ERROR, NULL, NULL, NULL);
 		return (FAILURE);
 	}
 	ms->oldpwd = NULL;
@@ -106,7 +100,6 @@ char	*get_home(void)
 		free(home);
 		entry = readdir(dir);
 	}
-	// printf("HOME = '%s'\n", home);
 	closedir(dir);
 	return (home);
 }
