@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 15:18:13 by apresas-          #+#    #+#             */
-/*   Updated: 2023/12/07 18:07:41 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:50:16 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	env_add(char *name, char *content, t_env **head)
 	t_env	*new;
 
 	if (!name)
-		return (FAILURE); // No sé si retornar failure, por que en realidad asegurarme de que una variable sin nombre no sea añadida es parte del funcionamiento esperable de esta función
+		return (FAILURE);
 	new = env_new(head);
 	if (!new)
 		return (FAILURE);
@@ -70,7 +70,7 @@ t_env	*env_new(t_env **head)
 int	env_edit(t_env *var, char *content)
 {
 	if (!var)
-		return (FAILURE); // FAILURE O SUCCESS?
+		return (FAILURE);
 	if (var->content)
 		free(var->content);
 	if (content)
