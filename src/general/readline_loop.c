@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:52:54 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 15:26:56 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:06:11 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@ int	readline_loop(t_ms *ms)
 		if (!(tokenize(buffer, ms) == SUCCESS && \
 		expansor(ms, ms->token) == SUCCESS && iterate_cmds(ms) == SUCCESS))
 			continue ;
-		//
-		// print_cmd_structs(ms->cmd, ms->num_cmd);//
-		// exit(0);//
-		//
-		// Aqui salen los commandos ya mal
 		execute_cmds(ms);
 		erase_hrdc_files(ms->cmd, ms->num_cmd);
 		free_tokens(&ms->token);
@@ -61,7 +56,6 @@ static char	*terminal_entry(int exit_status)
 			if (isatty(STDIN))
 				printf("%s%s%s%s", "\033[A", "\033[2K", CMDPROMPT, "exit\n");
 			restore_terminal_settings();
-			// testing
 			exit(exit_status);
 		}
 		ms_quit(MALLOC_ERR);
