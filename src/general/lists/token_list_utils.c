@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 16:45:34 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/22 15:44:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:51:26 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	token_append(t_token **token)
 	new->quotes = NULL;
 	new->content = NULL;
 	new->type = TEXT;
-	new->hascontent = FALSE; // cambio Albert
+	new->hascontent = FALSE;
 	if (*token == NULL)
 		*token = new;
 	else
