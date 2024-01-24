@@ -6,13 +6,20 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/23 17:05:39 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:50:35 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// testing una cosa
+#include <sys/types.h>
+#include <pwd.h>
+#include <uuid/uuid.h>
+//
+
 static int	ms_struct_init(t_ms *ms);
+char	*get_home(void); // testing
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -51,7 +58,6 @@ if (dup2(urandom_fd, STDIN_FILENO) == -1) {
 
 static int	ms_struct_init(t_ms *ms)
 {
-	// si añado ms->mem hay que ponerlo a NULL
 	ms->pwd = getcwd(NULL, 0);
 	if (!ms->pwd) // antes if (errno)
 	{
@@ -59,10 +65,11 @@ static int	ms_struct_init(t_ms *ms)
 		// podemos printear esto:
 		// shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
 		// sh_makepath: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+		// Esto es para cuando el directorio en el que estás cuando ejecutas bash ha sido eliminado
 		return (FAILURE);
 	}
 	ms->oldpwd = NULL;
-	ms->home = NULL;
+	ms->home = get_home();
 	ms->prevdir = NULL;
 	ms->env = NULL;
 	ms->token = NULL;
@@ -74,67 +81,32 @@ static int	ms_struct_init(t_ms *ms)
 	return (SUCCESS);
 }
 
-// void	*ms_malloc(size_t size, t_ms *ms)
-// {
-// 	void	*memory;
+// Idea que he tenido, enseñar a Chus a ver qué piensa
+char	*get_home(void)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	struct stat		fstat;
+	char			*home;
 
-// 	memory = malloc(size);
-// 	if (!memory)
-// 	{
-// 		ms_perror("malloc", strerror(errno), NULL, NULL);
-// 		return (NULL);
-// 	}
-// 	if (add_mem(memory, &ms->mem) == FAILURE)
-// 	{
-// 		free(memory);
-// 		return (NULL);
-// 	}
-// 	return (memory);
-// }
-
-// int	add_mem(void *ptr, t_mem **mem)
-// {
-// 	t_mem	*new;
-// 	t_mem	*last;
-
-// 	new = malloc(sizeof(t_mem));
-// 	if (!new)
-// 	{
-// 		ms_perror("malloc", strerror(errno), NULL, NULL);
-// 		return (FAILURE);
-// 	}
-// 	new->prev = NULL;
-// 	new->next = NULL;
-// 	if (*mem == NULL)
-// 		*mem = new;
-// 	else
-// 	{
-// 		last = tail(*mem);
-// 		last->next = new;
-// 		new->prev = last;
-// 	}
-// 	return (SUCCESS);
-// }
-
-// void	rm_mem(void *rm, t_mem **mem)
-// {
-// 	t_mem	*current;
-
-// 	if (!rm)
-// 		return ;
-// 	current = *mem;
-// 	while (current)
-// 	{
-// 		if (current->ptr == rm)
-// 		{
-// 			if (current->prev)
-// 				current->prev->next = current->next;
-// 			if (current->next)
-// 				current->next->prev = current->prev;
-// 			free(current->ptr);
-// 			free(current);
-// 		}
-// 		current = current->next;
-// 	}
-// 	return ;
-// }
+	dir = opendir("/Users");
+	if (!dir)
+		ms_quit("Opendir failure\n");
+	entry = readdir(dir);
+	while (entry != NULL)
+	{
+		home = ft_strjoin("/Users/", entry->d_name);
+		if (!home)
+			ms_quit(MALLOC_ERR);
+		if (stat(home, &fstat) == -1)
+			continue ;
+		if ((fstat.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO)) == 448 \
+		&& ft_strcmp(home, "/Users/bocal") != 0)
+			break ;
+		free(home);
+		entry = readdir(dir);
+	}
+	// printf("HOME = '%s'\n", home);
+	closedir(dir);
+	return (home);
+}

@@ -80,3 +80,26 @@ si PWD ha sido unset.
 	con su valor correcto cuando sea actualize por cambio de directorio.
 
 Hay otro fallo de PWD y OLDPWD según mpanic
+
+
+  SUMARY                         [ OK ] [ KO ] [ SF ] [ TT ]
+  [echo]                           17      1      0     18
+  [export]                         16      0      0     16
+  [env]                             8      0      0      8
+  [exit]                           55      0      0     55
+  [directory]                      20      3      0     23
+  [dollars]                        31      3      0     34
+  [quotes]                         49      3      0     52
+  [spaces]                         10      0      0     10
+  [tilde]                           4      5      0      9
+  [syntax_error]                   27      0      0     27
+  [pipe]                           49      0      0     49
+  [redirection]                    47     20      0     67
+  [status]                         21      6      0     27
+  [shlvl]                           9      0      0      9
+  [panic mandatory]                 3      9      0     12
+  [your]                            5      2      0      7
+
+  total                          [0344] [0052] [0000] [0396]
+
+  

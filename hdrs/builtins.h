@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 11:52:17 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 17:29:51 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:30:15 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,10 @@ int		process_argument(char *arg, t_ms *ms);
 char	*get_name(char *arg);
 char	*get_content(char *arg);
 int		get_operation(char *arg);
+
+// Cd
+char	*set_dst(t_ms *ms, char **argv, int *flag);
+char	*cd_oldpwd(t_ms *ms, int *flag);
+char	*cd_home(t_ms *ms);
 
 #endif

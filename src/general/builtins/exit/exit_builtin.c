@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 18:44:24 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:15:05 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,21 @@ static void	exit_quit(int exit_status);
 // VERSION B, HABRÁ QUE VER EN 42 CUAL MANDA
 int	ms_exit(char **argv, int exit_status)
 {
+	char	*arg;
+
 	exit_status %= 256;
-	if (!argv[1])
+	arg = argv[1];
+	if (argv[1] && ft_strcmp(argv[1], "--") == 0)
+		arg = argv[2];
+	if (!arg)
 		exit_quit(exit_status);
-	exit_status = ft_strtol(argv[1]) % 256;
-	if (is_long(argv[1]) == FALSE || !argv[1][0])
+	exit_status = ft_strtol(arg) % 256;
+	if (is_long(arg) == FALSE || !arg[0])
 	{
-		ms_perror("exit", argv[1], NUMERIC_ARG, NULL);
+		ms_perror("exit", arg, NUMERIC_ARG, NULL);
 		exit_status = 255;
 	}
-	else if (argv[2])
+	else if ((arg == argv[1] && argv[2]) || (arg == argv[2] && argv[3]))
 	{
 		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
 		return (1);

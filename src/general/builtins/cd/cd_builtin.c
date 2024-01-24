@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 18:43:09 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:30:26 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,82 @@ static int	dumb_error(t_ms *ms, char *arg);
 int	ms_cd(t_ms *ms, char **argv)
 {
 	char	*pwd;
+	char	*dst;
+	int		flag;
 
-	if (!argv[1] || !argv[1][0])
-		return (EXIT_SUCCESS);
-	if (ft_strlen(argv[1]) >= 256)
-		return (ms_perror("cd", argv[1], TOO_LONG, NULL));
-	if (check_arg_errors(argv[1]) == FAILURE)
-		return (EXIT_FAILURE);
-	if (chdir(argv[1]) == -1)
+	flag = 0;
+	dst = set_dst(ms, argv, &flag);
+	if (!dst)
+		return (FAILURE);
+	if (ft_strlen(dst) >= 256)
+		return (ms_perror("cd", dst, TOO_LONG, NULL));
+	if (!(flag & 2) && check_arg_errors(dst) == FAILURE)
+		return (FAILURE);
+	if (!(flag & 2) && chdir(dst) == -1)
 		return (ms_perror("cd", "chdir", strerror(errno), NULL));
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (dumb_error(ms, argv[1]));
 	if (update_environment(ms, pwd) == FAILURE)
 		return (-1);
-	return (EXIT_SUCCESS);
+	if (flag & 1)
+		printf("%s\n", pwd);
+	return (SUCCESS);
 }
+
+// cd adaptado para cd sin args
+/* int	ms_cd(t_ms *ms, char **argv)
+{
+	char	*pwd;
+	char	*dst;
+
+	if (argv[1] && !argv[1][0])
+		return (SUCCESS);
+	if (!argv[1])
+		dst = ms->home;
+	else
+		dst = argv[1];
+	if (ft_strlen(dst) >= 256)
+		return (ms_perror("cd", dst, TOO_LONG, NULL));
+	if (check_arg_errors(dst) == FAILURE)
+		return (FAILURE);
+	if (chdir(dst) == -1)
+		return (ms_perror("cd", "chdir", strerror(errno), NULL));
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (dumb_error(ms, dst));
+	if (update_environment(ms, pwd) == FAILURE)
+		return (-1);
+	return (SUCCESS);
+} */
+
+// Adaptado para -- y cd sin args
+/* int	ms_cd(t_ms *ms, char **argv)
+{
+	char	*pwd;
+	char	*dst;
+
+	if (argv[1] && ft_strcmp(argv[1], "--") == 0)
+		ms_cd(ms, argv + 1);
+	if (argv[1] && !argv[1][0])
+		return (SUCCESS);
+	if (!argv[1])
+		dst = ms->home;
+	if (argv[1])
+		dst = argv[1];
+	if (ft_strlen(dst) >= 256)
+		return (ms_perror("cd", dst, TOO_LONG, NULL));
+	if (check_arg_errors(dst) == FAILURE)
+		return (EXIT_FAILURE);
+	if (chdir(dst) == -1)
+		return (ms_perror("cd", "chdir", strerror(errno), NULL));
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (dumb_error(ms, dst));
+	if (update_environment(ms, pwd) == FAILURE)
+		return (-1);
+	return (EXIT_SUCCESS);
+} */
 
 // Adaptado para --
 /* int	ms_cd(t_ms *ms, char **argv)

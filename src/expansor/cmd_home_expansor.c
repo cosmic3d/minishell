@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 17:18:16 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 17:51:59 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 14:59:20 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote)
 	char	*aux_str;
 	char	*new_str;
 
-	if (str[*i + 1] != ' ')
+	if ((str[*i + 1] && str[*i + 1] != ' ' && str[*i + 1] != '/') \
+	|| (*i != 0 && str[*i - 1] != ' ' && str[*i - 1] != '/'))
 		return (str);
 	homeenv = env_find("HOME", ms->env);
 	home = ms->home;
