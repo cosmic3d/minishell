@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 16:15:05 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:34:21 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,10 @@ static int	is_long(char *str)
 		str++;
 	if (*str == '\0')
 		return (FALSE);
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = 0;
+	if (*str == '-')
+		sign = 0;
+	if (*str == '+' || *str == '-')
 		str++;
-	}
 	while (ft_isdigit(str[++i]))
 	{
 		if (num > LMAX_10 || (num == LMAX_10 && (str[i] - '0') > 8 - sign))
