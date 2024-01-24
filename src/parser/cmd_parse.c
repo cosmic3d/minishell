@@ -16,7 +16,7 @@
 int	tokenize(char *cmd_line, t_ms *ms)
 {
 	int		i;
-	int		nt; //El primer caracter del new token (puta norminette)
+	int		nt;
 
 	i = -1;
 	nt = -1;
