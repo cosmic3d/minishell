@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/23 17:19:29 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:27:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ static int	do_hrdc(t_redirection *rd_i, int *xs, int i)
 	signal_handler(HEREDOC);
 	tmp_str = readline("> ");
 	tmp_fd = do_hrdc_loop(tmp_fd, tmp_str, tmp_eof, xs);
-	//printf("tmp_fd es: %i\n", tmp_fd);
 	if (dup2(tmp_stdin, STDIN) < 0 && close(tmp_stdin) <= 0)
 		ms_quit("Dup error");
 	close(tmp_stdin);

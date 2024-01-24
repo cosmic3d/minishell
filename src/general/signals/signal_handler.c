@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/08 16:06:47 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:23:21 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,7 @@ static void	signal_action_interactive(int signum)
 static void	signal_action_heredoc(int signum)
 {
 	g_received_signal = signum;
-	close(STDIN); //HAY FE
-	/* int	tmp;
-
-	tmp = dup(STDIN);
-	if (tmp < 0)
-		ms_quit("Dup error");
-	write(STDIN, "\n", 1); */
-	/* if (dup2(tmp, STDIN) == -1)
-		ms_quit("Dup error");
-	close(tmp); */
+	close(STDIN);
 	return ;
 }
 
@@ -53,10 +44,7 @@ int	signal_handler(int mode)
 	sa_c.sa_handler = signal_action_interactive;
 	sa_bs.sa_handler = signal_action_interactive;
 	if (mode == HEREDOC)
-	{
 		sa_c.sa_handler = signal_action_heredoc;
-		//sa_bs.sa_handler = signal_action_heredoc;
-	}
 	sigemptyset(&sa_c.sa_mask);
 	sigemptyset(&sa_bs.sa_mask);
 	sa_c.sa_flags = 0;

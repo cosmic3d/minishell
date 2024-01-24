@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/23 17:45:58 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/24 21:29:10 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 {
 	int	pipefd[2];
 
-	if (cmd->next_cmd) //No es el último comando
+	if (cmd->next_cmd)
 	{
 		if (ms_pipe(pipefd, xs) == FAILURE)
 			return (FAILURE);
@@ -33,8 +33,7 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 		if (!cmd->rd_out)
 			fd[STDOUT] = pipefd[STDOUT];
 		else if (close(pipefd[STDOUT]) <= 0 && ms_open(cmd->rd_out, \
-		&fd[STDOUT], xs) == FAILURE && close(pipefd[STDIN]) <= 0) /* Si hay un archivo, cerramos el extremo de escritura del pipe para que el siguiente
-			comando reciba un EOF y no lea nada de la pipe de lectura */
+		&fd[STDOUT], xs) == FAILURE && close(pipefd[STDIN]) <= 0)
 			return (FAILURE);
 		if (cmd->next_cmd->rd_in && close(fd[STDIN]) <= 0 && \
 		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) \
@@ -61,12 +60,10 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 	{
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
-		// close(STDIN);
 		signal_handler(HEREDOC);
 		tmp[0] = exec_builtin(ms, cmd);
 		if (tmp[0] != -1)
 			exit(tmp[0]);
-		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(ms->exit_status);
@@ -74,8 +71,6 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
-		/* Fumada del test mandatory de mpanic, a lo mejor ni hace falta */
-		// ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
 		exit(ms->exit_status);
 		// ms_quit(NULL);
 	}
