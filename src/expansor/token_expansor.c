@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/22 17:53:54 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:46:58 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,7 @@ static t_token	*token_splitter(t_token *token)
 
 	if (!ft_strlen(token->content))
 		return (NULL);
-	// printf("LLEGA: >%s<\n", token->content);
 	num_tokens = token_count(token, 0);
-	// printf("NUM OF TOKENS: %i\n", num_tokens);
 	if (num_tokens == 1)
 		return (NULL);
 	tk_contents = (char **)malloc(sizeof(char *) * (num_tokens + 1));
@@ -133,8 +131,6 @@ static t_token	*token_splitter(t_token *token)
 		ms_quit(MALLOC_ERR);
 	tk_contents = token_splitter_helper(tk_contents, token, num_tokens);
 	new_tkn = token_joiner(tk_contents);
-	//LIBERAR TOKEN ANTIGUO AFUERA
-	// printf("SALE: >%s<\n", new_tkn->content);
 	return (new_tkn);
 }
 
@@ -167,10 +163,10 @@ t_token	*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp)
 	if (token->next)
 	{
 		token->next->prev = nt;
-		check_for_token_content(nt); // Albert cambio
+		check_for_token_content(nt);
 		nt = token_tail(ms->token);
 		nt->next = token->next;
-		free_token(token); // bingo
+		free_token(token);
 		return (nt);
 	}
 	free_token(token);

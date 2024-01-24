@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/22 19:37:43 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:31:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 	if (!rd_i->str[0])
 	{
 		*xs = 1;
-		ms_perror(rd_i->str, "Noseque", NULL, NULL);
+		ms_perror(rd_i->str, "ambiguous redirect", NULL, NULL);
 		return ;
 	}
 	if (file_check(rd_i->str, F_OK) == TRUE)
@@ -62,7 +62,7 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 	if (!rd_i->str[0])
 	{
 		*xs = 1;
-		ms_perror(rd_i->str, "Noseque", NULL, NULL);
+		ms_perror(rd_i->str, "ambiguous redirect", NULL, NULL);
 		return ;
 	}
 	if (file_check(rd_i->str, F_OK) == TRUE && \

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 14:52:49 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:26:19 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,11 @@ int	expansor(t_ms *ms, t_token *token)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
-			check_for_token_content(token); // Albert cambio
+			check_for_token_content(token);
 			token = retokenizer(token, ms, NULL, NULL);
 		}
 		token = token->next;
 	}
-	// print_tokens(ms->token);
 	return (SUCCESS);
 }
 
@@ -84,29 +83,22 @@ static void	expand(t_ms *ms, t_token *token)
 	i = 0;
 	while (token->content[i])
 	{
-		// printf("token : %c\n", token->content[i]);
 		if (token->content[i] == '\'' && token->quotes->d_on == OFF \
 		&& is_valid_quote(i, token->quotes->s))
 			token->quotes->s_on *= SWITCH;
 		if (token->content[i] == '"' && token->quotes->s_on == OFF \
 		&& is_valid_quote(i, token->quotes->d))
 			token->quotes->d_on *= SWITCH;
-		// tonteria, primero que no funciona, segundo que no hace falta
-		if (token->content[i] == '~' && token->quotes->d_on == OFF \
-		&& token->quotes->s_on == OFF && token->content[i])
-			token->content = expand_home(ms, token->content, &i, token->quotes);
 		if (token->content[i] == '$' && token->quotes->s_on == OFF)
 		{
 			token->content = expand_and_update(ms, token->content, \
 			&i, token->quotes);
 		}
+		else if (token->content[i] == '~' && token->quotes->d_on == OFF \
+		&& token->quotes->s_on == OFF && token->content[i])
+			token->content = expand_home(ms, token->content, &i, token->quotes);
 		i++;
 	}
-	// Check si el token está vacio
-	// printf("checking if ->%s<- token has content\n", token->content);
-	check_for_token_content(token); // Albert cambio
-	// printf("Has content? %d\n", token->hascontent);
-	// esto está en pruebas ahora mismo
-	
+	check_for_token_content(token);
 	return ;
 }

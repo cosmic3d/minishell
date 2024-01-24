@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:15:39 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 17:47:11 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:45:45 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ str[index] es una quote activa, o FALSE si es una quote como caracter
 literal */
 int	is_active_quote(char *str, int index, t_quotes *q)
 {
-	if (index == 0) // Para reiniciar los estados de las quotes a OFF por si aca
+	if (index == 0)
 	{
 		q->d_on = OFF;
 		q->s_on = OFF;

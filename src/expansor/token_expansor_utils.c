@@ -63,8 +63,7 @@ t_token	*token_joiner(char **strs)
 		new_tkn->type = TEXT;
 		new_tkn->quotes = NULL;
 		new_tkn->next = NULL;
-		check_for_token_content(new_tkn); // Albert cambio
-		//printf("TOken content: %s\n", new_tkn->content);
+		check_for_token_content(new_tkn);
 	}
 	free(strs);
 	return (first_tkn);
@@ -79,39 +78,14 @@ static int	ms_substr_helper(char *s, int start, int len, t_token *t)
 
 	final_len = len;
 	i = start;
-	// Puede que esto sea innecesario por que las quotes deberían acabar siempre 
-	// cerradas al acabar un prompt
-	t->quotes->s_on = OFF; // cosas test
-	t->quotes->d_on = OFF; // cosas test
-	//printf("Initial len: %d\n", final_len);
+	t->quotes->s_on = OFF;
+	t->quotes->d_on = OFF;
 	while (s[i] && i < start + len)
 	{
-		// Nueva versión:
 		if (is_active_quote(s, i, t->quotes) == TRUE)
 			final_len--;
-
-		// Testeando cosas
-		/* if (s[i] == '\'' && t->quotes->d_on == OFF \
-		&& is_valid_quote(i, t->quotes->s))
-		{
-			final_len--;
-			t->quotes->s_on *= SWITCH;
-		}
-		if (s[i] == '"' && t->quotes->s_on == OFF \
-		&& is_valid_quote(i, t->quotes->d))
-		{
-			final_len--;
-			t->quotes->d_on *= SWITCH;
-		} */
-
-		// Como estaba antes, creo
-		/* if ((s[i] == '"' || s[i] == '\'') && \
-		is_valid_quote(i, goodbrack(s[i], t)))
-			final_len--; */
-
 		i++;
 	}
-	//printf("Final len: %d\n", final_len);
 	return (final_len);
 }
 
@@ -135,33 +109,15 @@ char	*ms_substr(char *s, int start, int n, t_token *t)
 	str = malloc(sizeof(char) * (n + 1));
 	if (!str)
 		ms_quit(MALLOC_ERR);
-	t->quotes->s_on = OFF; // cosas test
-	t->quotes->d_on = OFF; // cosas test
-	// printf("token al entrar: %s\n", s);
+	t->quotes->s_on = OFF;
+	t->quotes->d_on = OFF;
 	while (i < n)
 	{
 		if (is_active_quote(s, start, t->quotes) == TRUE)
 			start++;
 		else
 			str[i++] = s[start++];
-
-		//printf("i: %d\n", i);
-/* 		if (s[start] == '\'' && t->quotes->d_on == OFF \
-		&& is_valid_quote(start, t->quotes->s))
-		{
-			start++;
-			t->quotes->s_on *= SWITCH;
-		}
-		else if (s[start] == '"' && t->quotes->s_on == OFF \
-		&& is_valid_quote(start, t->quotes->d))
-		{
-			start++;
-			t->quotes->d_on *= SWITCH;
-		}
-		else
-			str[i++] = s[start++]; */
 	}
 	str[i] = '\0';
-	// printf("token al salir: ->%s<-\n", str);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:32:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/23 19:32:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:11:47 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,10 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 	char	*new_str;
 
 	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?')
-/* 	if (!ft_isalpha(str[*i + 1]) && str[*i + 1] != '_' && str[*i + 1] != '?' \
-	&& str[*i + 1] != '\'' && str[*i + 1] != '"') // Las comillas? */
 		return (str);
 	variable = get_variable_data(ms, str, *i);
 	if (!variable->content)
-		return (str); //? para variables que no existen o están vacias
+		return (str);
 	aux_str = ft_strljoin(str, *i, variable->content, -1);
 	if (!aux_str)
 		ms_quit(MALLOC_ERR);
@@ -43,27 +41,16 @@ char	*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *quote)
 		ms_quit(MALLOC_ERR);
 	free(aux_str);
 	free(str);
-
-	// printf("before clear_spaces = \"%s\"\n", new_str);
-	// printf("c_len before clear_spaces = %d\n", variable->c_len);
-	// printf("content = '%s'\n", new_str);
-	new_str = clear_spaces(new_str, quote, variable); // NUEVO
-	// printf("c_len after clear_spaces = %d\n", variable->c_len);
-	// printf("content = '%s'\n", new_str);
-	// printf("after clear_spaces = \"%s\"\n", new_str);
-
+	new_str = clear_spaces(new_str, quote, variable);
 	update_quote_positions(quote, variable);
-	// printf("i = %d\n", *i);
-	// printf("new_str[%i] = %c\n", *i, new_str[*i]);
 	*i += variable->c_len - 1;
-	// printf("new_str[%i] = %c\n", *i, new_str[*i]);
 	free(variable->name);
 	free(variable->content);
 	free(variable);
 	return (new_str);
 }
 
-// TESTING THIS SHIT
+/* Limpia los espacios sobrantes a los bordes de la string tras una expansión */
 char	*clear_spaces(char *str, t_quotes *q, t_var *var)
 {
 	char	*cleanstr;
@@ -117,11 +104,7 @@ static t_var	*get_variable_data(t_ms *ms, char *str, int index)
 		var->content = get_env_content(var->name, ms->env);
 	if (!var->content)
 		ms_quit(MALLOC_ERR);
-	// printf("Wcontent = '%s'\n", var->content);
 	var->c_len = ft_strlen(var->content);
-	// printf("Wc_len = %d\n", var->c_len);
-	// if (var->content)
-		// var->c_len = ft_strlen(var->content);
 	return (var);
 }
 
