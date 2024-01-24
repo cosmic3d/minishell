@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 17:34:21 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:44:27 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ int	ms_exit(char **argv, int exit_status)
 		exit_status = 255;
 	}
 	else if ((arg == argv[1] && argv[2]) || (arg == argv[2] && argv[3]))
-	{
-		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
-		return (1);
-	}
+		return (ms_perror("exit", TOO_MANY_ARG, NULL, NULL));
 	exit_quit(exit_status);
 	return (0);
 }
