@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 21:27:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 02:30:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static int	do_hrdc(t_redirection *rd_i, int *xs, int i)
 /* Iteramos a través de todos los heredocs de todos los comandos,
 ya que aunque solo queremos el último de cada comando, todos los demás
 se deben de realizar igualmente */
-static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
+int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 {
 	int	i;
 	int	j;
@@ -138,19 +138,38 @@ static int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 	return (SUCCESS);
 }
 
-/* Iteramos a través de todas las redirecciones de todos los comandos
+/* Iteramos a través de todas las redirecciones de un comando
 y las evaluamos de izquierda a derecha. Si en alguna de ellas sucede
 algún error, la función setea exit status a 1 y continua con el
 siguiente comando en cuestión. */
-int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
+int	iterate_rds(t_cmdinfo *cmd, int *exit_status)
+{
+	int	i;
+	int	aux;
+
+	i = -1;
+	aux = 0;
+	while (++i < cmd->num_rd)
+	{
+		if (cmd->rd[i].type > REDIRECT_APPEND)
+			in_rds(&cmd->rd[i], &cmd->rd_in, &aux);
+		else
+			out_rds(&cmd->rd[i], &cmd->rd_out, &aux);
+		if (aux)
+		{
+			*exit_status = aux;
+			return (FAILURE);
+		}
+	}
+	return (SUCCESS);
+}
+/* int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
 	int	aux;
 
 	i = -1;
-	if (iterate_hrdcs(cmd, num_cmds, exit_status) == FAILURE)
-		return (FAILURE);
 	while (++i < num_cmds)
 	{
 		j = -1;
@@ -169,4 +188,4 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 		}
 	}
 	return (SUCCESS);
-}
+} */

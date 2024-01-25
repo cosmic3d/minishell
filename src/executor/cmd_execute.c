@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 21:29:10 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 02:39:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 el comando en cuestión y esperamos a que acabe con waitpid.
 Cuando el proceso haya terminado o sido detenido de cualquier forma
 guardamos su exit status / señal con el que terminó en nuestro exit status*/
-static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
+static void	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
-	if (ms->forkret == 0) //Es el proceso hijo
+	if (ms->forkret == 0)
 	{
+		if (iterate_rds(cmd, &ms->exit_status) == FAILURE) //METER ORS AQUÍ PA AHORRAR LINEAS MIMIMIM
+			exit(ms->exit_status);
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
 		signal_handler(HEREDOC);
@@ -72,15 +74,13 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
 		exit(ms->exit_status);
-		// ms_quit(NULL);
 	}
 	else if (ms->forkret == -2)
+	{
+		if (iterate_rds(cmd, &ms->exit_status) == FAILURE)
+			return ;
 		ms->exit_status = exec_builtin(ms, cmd);
-	/* if (isatty(STDOUT) == FALSE)
-		close(STDOUT); */
-	// if (ms->forkret != -2)
-	// 	ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
-	return (SUCCESS);
+	}
 }
 
 /* Ejecutamos todos los comandos en un bucle hasta que ya no haya más o
@@ -108,13 +108,11 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if ((ms->num_cmd > 1 || is_builtin(ms->cmd[i].cmd) == FALSE) && \
 		ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
 			return (FAILURE);
-		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
-			return (FAILURE);
+		manage_child(&ms->cmd[i], ms, tmp);
 	}
-	// provisional Albert
-	int aux = set_exit_status(ms->forkret, ms->num_cmd);
-	if (aux != -1)
-		ms->exit_status = aux;
+	i = set_exit_status(ms->forkret, ms->num_cmd); //MIRAR A VER SI ES NECESARIO MAÑANA PARA AHORRAR LÍNEAS
+	if (i != -1)
+		ms->exit_status = i;
 	//
 	// Original:
 	// ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
@@ -170,7 +168,7 @@ comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
 EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
-	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
+	if (iterate_hrdcs(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);
