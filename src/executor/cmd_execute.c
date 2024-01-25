@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/22 20:14:34 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:31:18 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
+		// Mirarse esto por si algun error
 		/* Fumada del test mandatory de mpanic, a lo mejor ni hace falta */
 		// ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
 		exit(ms->exit_status);

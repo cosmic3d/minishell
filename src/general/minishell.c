@@ -6,17 +6,11 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 18:05:15 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:29:14 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// testing una cosa
-#include <sys/types.h>
-#include <pwd.h>
-#include <uuid/uuid.h>
-//
 
 static int	ms_struct_init(t_ms *ms);
 char	*get_home(void); // testing

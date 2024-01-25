@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 18:26:19 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:27:50 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ int	expansor(t_ms *ms, t_token *token)
 {
 	while (token)
 	{
-		if (token->type == TEXT)
+		if (token->type == TEXT && token->prev && token->prev->type == REDIRECT_HEREDOC)
+			token = token->next;
+		else if (token->type == TEXT)
 		{
 			init_quote_struct(token);
 			expand(ms, token);
