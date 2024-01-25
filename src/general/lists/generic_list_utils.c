@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-/* Funciones de lista genéricas en este archivo: */
 /* Retorna el último elemento de cualquier lista */
 void	*tail(void *node)
 {

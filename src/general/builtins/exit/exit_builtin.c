@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:37:51 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 17:44:27 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:21:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	is_long(char *str);
 static void	exit_quit(int exit_status);
 
-// VERSION B, HABRÁ QUE VER EN 42 CUAL MANDA
+/* Emula el funcionamiento de exit */
 int	ms_exit(char **argv, int exit_status)
 {
 	char	*arg;
@@ -37,32 +37,6 @@ int	ms_exit(char **argv, int exit_status)
 	exit_quit(exit_status);
 	return (0);
 }
-
-// Adaptado para --
-/* int	ms_exit(char **argv, int exit_status)
-{
-	int	i;
-
-	i = 1;
-	if (!ft_strcmp(argv[1], "--"))
-		i = 2;
-	exit_status %= 256;
-	if (!argv[i])
-		exit_quit(exit_status);
-	exit_status = ft_strtol(argv[i]) % 256;
-	if (is_long(argv[i]) == FALSE || !argv[i][0])
-	{
-		ms_perror("exit", argv[i], NUMERIC_ARG, NULL);
-		exit_status = 255;
-	}
-	else if (argv[i + 1])
-	{
-		ms_perror("exit", TOO_MANY_ARG, NULL, NULL);
-		return (1);
-	}
-	exit_quit(exit_status);
-	return (0);
-} */
 
 static int	is_long(char *str)
 {

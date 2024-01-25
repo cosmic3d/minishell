@@ -214,22 +214,12 @@ typedef struct s_variable_data
 
 /* --------------------------------- FUNCS ---------------------------------- */
 
-//////// DEBUG
-void			print_envp(char **envp);
-void			print_env_and_export_output(t_ms *ms);
-void			print_env(t_env *env);
-void			check(void);
-void			test_export(t_ms *ms);
-void			print_tokens(t_token *token);
-void			print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd);
-//////////////
-
 ////// Executor:
 // cmd_env_creation.c
 char			**env_list_to_envp(t_env *head);
 
 // cmd_execute_redirections.c
-int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
+void			iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
 int				iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status);
 
 // cmd_execute_redirections_utils.c
@@ -362,6 +352,7 @@ int				signal_handler(int mode);
 //// Utils
 // error.c
 int				ms_perror(char *s1, char *s2, char *s3, char *s4);
+int				ms_perror_xs(char *s1, char *s2, char *s3, int *xs);
 void			ms_quit(char *error_message);
 
 // utils.c

@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/25 17:26:07 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:01:29 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	signal_action_interactive(int signum)
 /* Función para las señales cuando estamos en modo heredoc */
 static void	signal_action_heredoc(int signum)
 {
-	g_received_signal = signum;
+	g_received_signal = SIGINT + (signum * 0);
 	close(STDIN);
 	return ;
 }

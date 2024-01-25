@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_env_creation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 13:57:12 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/25 17:45:37 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:18:32 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	**env_list_to_envp(t_env *head)
 	return (envp);
 }
 
+/* Une el nombre de la variable de env con su valor mediante un = */
 static char	*join_env_var_parts(char *name, char *content)
 {
 	char	*joined;

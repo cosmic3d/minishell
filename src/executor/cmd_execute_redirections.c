@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 19:03:19 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:08:28 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,10 @@ int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
 				do_hrdc(&cmd[i].rd[j], &aux, i);
-			if (aux)
+			if (aux != 0)
 			{
-				*exit_status = aux;
+				if (aux != -42)
+					*exit_status = aux;
 				cmd[i].rd_failed = TRUE;
 				return (FAILURE);
 			}

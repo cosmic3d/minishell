@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:44:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 18:42:58 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 20:11:39 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs)
 		if (write(tmp_fd, tmp_str, ft_strlen(tmp_str)) < 0 || \
 		write(tmp_fd, "\n", 1) < 0)
 		{
-			ms_perror(strerror(errno), NULL, NULL, NULL);
-			*xs = 1;
+			*xs = ms_perror(strerror(errno), NULL, NULL, NULL);
 			break ;
 		}
 		free(tmp_str);
@@ -58,7 +57,7 @@ int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs)
 	free(tmp_eof);
 	close(tmp_fd);
 	if (g_received_signal == SIGINT && reset_received_signal() == SUCCESS)
-		return (FAILURE);
+		return ((*xs = -42), FAILURE);
 	return (SUCCESS);
 }
 

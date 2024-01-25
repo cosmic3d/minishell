@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   llamar_builtins.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:44:01 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 17:42:38 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:21:51 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Devuelve TRUE si el string es un builtin, FALSE si no lo es */
 int	is_builtin(char *str)
 {
 	if (!str)
@@ -33,7 +34,8 @@ int	is_builtin(char *str)
 	return (FALSE);
 }
 
-// provisional
+/* Devuelve el exit status del builtin ejecutado
+o -1 si ninguno fue ejecutado */
 int	exec_builtin(t_ms *ms, t_cmdinfo *cmd)
 {
 	if (!cmd->cmd)

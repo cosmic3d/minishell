@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 15:18:13 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 18:57:20 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:14:22 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,7 @@ int	env_add(char *name, char *content, t_env **head)
 		return (FAILURE);
 	new->name = ft_strdup(name);
 	if (!new->name)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		env_remove(new);
-		return (FAILURE);
-	}
+		ms_quit(MALLOC_ERR);
 	if (env_edit(new, content) == FAILURE)
 	{
 		env_remove(new);
@@ -47,10 +43,7 @@ t_env	*env_new(t_env **head)
 
 	new = malloc(sizeof(t_env));
 	if (!new)
-	{
-		ms_perror("malloc", strerror(errno), NULL, NULL);
-		return (NULL);
-	}
+		ms_quit(MALLOC_ERR);
 	new->prev = NULL;
 	new->next = NULL;
 	new->name = NULL;
@@ -77,10 +70,7 @@ int	env_edit(t_env *var, char *content)
 	{
 		var->content = ft_strdup(content);
 		if (!var->content)
-		{
-			ms_perror("malloc", strerror(errno), NULL, NULL);
-			return (FAILURE);
-		}
+			ms_quit(MALLOC_ERR);
 	}
 	else
 		var->content = NULL;
