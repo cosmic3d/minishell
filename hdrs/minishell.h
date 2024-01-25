@@ -62,7 +62,7 @@ looking for matching `%c\'\n"
 getcwd: cannot access parent directories: No such file or directory"
 # define SH_MAKEPATH_ERROR "sh_makepath: error retrieving current directory: \
 getcwd: cannot access parent directories: No such file or directory"
-# define AMBIGUOUS_REDIRECT "minishell: ambiguous redirect\n"
+# define AMBIGUOUS_REDIRECT "minishell: ambiguous redirect"
 
 //Token types
 # define TEXT 0
@@ -103,6 +103,7 @@ vwxyz0123456789_"
 # define NO_SUCH_FILE "No such file or directory"
 # define _CMD_NOT_FOUND 127
 # define CMD_NOT_FOUND "command not found"
+# define UNSUPPORTED_FILE "Specilal filetype not supported"
 
 // For access(), better readability of its macros
 # define HAS_READ_PERMISSIONS R_OK // muy largo

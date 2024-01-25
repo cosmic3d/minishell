@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 14:22:19 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 15:13:01 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,14 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 {
 	if (!rd_i->str[0])
 	{
-		*xs = 1;
-		ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
+		*xs = ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
 		return ;
 	}
 	if (file_check(rd_i->str, F_OK) == TRUE)
 	{
 		if (file_check(rd_i->str, IS_DIRECTORY) == TRUE)
 		{
-			ms_perror(rd_i->str, "Is a directory", NULL, NULL);
-			*xs = 1;
+			*xs = ms_perror(rd_i->str, "Is a directory", NULL, NULL);
 			return ;
 		}
 		if (file_check(rd_i->str, HAS_READ_PERMISSIONS) == TRUE)
@@ -37,12 +35,10 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 			*rd_in = rd_i;
 			return ;
 		}
-		ms_perror(rd_i->str, "Permission denied", NULL, NULL);
-		*xs = 1;
+		*xs = ms_perror(rd_i->str, "Permission denied", NULL, NULL);
 		return ;
 	}
-	ms_perror(rd_i->str, "No such file or directory", NULL, NULL);
-	*xs = 1;
+	*xs = ms_perror(rd_i->str, "No such file or directory", NULL, NULL);
 	return ;
 }
 
@@ -55,8 +51,7 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 
 	if (!rd_i->str[0])
 	{
-		*xs = 1;
-		ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
+		*xs = ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
 		return ;
 	}
 	if (file_check(rd_i->str, F_OK) == TRUE && \
@@ -67,8 +62,7 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 			*rd_out = rd_i;
 			return ;
 		}
-		ms_perror(rd_i->str, "Permission denied", NULL, NULL);
-		*xs = 1;
+		*xs = ms_perror(rd_i->str, "Permission denied", NULL, NULL);
 		return ;
 	}
 	if (ms_open(rd_i, &fd, xs) == FAILURE)
