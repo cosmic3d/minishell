@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:15:39 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 18:45:45 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:42:57 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@ int	is_valid_quote(int index, int *quote_array)
 	}
 	return (FALSE);
 }
-
-// Maybe lo implemento para que el código sea más limpio
-/* Gestiona el switching ON y OFF del *t_quotes recibido en base al
-caracter en str[i] */
-// void	quote_switch(char *str, int i, t_quotes *q)
-// {
-// 	if (str[i] == '\'' && q->d_on == OFF && is_valid_quote(i, q->s))
-// 		q->s_on *= SWITCH;
-// 	if (str[i] == '"' && q->s_on == OFF && is_valid_quote(i, q->d))
-// 		q->d_on *= SWITCH;
-// }
 
 /* Gestiona los switches de las quotes y retorna TRUE si la quote en
 str[index] es una quote activa, o FALSE si es una quote como caracter

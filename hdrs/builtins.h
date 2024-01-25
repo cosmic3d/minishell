@@ -6,12 +6,12 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 11:52:17 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 18:50:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:49:46 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_BUILTINS_H
-# define MINISHELL_BUILTINS_H
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
 # include "minishell.h"
 

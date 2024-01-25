@@ -6,16 +6,14 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/25 18:25:12 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 19:04:25 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static char	*find_as_path(char *cmd, int *exit_status);
 static char	*find_as_command(char *cmd, int *exit_status, t_ms *ms);
 static char	**get_path_directories(t_env *env);
-static char	*find_locally(char *cmd, int *exit_status);
 static char	*find_as_pathname(char *pathname, int *exit_status);
 
 /* Devuelve el file_path al programa representado por la string cmd y gestiona
@@ -23,19 +21,20 @@ errores de ejecución previos asignando un valor a exit_status */
 char	*get_pathname(char *cmd, int *exit_status, t_ms *ms)
 {
 	char	*pathname;
+	int		xs;
 
+	xs = 0;
 	if (!cmd)
 		return (NULL);
 	if (!ft_strchr(cmd, '/'))
 	{
-		pathname = find_as_command(cmd, exit_status, ms);
-		if (pathname || *exit_status != 0)
+		pathname = find_as_command(cmd, &xs, ms);
+		if (xs != 0)
+			*exit_status = xs;
+		if (pathname || xs != 0)
 			return (pathname);
 	}
 	pathname = find_as_pathname(cmd, exit_status);
-	if (pathname || *exit_status != 0)
-		return (pathname);
-	pathname = find_locally(cmd, exit_status); // innecesario??
 	if (pathname || *exit_status != 0)
 		return (pathname);
 	free(pathname);
@@ -88,38 +87,6 @@ static char	**get_path_directories(t_env *env)
 	return (path_split);
 }
 
-/* Gestiona la búsqueda del archivo indicado por cmd en el directorio actual,
-cosa que minishell hará si no tiene un PATH válido. También gestiona errores
-varios como si el directorio actual ya no existe por que fue eliminado, como
-si el archivo buscado no existe, etc. */
-static char	*find_locally(char *cmd, int *exit_status)
-{
-	char	*file_path;
-	char	*pwd;
-
-	pwd = safe_getcwd(cmd, exit_status);
-	if (!pwd)
-		return (NULL);
-	file_path = join_filename(cmd, pwd);
-	free(pwd);
-	if (file_check(file_path, IS_DIRECTORY))
-		*exit_status = exec_error(cmd, IS_DIR, _IS_DIR);
-	else if (file_check(file_path, IS_FILE))
-	{
-		if (file_path[ft_strlen(cmd) - 1] == '/')
-			*exit_status = exec_error(cmd, NOT_DIR, _NOT_DIR);
-		else if (!file_check(file_path, X_OK))
-			*exit_status = exec_error(cmd, PERM_DENIED, _PERM_DENIED);
-		else
-			return (file_path);
-	}
-	if (!file_check(file_path, F_OK))
-		*exit_status = exec_error(cmd, NO_SUCH_FILE, _NO_SUCH_FILE);
-	free(file_path);
-	return (NULL);
-}
-// demasiadas lineas
-
 /* Esta función asume que cmd ya está formateado como una dirección que hay
 que interpretar literalmente como path absoluto o relativo. */
 static char	*find_as_pathname(char *pathname, int *exit_status)
@@ -144,6 +111,8 @@ static char	*find_as_pathname(char *pathname, int *exit_status)
 	}
 	else if (file_check(clean_pathname, F_OK) == FALSE)
 		*exit_status = exec_error(pathname, NO_SUCH_FILE, _NO_SUCH_FILE);
+	else
+		*exit_status = exec_error(pathname, UNSUPPORTED_FILE, 1);
 	free(clean_pathname);
 	return (NULL);
 }

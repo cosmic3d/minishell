@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 13:02:32 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 17:25:20 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:18:56 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ static int	check_arg_errors(char *arg)
 
 	if (file_check(arg, F_OK) == TRUE)
 	{
-		if (file_check(arg, F_DIR) == FALSE)
+		if (file_check(arg, IS_DIRECTORY) == FALSE)
 			return (ms_perror("cd", arg, NOT_DIR, NULL));
 		if (file_check(arg, X_OK) == FALSE)
 			return (ms_perror("cd", arg, PERM_DENIED, NULL));
@@ -172,7 +172,7 @@ static int	check_arg_errors_2(char *pathname, char *arg)
 		pathname = crop_pathname(pathname);
 		if (file_check(pathname, F_OK) == TRUE)
 		{
-			if (file_check(pathname, F_DIR) == FALSE)
+			if (file_check(pathname, IS_DIRECTORY) == FALSE)
 			{
 				free(pathname);
 				return (ms_perror("cd", arg, NOT_DIR, NULL));
