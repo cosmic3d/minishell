@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 13:40:53 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 13:44:14 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 {
 	int	pipefd[2];
 
-	if (cmd->next_cmd) //No es el último comando
+	if (cmd->next_cmd)
 	{
 		if (ms_pipe(pipefd, xs) == FAILURE)
 			return (FAILURE);
@@ -33,8 +33,7 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 		if (!cmd->rd_out)
 			fd[STDOUT] = pipefd[STDOUT];
 		else if (close(pipefd[STDOUT]) <= 0 && ms_open(cmd->rd_out, \
-		&fd[STDOUT], xs) == FAILURE && close(pipefd[STDIN]) <= 0) /* Si hay un archivo, cerramos el extremo de escritura del pipe para que el siguiente
-			comando reciba un EOF y no lea nada de la pipe de lectura */
+		&fd[STDOUT], xs) == FAILURE && close(pipefd[STDIN]) <= 0)
 			return (FAILURE);
 		if (cmd->next_cmd->rd_in && close(fd[STDIN]) <= 0 && \
 		ms_open(cmd->next_cmd->rd_in, &fd[STDIN], xs) \
@@ -55,18 +54,18 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 el comando en cuestión y esperamos a que acabe con waitpid.
 Cuando el proceso haya terminado o sido detenido de cualquier forma
 guardamos su exit status / señal con el que terminó en nuestro exit status*/
-static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
+static void	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
-	if (ms->forkret == 0) //Es el proceso hijo
+	if (ms->forkret == 0)
 	{
+		if (iterate_rds(cmd, &ms->exit_status) == FAILURE) //METER ORS AQUÍ PA AHORRAR LINEAS MIMIMIM
+			exit(ms->exit_status);
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
-		// close(STDIN);
 		signal_handler(HEREDOC);
 		tmp[0] = exec_builtin(ms, cmd);
 		if (tmp[0] != -1)
 			exit(tmp[0]);
-		//write(2, "No es builtin\n", 14);
 		cmd->cmd = get_pathname(cmd->cmd, &ms->exit_status, ms);
 		if (!cmd->cmd)
 			exit(ms->exit_status);
@@ -74,19 +73,14 @@ static int	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		if (!ms->envp)
 			ms_quit(MALLOC_ERR);
 		execve(cmd->cmd, cmd->args, ms->envp);
-		// Mirarse esto por si algun error
-		/* Fumada del test mandatory de mpanic, a lo mejor ni hace falta */
-		// ms_perror("execve", strerror(errno), NULL, NULL); // Si llega hasta aquí es que execve ha fallado :)
 		exit(ms->exit_status);
-		// ms_quit(NULL);
 	}
 	else if (ms->forkret == -2)
+	{
+		if (iterate_rds(cmd, &ms->exit_status) == FAILURE)
+			return ;
 		ms->exit_status = exec_builtin(ms, cmd);
-	/* if (isatty(STDOUT) == FALSE)
-		close(STDOUT); */
-	// if (ms->forkret != -2)
-	// 	ms->exit_status = set_exit_status(ms->forkret, cmd->cmd);
-	return (SUCCESS);
+	}
 }
 
 /* Ejecutamos todos los comandos en un bucle hasta que ya no haya más o
@@ -100,7 +94,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = -1;
 	while (++i < ms->num_cmd)
 	{
-		if (!ms->cmd[i].cmd && ms->cmd[i].exists == TRUE)
+		if ((!ms->cmd[i].cmd && ms->cmd[i].exists == TRUE))
 			continue ;
 		ms->forkret = -2;
 		if (fd[STDIN] != STDIN && ms_dup(fd[STDIN], STDIN, \
@@ -114,13 +108,11 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 		if ((ms->num_cmd > 1 || is_builtin(ms->cmd[i].cmd) == FALSE) && \
 		ms_fork(&ms->forkret, &ms->exit_status) == FAILURE)
 			return (FAILURE);
-		if (manage_child(&ms->cmd[i], ms, tmp) == FAILURE)
-			return (FAILURE);
+		manage_child(&ms->cmd[i], ms, tmp);
 	}
-	// provisional Albert
-	int aux = set_exit_status(ms->forkret, ms->num_cmd);
-	if (aux != -1)
-		ms->exit_status = aux;
+	i = set_exit_status(ms->forkret, ms->num_cmd); //MIRAR A VER SI ES NECESARIO MAÑANA PARA AHORRAR LÍNEAS
+	if (i != -1)
+		ms->exit_status = i;
 	//
 	// Original:
 	// ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
@@ -144,6 +136,7 @@ static int	init_execution(t_ms *ms)
 	//Duplicamos stdin y stdout para no perderlos
 	tmp[STDIN] = -1;
 	tmp[STDOUT] = -1;
+	fd[STDOUT] = STDOUT;
 	if ((ms->num_cmd > 1 || ms->cmd[0].rd_in) && ms_dup(STDIN, -1, \
 	&tmp[STDIN], &ms->exit_status) == FAILURE)
 		return (FAILURE);
@@ -175,7 +168,7 @@ comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
 EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
-	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
+	if (iterate_hrdcs(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);

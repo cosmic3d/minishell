@@ -6,8 +6,9 @@
       "request": "launch",
       "program": "${cwd}/minishell",
       "args": [],
-      "stopAtEntry": false,
-      "cwd": "/Users/jenavarr/Documents/minishell",
+      "stopAtEntry": true,
+      "miDebuggerPath": "/usr/bin/gdb",
+      "cwd": "/home/jenavarr/projects/minishell",
       "environment": [],
       "externalConsole": true,
       "MIMode": "lldb"
