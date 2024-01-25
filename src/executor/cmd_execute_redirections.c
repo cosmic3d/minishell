@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 13:45:49 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:22:19 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,15 @@ int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 	{
 		aux = 0;
 		j = -1;
+		cmd[i].rd_failed = FALSE;
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type == REDIRECT_HEREDOC)
-				if (do_hrdc(&cmd[i].rd[j], &aux, i) == FAILURE)
-					return (FAILURE);
+				do_hrdc(&cmd[i].rd[j], &aux, i);
 			if (aux)
 			{
 				*exit_status = aux;
+				cmd[i].rd_failed = TRUE;
 				return (FAILURE);
 			}
 		}
@@ -138,32 +139,11 @@ int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 	return (SUCCESS);
 }
 
-/* Iteramos a través de todas las redirecciones de un comando
+/* Iteramos a través de todas las redirecciones de todos los comandos
 y las evaluamos de izquierda a derecha. Si en alguna de ellas sucede
 algún error, la función setea exit status a 1 y continua con el
 siguiente comando en cuestión. */
-int	iterate_rds(t_cmdinfo *cmd, int *exit_status)
-{
-	int	i;
-	int	aux;
-
-	i = -1;
-	aux = 0;
-	while (++i < cmd->num_rd)
-	{
-		if (cmd->rd[i].type > REDIRECT_APPEND)
-			in_rds(&cmd->rd[i], &cmd->rd_in, &aux);
-		else
-			out_rds(&cmd->rd[i], &cmd->rd_out, &aux);
-		if (aux)
-		{
-			*exit_status = aux;
-			return (FAILURE);
-		}
-	}
-	return (SUCCESS);
-}
-/* int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
+int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
@@ -174,6 +154,7 @@ int	iterate_rds(t_cmdinfo *cmd, int *exit_status)
 	{
 		j = -1;
 		aux = 0;
+		cmd[i].rd_failed = FALSE;
 		while (++j < cmd[i].num_rd)
 		{
 			if (cmd[i].rd[j].type > REDIRECT_APPEND)
@@ -183,9 +164,10 @@ int	iterate_rds(t_cmdinfo *cmd, int *exit_status)
 			if (aux)
 			{
 				*exit_status = aux;
-				return (FAILURE);
+				cmd[i].rd_failed = TRUE;
+				break ;
 			}
 		}
 	}
 	return (SUCCESS);
-} */
+}

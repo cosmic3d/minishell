@@ -142,6 +142,7 @@ typedef struct s_cmdinfo
 	int					fdout;
 	int					fdin;
 	int					exists;
+	int					rd_failed;
 }				t_cmdinfo;
 
 typedef struct s_env
@@ -301,7 +302,7 @@ int				token_append(t_token **token);
 int				in_x(char *str, char c);
 
 //cmd_execute_redirections.c
-int				iterate_rds(t_cmdinfo *cmd, int *exit_status);
+int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
 int				iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status);
 
 //cmd_execute_redirections_utils.c

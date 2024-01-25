@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 13:44:14 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:25:11 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ static void	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 {
 	if (ms->forkret == 0)
 	{
-		if (iterate_rds(cmd, &ms->exit_status) == FAILURE) //METER ORS AQUÍ PA AHORRAR LINEAS MIMIMIM
-			exit(ms->exit_status);
 		close(tmp[STDIN]);
 		close(tmp[STDOUT]);
+		if (cmd->rd_failed == TRUE)
+			exit(ms->exit_status);
 		signal_handler(HEREDOC);
 		tmp[0] = exec_builtin(ms, cmd);
 		if (tmp[0] != -1)
@@ -75,12 +75,8 @@ static void	manage_child(t_cmdinfo *cmd, t_ms *ms, int tmp[2])
 		execve(cmd->cmd, cmd->args, ms->envp);
 		exit(ms->exit_status);
 	}
-	else if (ms->forkret == -2)
-	{
-		if (iterate_rds(cmd, &ms->exit_status) == FAILURE)
-			return ;
+	else if (ms->forkret == -2 && cmd->rd_failed == FALSE)
 		ms->exit_status = exec_builtin(ms, cmd);
-	}
 }
 
 /* Ejecutamos todos los comandos en un bucle hasta que ya no haya más o
@@ -113,10 +109,6 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 	i = set_exit_status(ms->forkret, ms->num_cmd); //MIRAR A VER SI ES NECESARIO MAÑANA PARA AHORRAR LÍNEAS
 	if (i != -1)
 		ms->exit_status = i;
-	//
-	// Original:
-	// ms->exit_status = set_exit_status(ms->forkret, ms->num_cmd);
-	//
 	return (SUCCESS);
 }
 
@@ -169,6 +161,8 @@ EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
 int	execute_cmds(t_ms *ms) //EN PROCESO
 {
 	if (iterate_hrdcs(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
+		return (FAILURE);
+	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);

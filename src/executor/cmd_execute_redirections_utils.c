@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_redirections_utils.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
+/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:44:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 14:36:40 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 14:24:05 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
