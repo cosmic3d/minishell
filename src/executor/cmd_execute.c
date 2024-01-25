@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 14:25:11 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:25:13 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ static int	execution_loop(t_ms *ms, int fd[2], int tmp[2])
 			return (FAILURE);
 		manage_child(&ms->cmd[i], ms, tmp);
 	}
-	i = set_exit_status(ms->forkret, ms->num_cmd); //MIRAR A VER SI ES NECESARIO MAÑANA PARA AHORRAR LÍNEAS
+	i = set_exit_status(ms->forkret, ms->num_cmd, -1);
 	if (i != -1)
 		ms->exit_status = i;
 	return (SUCCESS);
@@ -119,13 +119,12 @@ En caso de error, se devuelve FAILURE.
 Un error en alguna de estas funciones es fatal y no nos permite continuar con
 la ejecución de los comandos, aunque puede que sí con nuestro programa.
 Esto puede suceder si nos limitan los file descriptors disponibles con
-ulimit -n 4 por ejemplo.
-SE REALIZARÁN PRUEBAS EN EL FUTURO PARA DECIDIR QUÉ HACER*/
+ulimit -n 4 por ejemplo.*/
 static int	init_execution(t_ms *ms)
 {
 	int	tmp[2];
 	int	fd[2];
-	//Duplicamos stdin y stdout para no perderlos
+
 	tmp[STDIN] = -1;
 	tmp[STDOUT] = -1;
 	fd[STDOUT] = STDOUT;
@@ -135,16 +134,12 @@ static int	init_execution(t_ms *ms)
 	if ((ms->num_cmd > 1 || ms->cmd[0].rd_out) && ms_dup(STDOUT, -1, \
 	&tmp[STDOUT], &ms->exit_status) == FAILURE && close(tmp[STDIN]) <= 0)
 		return (FAILURE);
-	//Duplicar el stdin en caso de que exista un archivo
 	if (!ms->cmd[0].rd_in)
 		fd[STDIN] = STDIN;
-	//Si existe una redirección de input, abrimos ese archivo en fd[STDIN]
 	else if (ms_open(ms->cmd[0].rd_in, &fd[STDIN], &ms->exit_status) \
 	== FAILURE && close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
-	//Llamamos al bucle de ejecución de los comandos para que los ejecute todos
 	execution_loop(ms, fd, tmp);
-	//Restauramos stdin y stdout para que apunten de nuevo a la terminal
 	if (tmp[STDIN] != -1 && ms_dup(tmp[STDIN], STDIN, NULL, &ms->exit_status) \
 	== FAILURE && close(tmp[STDIN]) <= 0 && close(tmp[STDOUT]) <= 0)
 		return (FAILURE);
@@ -156,14 +151,13 @@ static int	init_execution(t_ms *ms)
 
 /* Función que llama a otras para realizar todo el proceso
 a seguir en la ejecución de los comandos. Devuelve SUCCESS si los
-comandos se han ejecutado sin problema alguno. PUEDE QUE SE CAMBIE
-EL FUNCIONAMIENTO DE ESTA FUNCIÓN EN EL FUTURO */
-int	execute_cmds(t_ms *ms) //EN PROCESO
+comandos se han ejecutado sin problema alguno.
+Devuelve FAILURE si han fallado los heredocs o la ejecución de los comandos.*/
+int	execute_cmds(t_ms *ms)
 {
 	if (iterate_hrdcs(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
 		return (FAILURE);
-	if (iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status) == FAILURE)
-		return (FAILURE);
+	iterate_rds(ms->cmd, ms->num_cmd, &ms->exit_status);
 	if (init_execution(ms) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);

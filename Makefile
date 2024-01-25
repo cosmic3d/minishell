@@ -33,56 +33,81 @@ MKDIR		= mkdir -p
 CP			= cp -f
 MAKE		= make -s
 MUTE		= &> /dev/null
+CR			= \033[K\r
+
+#.ONESHELL:
+
+# -=-=-=-=-	FUNCTIONS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
+# Function to hide the cursor
+define hide_cursor
+    @printf "\e[?25l"  # Hide the cursor
+endef
+
+# Function to show the cursor
+define show_cursor
+    @printf "\e[?25h"  # Show the cursor
+endef
 # -=-=-=-=-	LIBS/HEADERS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 LIBS		+= $(LFT_DIR)libft.a $(RDL_DIR)libreadline.a $(RDL_DIR)libhistory.a
 HDRS		+= $(INC_DIR)*.h
 # -=-=-=-=-	SOURCES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-SRCS		:= $(shell find src -name "*.c")
+SRCS		:= cmd_env_creation cmd_execute cmd_execute_redirections cmd_execute_redirections_utils cmd_execute_utils \
+cmd_struct cmd_struct_utils find_filepath find_filepath_utils cmd_expansor \
+cmd_expansor_utils cmd_home_expansor quotes_utils token_expansor token_expansor_utils \
+cd_builtin cd_builtin_utils echo_builtin env_builtin exit_builtin \
+export_builtin export_process_arg export_utils llamar_builtins pwd_builtin \
+unset_builtin debug env_list_init env_list_utils env_list_utils_2 \
+generic_list_utils token_list_utils minishell readline_loop echo_chars \
+signal_handler error utils cmd_parse cmd_parse_brackets \
+cmd_parse_checker
+
+SRCS		:=	$(addsuffix .c,$(SRCS))
+
+vpath %.c src  src/executor  src/executor/get_pathname  src/expansor  src/general  src/general/builtins  src/general/builtins/cd  \
+src/general/builtins/echo  src/general/builtins/env  src/general/builtins/exit  src/general/builtins/export  src/general/builtins/pwd  \
+src/general/builtins/unset  src/general/debug  src/general/lists  src/general/lists/env_list  src/general/signals  src/general/utils  src/parser
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 
-#OBJS		:= $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))#@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
-OBJS		:= $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
+
+OBJS		:= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-INCLUDE 	= -I$(INC_DIR)
+INCLUDE 	= -Ihdrs
 
 all: $(NAME)
 
-# debugging Albert ######
-test: $(NAME)
-	gcc test.c -o tester
-	./tester
-#########################
-
 $(NAME):: $(LIBS) $(OBJS)
-	$(CC) $(CFLAGS) $(SANS) -L$(LFT_DIR) -L$(RDL_DIR) $(INCLUDE) $(OBJS) -o $(NAME) -lft -lreadline -lhistory -ltermcap
-	echo "$(GREEN)🐜🐌MINISHELL COMPILED🐜🐌$(RESET)"
+	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
+	@printf "$(GREEN)\n🐜🐌MINISHELL COMPILED🐜🐌$(RESET)\n"
 
 $(NAME)::
-	echo "$(BLUE)Nothing to be done for $@$(RESET)";
+	@printf "$(BLUE)Nothing to be done for $@\n$(RESET)";
+	@$(show_cursor)
 
 $(LIBS):
-	make -sC $(LFT_DIR) $(MUTE)
-	make -sC $(RDL_DIR) $(MUTE)
+	@cd $(RDL_DIR) $(MUTE) && ./configure $(MUTE)
+	@make -sC $(RDL_DIR) $(MUTE)
+	@make -sC $(LFT_DIR) $(MUTE)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(MK) $(HDRS)
-	$(MKDIR) $(dir $@)
-	echo "$(MAGENTA)Compiling: $<$(RESET)"
-	$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
+$(OBJ_DIR)%.o: %.c $(MK) $(HDRS)
+	@$(hide_cursor)
+	@$(MKDIR) $(dir $@)
+	@printf "$(MAGENTA)Compiling: $(notdir $<)$(RESET)$(CR)"
+	@$(CC) -MT $@ -MMD -MP $(INCLUDE) $(CFLAGS) $(SANS) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJ_DIR)
-	make clean -sC $(RDL_DIR)
-	make clean -sC $(LFT_DIR)
-	echo "$(CYAN)Dependencies and objects removed$(RESET)"
+	@$(RM) -r $(OBJ_DIR)
+	@make clean -sC $(RDL_DIR)
+	@make clean -sC $(LFT_DIR)
+	@echo "$(CYAN)Dependencies and objects removed$(RESET)"
 
 fclean: clean
-	$(RM) $(NAME)
-	make fclean -sC $(LFT_DIR)
-	echo "$(RED)$(NAME) succesfully removed$(RESET)"
+	@$(RM) $(NAME)
+	@make fclean -sC $(LFT_DIR)
+	@echo "$(RED)$(NAME) succesfully removed$(RESET)"
 
 re: fclean all
 

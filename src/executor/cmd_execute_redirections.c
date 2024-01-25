@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_redirections.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 14:22:19 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:19:18 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,13 @@
 (falta de permisos, el archivo no existe, es una carpeta...) */
 static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 {
-	if (!rd_i->str[0])
-	{
-		*xs = 1;
-		ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
+	if (!rd_i->str[0] && ms_perror_xs(rd_i->str, AMBIGUOUS_REDIRECT, NULL, xs))
 		return ;
-	}
 	if (file_check(rd_i->str, F_OK) == TRUE)
 	{
-		if (file_check(rd_i->str, IS_DIRECTORY) == TRUE)
-		{
-			ms_perror(rd_i->str, "Is a directory", NULL, NULL);
-			*xs = 1;
+		if (file_check(rd_i->str, IS_DIRECTORY) == TRUE && \
+		ms_perror_xs(rd_i->str, "Is a directory", NULL, xs) == SUCCESS)
 			return ;
-		}
 		if (file_check(rd_i->str, HAS_READ_PERMISSIONS) == TRUE)
 		{
 			if (rd_i->type == REDIRECT_HEREDOC)
@@ -37,12 +30,10 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 			*rd_in = rd_i;
 			return ;
 		}
-		ms_perror(rd_i->str, "Permission denied", NULL, NULL);
-		*xs = 1;
+		ms_perror_xs(rd_i->str, "Permission denied", NULL, xs);
 		return ;
 	}
-	ms_perror(rd_i->str, "No such file or directory", NULL, NULL);
-	*xs = 1;
+	ms_perror_xs(rd_i->str, "No such file or directory", NULL, xs);
 	return ;
 }
 
@@ -53,12 +44,8 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 {
 	int	fd;
 
-	if (!rd_i->str[0])
-	{
-		*xs = 1;
-		ms_perror(rd_i->str, AMBIGUOUS_REDIRECT, NULL, NULL);
+	if (!rd_i->str[0] && ms_perror_xs(rd_i->str, AMBIGUOUS_REDIRECT, NULL, xs))
 		return ;
-	}
 	if (file_check(rd_i->str, F_OK) == TRUE && \
 	file_check(rd_i->str, IS_DIRECTORY) == FALSE)
 	{
@@ -67,8 +54,7 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 			*rd_out = rd_i;
 			return ;
 		}
-		ms_perror(rd_i->str, "Permission denied", NULL, NULL);
-		*xs = 1;
+		ms_perror_xs(rd_i->str, "Permission denied", NULL, xs);
 		return ;
 	}
 	if (ms_open(rd_i, &fd, xs) == FAILURE)
@@ -143,7 +129,7 @@ int	iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status)
 y las evaluamos de izquierda a derecha. Si en alguna de ellas sucede
 algún error, la función setea exit status a 1 y continua con el
 siguiente comando en cuestión. */
-int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
+void	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 {
 	int	i;
 	int	j;
@@ -169,5 +155,5 @@ int	iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status)
 			}
 		}
 	}
-	return (SUCCESS);
+	return ;
 }

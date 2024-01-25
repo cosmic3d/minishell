@@ -243,6 +243,7 @@ void			print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd);
 
 // error.c
 int				ms_perror(char *s1, char *s2, char *s3, char *s4);
+int				ms_perror_xs(char *s1, char *s2, char *s3, int *xs);
 void			ms_quit(char *error_message);
 
 // export_init.c
@@ -302,7 +303,7 @@ int				token_append(t_token **token);
 int				in_x(char *str, char c);
 
 //cmd_execute_redirections.c
-int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
+void			iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
 int				iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status);
 
 //cmd_execute_redirections_utils.c
@@ -318,7 +319,7 @@ int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
 int				ms_pipe(int fd[2], int *xs);
 int				ms_fork(int *forkret, int *xs);
-int				set_exit_status(int forkret, int num_cmd);
+int				set_exit_status(int forkret, int num_cmd, int i);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
@@ -380,8 +381,7 @@ int				ms_pwd(t_ms *ms);
 int				ms_echo(char **argv);
 
 // exit_builtin.c
-// int				ms_exit(char **argv);
-int				ms_exit(char **argv, int exit_status); // version 2
+int				ms_exit(char **argv, int exit_status);
 
 // env_builtin.c
 int				ms_env(t_ms *ms);

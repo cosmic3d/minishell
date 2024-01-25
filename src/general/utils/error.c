@@ -42,6 +42,15 @@ int	ms_perror(char *s1, char *s2, char *s3, char *s4)
 	return (1);
 }
 
+/* Función especial que llama a msperror pero aparte setea exit status
+a 1 */
+int	ms_perror_xs(char *s1, char *s2, char *s3, int *xs)
+{
+	ms_perror(s1, s2, s3, NULL);
+	*xs = 1;
+	return (SUCCESS);
+}
+
 // Printea el error y usa exit(EXIT_FAILURE);
 void	ms_quit(char *error_message)
 {

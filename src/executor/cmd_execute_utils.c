@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 17:41:33 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/18 17:27:31 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 16:15:42 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,22 @@ int	ms_fork(int *forkret, int *xs)
 
 /* Seteamos el exit status de cualquier hijo que termine.
 Además también imprimimos el mensajito que da SIGQUIT.*/
-int	set_exit_status(int forkret, int num_cmd)
+int	set_exit_status(int forkret, int num_cmd, int i)
 {
 	int	child_status;
 	int	xs;
-	int	i;
 
 	xs = 1;
-	child_status = -1; //Cambio provisional Albert, antes esto era = 0, ahora = -1
-	// child_status = 0;
-	i = -1;
+	child_status = -1;
 	while (++i < num_cmd)
 	{
 		if (waitpid(-1, &child_status, 0) == forkret)
 		{
-			if (WIFEXITED(child_status)) //Terminó correctamente
+			if (WIFEXITED(child_status))
 				xs = WEXITSTATUS(child_status);
-			else if (WIFSIGNALED(child_status)) //Terminó por una señal
+			else if (WIFSIGNALED(child_status))
 				xs = 128 + WTERMSIG(child_status);
-			else if (WIFSTOPPED(child_status)) // Fue detenido por una señal
+			else if (WIFSTOPPED(child_status))
 				xs = 128 + WSTOPSIG(child_status);
 			if (xs - SIGQUIT == 128)
 				write(1, "Quit: 3\n", 8);
@@ -114,9 +111,7 @@ int	set_exit_status(int forkret, int num_cmd)
 		if (WIFSIGNALED(child_status) && WTERMSIG(child_status) == SIGINT)
 			write(1, "\n", 1);
 	}
-	if (child_status == -1) // Cambio provisional Albert, esto no estaba
+	if (child_status == -1)
 		return (-1);
-	/* COMMENT: No estoy seguro de la diferencia entre WIFSIGNALED y WIFSTOPPED,
-	pero la hay y en cualquiera de los casos guardamos el exit status*/
 	return (xs);
 }
