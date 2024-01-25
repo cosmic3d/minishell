@@ -314,6 +314,7 @@ int				erase_hrdc_files(t_cmdinfo *cmd, int num_cmd);
 //cmd_execute.c
 int				execute_cmds(t_ms *ms);
 
+
 //cmd_execute_utils.c
 int				ms_dup(int fd, int fd2, int *newfd, int *xs);
 int				ms_open(t_redirection *rd, int *fd, int *xs);
@@ -323,7 +324,7 @@ int				set_exit_status(int forkret, int num_cmd, int i);
 
 //cmd_struct.c
 void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
-char			**get_arguments(t_token *token);
+char			**get_arguments(t_token *token, int arg_c, int i, char **args);
 t_redirection	*get_redirections(t_token *token, int rd_count);
 int				iterate_cmds(t_ms *ms);
 

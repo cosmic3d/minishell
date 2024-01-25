@@ -6,13 +6,13 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 16:01:55 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 21:23:21 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:26:07 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_received_signal = 0; //Se puede inicializar una global con un valor o norminette se queja?
+int	g_received_signal = 0;
 
 /* Función para las señales cuando estamos en modo interactivo */
 static void	signal_action_interactive(int signum)

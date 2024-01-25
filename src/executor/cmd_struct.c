@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:04:53 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/23 17:43:27 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:39:54 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,8 @@ void	free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num)
 en un puntero, los rellena y devuelve el puntero.
 En caso de no haber argumentos devuelve NULL.
 En caso de ocurrir algún error, libera todo y hace exit*/
-char	**get_arguments(t_token *token)
+char	**get_arguments(t_token *token, int arg_count, int i, char **args)
 {
-	char	**args;
-	int		arg_count;
-	int		i;
-
-	i = -1;
-	arg_count = get_num_arguments(token);
-	if (!arg_count)
-		return (NULL);
-	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
 		ms_quit(MALLOC_ERR);
 	args[arg_count] = NULL;
@@ -72,7 +63,7 @@ char	**get_arguments(t_token *token)
 		if (token->hascontent == FALSE)
 		{
 			token = token->next;
-			continue;
+			continue ;
 		}
 		args[++i] = ft_strdup(token->content);
 		if (!args[i])
@@ -118,9 +109,15 @@ t_redirection	*get_redirections(t_token *token, int rd_count)
 un puntero al inicio del siguiente comando*/
 static t_token	*get_cmd_info(t_token *token, t_cmdinfo *cmdinfo)
 {
+	int	arg_count;
+
 	cmdinfo->num_rd = get_num_redirections(token);
 	cmdinfo->rd = get_redirections(token, cmdinfo->num_rd);
-	cmdinfo->args = get_arguments(token);
+	arg_count = get_num_arguments(token);
+	cmdinfo->args = NULL;
+	if (arg_count)
+		cmdinfo->args = get_arguments(token, arg_count, -1, \
+	(char **)malloc(sizeof(char *) * (arg_count + 1)));
 	cmdinfo->exists = TRUE;
 	if (!cmdinfo->args)
 		cmdinfo->exists = FALSE;

@@ -22,19 +22,13 @@ int	get_num_arguments(t_token *token)
 	tmp = token;
 	while (tmp && tmp->type != PIPE)
 	{
-		/* En vez de no contarlo si !hascontent, habria que contarlo pero
-		tratarlo de algún modo especial después para que no de problemas
-		con las pipes */
-		//  && tmp->hascontent == TRUE
 		if (tmp->type != TEXT)
 		{
 			tmp = tmp->next->next;
-			continue;
+			continue ;
 		}
 		if (tmp->type == TEXT && tmp->hascontent == TRUE)
 			text_count++;
-		// if (tmp->type == TEXT)
-			// text_count++;
 		tmp = tmp->next;
 	}
 	return (text_count);
@@ -77,7 +71,7 @@ void	get_rd_oflag(t_redirection *rd)
 	if (rd->type == REDIRECT_IN)
 		rd->oflag = O_RDONLY;
 	else if (rd->type == REDIRECT_HEREDOC)
-		rd->oflag = O_CREAT | O_WRONLY | O_TRUNC; //Luego se establecerá a O_RDONLY
+		rd->oflag = O_CREAT | O_WRONLY | O_TRUNC;
 	else if (rd->type == REDIRECT_OUT)
 		rd->oflag = O_CREAT | O_WRONLY | O_TRUNC;
 	else if (rd->type == REDIRECT_APPEND)

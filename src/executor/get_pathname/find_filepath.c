@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_filepath.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:35:49 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 19:15:00 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:25:12 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static char	*find_as_pathname(char *pathname, int *exit_status)
 	else if (file_check(clean_pathname, IS_FILE) == TRUE || \
 	file_check(clean_pathname, IS_LINK) == TRUE)
 	{
-		if (pathname[ft_strlen(pathname) - 1] == '/') // vigilar casos de root /
+		if (pathname[ft_strlen(pathname) - 1] == '/')
 			*exit_status = exec_error(pathname, NOT_DIR, _NOT_DIR);
 		else if (!file_check(clean_pathname, X_OK))
 			*exit_status = exec_error(pathname, PERM_DENIED, _PERM_DENIED);

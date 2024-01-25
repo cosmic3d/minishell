@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_expansor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 13:27:34 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/25 13:27:50 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:24:23 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ int	expansor(t_ms *ms, t_token *token)
 {
 	while (token)
 	{
-		if (token->type == TEXT && token->prev && token->prev->type == REDIRECT_HEREDOC)
-			token = token->next;
-		else if (token->type == TEXT)
+		if (token->type == TEXT)
 		{
+			if (token->prev && token->prev->type == REDIRECT_HEREDOC)
+			{
+				token = token->next;
+				continue ;
+			}
 			init_quote_struct(token);
 			expand(ms, token);
 			check_for_token_content(token);

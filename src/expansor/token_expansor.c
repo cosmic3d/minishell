@@ -3,55 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   token_expansor.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 18:46:58 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:02:47 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Version original
-/* Esta función devuelve el número de tokens que habrá que tokenizar */
-/* static int	token_count(t_token *t, int count)
+static int	token_count(t_token *t, int count, int i)
 {
-	int		i;
 	char	bracks;
 
-	i = -1;
-	//printf("Content: %s\n", t->content);
-	while (t->content[++i])
-	{
-		if (t->content[i + 1] && t->content[i] != ' ')
-		{
-			if ((t->content[i] == '"' || t->content[i] == '\'') && \
-			is_valid_quote(i, goodbrack(t->content[i], t)))
-			{
-				bracks = t->content[i++];
-				while (t->content[i + 1] && !(t->content[i] == bracks && \
-				is_valid_quote(i, goodbrack(bracks, t))))
-					i++;
-			}
-			if (t->content[i + 1])
-				continue ;
-		}
-		count++;
-		while (t->content[i + 1] && t->content[i + 2] && t->content[i] == ' ')
-			i++;
-	}
-	return (count);
-} */
-/*
-echo $A'$B'$C'A'$B'$C'
-*/
-// Version Albert fix rarete
-static int	token_count(t_token *t, int count)
-{
-	int		i;
-	char	bracks;
-
-	i = 0;
 	while (t->content[i])
 	{
 		if (t->content[i + 1] && t->content[i] != ' ')
@@ -64,20 +28,14 @@ static int	token_count(t_token *t, int count)
 				is_valid_quote(i, goodbrack(bracks, t))))
 					i++;
 			}
-			if (t->content[i + 1])
-			{
-				i++;
+			if (t->content[i + 1] && ++i != -1)
 				continue ;
-			}
 		}
-		count++;
-		if (t->content[i] == ' ')
-		{
+		if (++count != -1 && t->content[i] != ' ')
+			i++;
+		else
 			while (t->content[i] == ' ')
 				i++;
-		}
-		else
-			i++;
 	}
 	return (count);
 }
@@ -110,11 +68,7 @@ static char	**token_splitter_helper(char **strs, t_token *t, int tkn_count)
 	return (strs);
 }
 
-/* Esta función devuelve unos strings de los tokens ARREGLAR ESTA MIERDA DE DEFINICION
-que deberán de ser tokenizados.
-Si devuelve NULL, quiere decir que únicamente
-había un token, y que por lo tanto
-no hace falta crear nuevos tokens ni nada.*/
+/* Une los tokens nuevos en un solo token y devuelve el token nuevo */
 static t_token	*token_splitter(t_token *token)
 {
 	int		num_tokens;
@@ -123,7 +77,7 @@ static t_token	*token_splitter(t_token *token)
 
 	if (!ft_strlen(token->content))
 		return (NULL);
-	num_tokens = token_count(token, 0);
+	num_tokens = token_count(token, 0, 0);
 	if (num_tokens == 1)
 		return (NULL);
 	tk_contents = (char **)malloc(sizeof(char *) * (num_tokens + 1));
@@ -166,11 +120,9 @@ t_token	*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp)
 		check_for_token_content(nt);
 		nt = token_tail(ms->token);
 		nt->next = token->next;
-		free_token(token);
-		return (nt);
+		return (free_token(token), nt);
 	}
-	free_token(token);
-	return (token_tail(ms->token));
+	return (free_token(token), token_tail(ms->token));
 }
 
 void	check_for_token_content(t_token *token)

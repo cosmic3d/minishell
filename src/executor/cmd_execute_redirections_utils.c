@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_execute_redirections_utils.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:44:18 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 14:24:05 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:42:58 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	get_mshtmp_str(char **result, int i)
 
 /* Entramos en el bucle de un heredoc y leemos hasta que encontremos
 la palabra especificada o hasta que sea interrumpido mediante una señal. */
-int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs) //PONER A INT
+int	do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs)
 {
 	int	eof_len;
 

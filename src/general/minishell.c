@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 16:39:11 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 14:30:15 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:45:03 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	ms_struct_init(t_ms *ms);
-char	*get_home(void); // testing
+char		*get_home(void);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -21,19 +21,8 @@ int	main(int argc, char **argv, char **envp)
 
 	argv[0] = NULL;
 	argv = NULL;
-	clearTerm(); // revisar
 	if (argc > 1)
 		return (ms_perror(ARGC_ERR, NULL, NULL, NULL));
-/* 	int urandom_fd = open("/dev/urandom", O_RDONLY);
-if (urandom_fd == -1) {
-    perror("open");
-    exit(EXIT_FAILURE);
-}
-if (dup2(urandom_fd, STDIN_FILENO) == -1) {
-    perror("dup2");
-    close(urandom_fd);
-    exit(EXIT_FAILURE);
-} */
 	if (ms_struct_init(&ms) == FAILURE)
 		return (FAILURE);
 	if (env_list_init(&ms, envp) == FAILURE)
@@ -69,7 +58,7 @@ static int	ms_struct_init(t_ms *ms)
 	return (SUCCESS);
 }
 
-// Idea que he tenido, enseñar a Chus a ver qué piensa
+/* Obtiene el valor de home*/
 char	*get_home(void)
 {
 	DIR				*dir;

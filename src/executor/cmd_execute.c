@@ -6,7 +6,7 @@
 /*   By: jenavarr <jenavarr@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:32:05 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 16:25:13 by jenavarr         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:43:29 by jenavarr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ Si somos el último, por defecto el stdin será el de la pipe y el stdout será
 la propia terminal.
 Después de asignar las pipes, comprobamos las redirecciones ya que priorizan
 sobre estas, las cuales serán sobreescritas.
-SI HAY ALGÚN ERROR EN ALGÚN COMANDO QUE NO SEA EL ÚLTIMO, LOS FILE DESCRIPTORS DE LA PIPE SE CIERRAN
 */
-static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
+static int	get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 {
 	int	pipefd[2];
 
@@ -43,9 +42,9 @@ static int get_cmd_inout(t_cmdinfo *cmd, int fd[2], int tmp[2], int *xs)
 	}
 	if (tmp[STDOUT] == -1)
 		fd[STDOUT] = STDOUT;
-	else if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == FAILURE)
+	else if (!cmd->rd_out && ms_dup(tmp[STDOUT], -1, &fd[STDOUT], xs) == 1)
 		return (FAILURE);
-	else if (cmd->rd_out && ms_open(cmd->rd_out, &fd[STDOUT], xs) == FAILURE)
+	else if (cmd->rd_out && ms_open(cmd->rd_out, &fd[STDOUT], xs) == 1)
 		return (FAILURE);
 	return (SUCCESS);
 }

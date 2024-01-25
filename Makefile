@@ -1,5 +1,5 @@
 # -=-=-=-=-	NAME -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-NAME			= minishell
+NAME		= minishell
 MK			= Makefile
 
 # -=-=-=-=-	CLRS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
@@ -8,9 +8,9 @@ RESET		:= \033[0;39m
 BLACK		:= \033[0;30m
 RED			:= \033[0;91m
 GREEN		:= \033[0;92m
-YELLOW		:= \033[0;93m
+YELLOW	:= \033[0;93m
 BLUE		:= \033[0;94m
-MAGENTA		:= \033[0;95m
+MAGENTA	:= \033[0;95m
 CYAN		:= \033[0;96m
 GRAY		:= \033[0;90m
 WHITE		:= \033[0;97m
@@ -26,7 +26,7 @@ LFT_DIR = $(LIB_DIR)libft/
 # -=-=-=-=-	CMNDS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 CC			= gcc
 SANS		= -fsanitize=address -g
-CFLAGS		= -Wall -Werror -Wextra -g
+CFLAGS	= -Wall -Werror -Wextra -g
 AR			= ar -rcs
 RM			= rm -f
 MKDIR		= mkdir -p
@@ -34,8 +34,6 @@ CP			= cp -f
 MAKE		= make -s
 MUTE		= &> /dev/null
 CR			= \033[K\r
-
-#.ONESHELL:
 
 # -=-=-=-=-	FUNCTIONS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 # Function to hide the cursor
@@ -57,7 +55,7 @@ cmd_struct cmd_struct_utils find_filepath find_filepath_utils cmd_expansor \
 cmd_expansor_utils cmd_home_expansor quotes_utils token_expansor token_expansor_utils \
 cd_builtin cd_builtin_utils echo_builtin env_builtin exit_builtin \
 export_builtin export_process_arg export_utils llamar_builtins pwd_builtin \
-unset_builtin debug env_list_init env_list_utils env_list_utils_2 \
+unset_builtin env_list_init env_list_utils env_list_utils_2 \
 generic_list_utils token_list_utils minishell readline_loop echo_chars \
 signal_handler error utils cmd_parse cmd_parse_brackets \
 cmd_parse_checker
@@ -66,10 +64,9 @@ SRCS		:=	$(addsuffix .c,$(SRCS))
 
 vpath %.c src  src/executor  src/executor/get_pathname  src/expansor  src/general  src/general/builtins  src/general/builtins/cd  \
 src/general/builtins/echo  src/general/builtins/env  src/general/builtins/exit  src/general/builtins/export  src/general/builtins/pwd  \
-src/general/builtins/unset  src/general/debug  src/general/lists  src/general/lists/env_list  src/general/signals  src/general/utils  src/parser
+src/general/builtins/unset src/general/lists  src/general/lists/env_list  src/general/signals  src/general/utils  src/parser
 
 # -=-=-=-=-	OBJECTS/DEPENDENCIES -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
-
 
 OBJS		:= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
@@ -77,7 +74,7 @@ DEPS		+= $(addsuffix .d, $(basename $(OBJS)))
 # -=-=-=-=-	COMPILING -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- #
 INCLUDE 	= -Ihdrs
 
-all: $(NAME)
+all: libft $(NAME)
 
 $(NAME):: $(LIBS) $(OBJS)
 	@$(CC) $(CFLAGS) $(SANS) -ltermcap $(LIBS) $(OBJS) -o $(NAME)
@@ -111,6 +108,9 @@ fclean: clean
 
 re: fclean all
 
+libft:
+	@make -sC $(LFT_DIR)
+
 -include $(DEPS)
 
-.PHONY:	all clean fclean re make_libs
+.PHONY:	all clean fclean re libft make_libs
