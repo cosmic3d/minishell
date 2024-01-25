@@ -42,13 +42,13 @@ extern int	g_received_signal;
 
 # define INTERACTIVE 0
 # define HEREDOC 1
-//other?
+
 # define CMDPROMPT "minishell 🐌🐚 "
 # define ENV 0
 # define EXPORT 1
 
 // Errors
-# define MALLOC_ERR "Memory allocation failed.\n" // Cambiar?
+# define MALLOC_ERR "Memory allocation failed.\n"
 # define ARGC_ERR "Minishell does not accept arguments.\n"
 # define GETCWD_ERR "The function getcwd() failed unexpectedly.\n"
 # define READLINE_ERR "The function readline() failed unexpectedly.\n"
@@ -78,10 +78,6 @@ getcwd: cannot access parent directories: No such file or directory"
 # define TRUE 1
 # define FALSE 0
 
-// Export valid character pattern
-# define EXPORT_NAME_PATTERN "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstu\
-vwxyz0123456789_"
-
 // EXPORT OPERATORS
 # define EXPORT_NO_OP 0
 # define EXPORT_ADD 1
@@ -105,17 +101,10 @@ vwxyz0123456789_"
 # define CMD_NOT_FOUND "command not found"
 # define UNSUPPORTED_FILE "Specilal filetype not supported"
 
-// For access(), better readability of its macros
-# define HAS_READ_PERMISSIONS R_OK // muy largo
-# define HAS_WRITE_PERMISSIONS W_OK // muy largo
-# define HAS_EXECUTE_PERMISSIONS X_OK // muy largo
-# define FILE_EXISTS F_OK // muy largo
+// For file_check
 # define IS_FILE 8
 # define IS_DIRECTORY 16
 # define IS_LINK 32
-# define F_FILE 8 // alternativa
-# define F_DIR 16 // alternativa me lo estoy pensando por ser cute
-# define F_LINK 32 // alternativa
 
 // For open(), better readability of its macros
 # define D_PERMS 0644
@@ -190,8 +179,8 @@ typedef struct s_minishell
 	int			num_cmd;
 	char		**envp;
 	int			shlvl;
-	int			forkret; //Lo que devuelve fork (para el executor)
-	int			exit_status; // para $?
+	int			forkret;
+	int			exit_status;
 }				t_ms;
 
 typedef struct s_export
@@ -214,13 +203,6 @@ typedef struct s_quotes
 	int	d_on;
 }				t_quotes;
 
-/* struct con los valores necesarios para el funcionamiento del expansor.
-	name = Nombre de la variable
-	content = Contenido de la variable
-	n_len = Longitud de name
-	c_len = Longitud de content
-	index = Index en el que en el contenido del token se encuentre el primer
-		caracter de la variable. */
 typedef struct s_variable_data
 {
 	char	*name;
@@ -242,36 +224,145 @@ void			print_tokens(t_token *token);
 void			print_cmd_structs(t_cmdinfo *cmdinfo, int num_cmd);
 //////////////
 
-// error.c
-int				ms_perror(char *s1, char *s2, char *s3, char *s4);
-void			ms_quit(char *error_message);
+////// Executor:
+// cmd_env_creation.c
+char			**env_list_to_envp(t_env *head);
 
-// export_init.c
-void			export_init(t_export *data, char *arg);
-int				export_name_syntax(t_export *data, char *arg);
+// cmd_execute_redirections.c
+int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
+int				iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status);
 
-// export_testing.c
-int				ms_export(t_ms *ms, char **argv);
+// cmd_execute_redirections_utils.c
+int				get_mshtmp_str(char **result, int i);
+int				do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs);
+int				erase_hrdc_files(t_cmdinfo *cmd, int num_cmd);
 
-// generic list tools
-void			*tail(void *node);
-void			*head(void *node);
-int				append(t_lst **head, size_t size); // ?????
-void			swap(void *ptr_a, void *ptr_b); // TESTING
-int				list_len(void *head);
+// cmd_execute.c
+int				execute_cmds(t_ms *ms);
 
+// cmd_execute_utils.c
+int				ms_dup(int fd, int fd2, int *newfd, int *xs);
+int				ms_open(t_redirection *rd, int *fd, int *xs);
+int				ms_pipe(int fd[2], int *xs);
+int				ms_fork(int *forkret, int *xs);
+int				set_exit_status(int forkret, int num_cmd);
+
+// cmd_struct.c
+void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
+char			**get_arguments(t_token *token);
+t_redirection	*get_redirections(t_token *token, int rd_count);
+int				iterate_cmds(t_ms *ms);
+
+// cmd_struct_utils.c
+int				get_num_arguments(t_token *token);
+int				get_num_redirections(t_token *token);
+int				get_num_cmds(t_token *token);
+void			get_rd_oflag(t_redirection *rd);
+
+//// Get_pathname:
+//find_filepath.c
+char			*get_pathname(char *cmd, int *exit_status, t_ms *ms);
+
+// find_filepath_utils.c
+int				exec_error(char *cmd, char *error_str, int errnum);
+int				file_check(char *file_path, int check);
+char			*join_filename(char *filename, char *directory);
+char			*safe_getcwd(char *cmd, int *exit_status);
+char			*remove_slashes(char *str);
+
+////// Expansor:
+// cmd_expansor.c
+int				expansor(t_ms *ms, t_token *token);
+
+// cmd_expansor_utils.c
+char			*update_token(t_ms *ms, char *str, int j);
+char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *q);
+
+// cmd_home_expansor.c
+char			*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote);
+
+// quotes_utils.c
+int				is_valid_quote(int index, int *quote_array);
+int				is_active_quote(char *str, int index, t_quotes *q);
+
+// token_expansor.c
+t_token			*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp);
+void			check_for_token_content(t_token *token);
+
+// token_expansor_utils.c
+int				*goodbrack(char bracks, t_token *t);
+t_token			*token_joiner(char **strs);
+char			*ms_substr(char *s, int start, int n, t_token *t);
+void			token_traverse(t_token *t, int *i);
+
+////// General:
 // readline_loop.c
 int				readline_loop(t_ms *ms);
+
+//// Builtins:
+// cd_builtin.c
+int				ms_cd(t_ms *ms, char **argv);
+
+// export_builtin.c
+int				ms_export(t_ms *ms, char **argv);
+
+// pwd_builtin.c
+int				ms_pwd(t_ms *ms);
+
+// echo_builtin.c
+int				ms_echo(char **argv);
+
+// exit_builtin.c
+int				ms_exit(char **argv, int exit_status);
+
+// env_builtin.c
+int				ms_env(t_ms *ms);
+
+// unset_builtin.c
+int				ms_unset(t_ms *ms, char **argv);
+
+// llamar_builtins.c
+int				is_builtin(char *str);
+int				exec_builtin(t_ms *ms, t_cmdinfo *cmd);
+
+//// Lists:
+// env_list_init.c
+int				env_list_init(t_ms *ms, char **envp);
+
+// env_list_utils.c
+int				env_add(char *name, char *content, t_env **head);
+t_env			*env_new(t_env **head);
+int				env_edit(t_env *var, char *content);
+void			env_remove(t_env *var);
+void			env_free(t_ms *ms);
+
+// env_list_utils_2.c
+t_env			*env_find(char *name, t_env *head);
+char			*get_env_content(char *name, t_env *env);
+
+// generic_list_utils.c
+void			*tail(void *node);
+int				list_len(void *head);
+
+// token_list_utils.c
+t_token			*token_tail(t_token *token);
+void			free_tokens(t_token **token);
+void			free_token(t_token *tmp);
+int				token_append(t_token **token);
+int				in_x(char *str, char c);
+
+//// Signals:
+// echo_chars.c
+void			disable_control_chars_echo(void);
+void			restore_terminal_settings(void);
 
 // signal_handler.c
 int				signal_handler(int mode);
 
-//echo_chars.c
-void			disable_control_chars_echo(void);
-void			restore_terminal_settings(void);
-
-// unset_builtin.c
-int				ms_unset(t_ms *ms, char **argv);
+//// Utils
+// error.c
+int				ms_perror(char *s1, char *s2, char *s3, char *s4);
+void			ms_quit(char *error_message);
 
 // utils.c
 int				ms_arraylen(char **array);
@@ -279,6 +370,7 @@ void			check_fds(void);
 void			clearTerm(void);
 int				reset_received_signal(void);
 
+////// Parser:
 //cmd_parse.c
 int				tokenize(char *cmd_line, t_ms *ms);
 int				get_token(int *i, char *cmd_line);
@@ -294,121 +386,5 @@ char			*erase_brackets2(char *str, int bracks_count);
 int				check_tokens(t_ms *ms);
 int				check_token(t_token *token);
 int				is_empty(char *str);
-
-//token_list_utils.c
-t_token			*token_tail(t_token *token);
-void			free_tokens(t_token **token);
-void			free_token(t_token *tmp);
-int				token_append(t_token **token);
-int				in_x(char *str, char c);
-
-//cmd_execute_redirections.c
-int				iterate_rds(t_cmdinfo *cmd, int num_cmds, int *exit_status);
-int				iterate_hrdcs(t_cmdinfo *cmd, int num_cmd, int *exit_status);
-
-//cmd_execute_redirections_utils.c
-int				get_mshtmp_str(char **result, int i);
-int				do_hrdc_loop(int tmp_fd, char *tmp_str, char *tmp_eof, int *xs);
-int				erase_hrdc_files(t_cmdinfo *cmd, int num_cmd);
-
-//cmd_execute.c
-int				execute_cmds(t_ms *ms);
-
-//cmd_execute_utils.c
-int				ms_dup(int fd, int fd2, int *newfd, int *xs);
-int				ms_open(t_redirection *rd, int *fd, int *xs);
-int				ms_pipe(int fd[2], int *xs);
-int				ms_fork(int *forkret, int *xs);
-int				set_exit_status(int forkret, int num_cmd);
-
-//cmd_struct.c
-void			free_cmd_structs(t_cmdinfo *cmdinfo, int cmd_num);
-char			**get_arguments(t_token *token);
-t_redirection	*get_redirections(t_token *token, int rd_count);
-int				iterate_cmds(t_ms *ms);
-
-//cmd_struct_utils.c
-int				get_num_arguments(t_token *token);
-int				get_num_redirections(t_token *token);
-int				get_num_cmds(t_token *token);
-void			get_rd_oflag(t_redirection *rd);
-
-//cmd_expansor.c
-int				expansor(t_ms *ms, t_token *token);
-//int	create_new_tokens(t_ms *ms, t_token *o_token, char *o_str);
-int				is_valid_quote(int index, int *quote_array);
-int				is_active_quote(char *str, int index, t_quotes *q);
-
-//token_expansor.c
-t_token			*retokenizer(t_token *token, t_ms *ms, t_token	*nt, char *tmp);
-
-//token_expansor_utils.c
-int				*goodbrack(char bracks, t_token *t);
-t_token			*token_joiner(char **strs);
-char			*ms_substr(char *s, int start, int n, t_token *t);
-void			token_traverse(t_token *t, int *i);
-
-//cmd_expansor_utils.c
-char			*update_token(t_ms *ms, char *str, int j);
-char			*expand_and_update(t_ms *ms, char *str, int *i, t_quotes *q);
-
-//cmd_env_creation.c
-char			**env_list_to_envp(t_env *head);
-
-// find_filepath_utils.c
-int				exec_error(char *cmd, char *error_str, int errnum);
-char			*join_filename(char *filename, char *directory);
-int				file_check(char *file_path, int check);
-char			*safe_getcwd(char *cmd, int *exit_status);
-char			*remove_slashes(char *str);
-
-// find_filepath.c
-char			*get_pathname(char *cmd, int *exit_status, t_ms *ms);
-
-// find_filepath_utils.c
-int				exec_error(char *cmd, char *error_str, int errnum);
-char			*join_filename(char *filename, char *directory);
-int				file_check(char *file_path, int check);
-char			*safe_getcwd(char *cmd, int *exit_status);
-
-// cd_builtin.c
-int				ms_cd(t_ms *ms, char **argv);
-
-// pwd_builtin.c
-int				ms_pwd(t_ms *ms);
-
-// echo_builtin.c
-int				ms_echo(char **argv);
-
-// exit_builtin.c
-// int				ms_exit(char **argv);
-int				ms_exit(char **argv, int exit_status); // version 2
-
-// env_builtin.c
-int				ms_env(t_ms *ms);
-
-// llamar_builtins.c
-int				is_builtin(char *str);
-int				exec_builtin(t_ms *ms, t_cmdinfo *cmd);
-
-//// env_list:
-// env_list_init
-int				env_list_init(t_ms *ms, char **envp);
-
-// env_list_utils
-int				env_add(char *name, char *content, t_env **head);
-t_env			*env_new(t_env **head);
-int				env_edit(t_env *var, char *content);
-void			env_remove(t_env *var);
-void			env_free(t_ms *ms);
-
-// env_list_utils_2
-t_env			*env_find(char *name, t_env *head);
-char			*get_env_content(char *name, t_env *env);
-
-// testing albert
-void			check_for_token_content(t_token *token);
-//
-char			*expand_home(t_ms *ms, char *str, int *i, t_quotes *quote);
 
 #endif

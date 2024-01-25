@@ -1,7 +1,0 @@
-Notas sobre echo:
-
-- Según he oído, echo SOLO puede retornar exit_status 0, echo no puede fallar.
-
-- Las flags de echo funcionan de forma pesada:
-	echo -nnnnnn -n -n -nnnn hola
-	En este caso solo se printeará "hola". La flag está bien parseada.

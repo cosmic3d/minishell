@@ -6,46 +6,13 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 17:05:26 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/24 18:46:58 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:46:53 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Version original
 /* Esta función devuelve el número de tokens que habrá que tokenizar */
-/* static int	token_count(t_token *t, int count)
-{
-	int		i;
-	char	bracks;
-
-	i = -1;
-	//printf("Content: %s\n", t->content);
-	while (t->content[++i])
-	{
-		if (t->content[i + 1] && t->content[i] != ' ')
-		{
-			if ((t->content[i] == '"' || t->content[i] == '\'') && \
-			is_valid_quote(i, goodbrack(t->content[i], t)))
-			{
-				bracks = t->content[i++];
-				while (t->content[i + 1] && !(t->content[i] == bracks && \
-				is_valid_quote(i, goodbrack(bracks, t))))
-					i++;
-			}
-			if (t->content[i + 1])
-				continue ;
-		}
-		count++;
-		while (t->content[i + 1] && t->content[i + 2] && t->content[i] == ' ')
-			i++;
-	}
-	return (count);
-} */
-/*
-echo $A'$B'$C'A'$B'$C'
-*/
-// Version Albert fix rarete
 static int	token_count(t_token *t, int count)
 {
 	int		i;

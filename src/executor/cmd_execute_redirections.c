@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:04:59 by jenavarr          #+#    #+#             */
-/*   Updated: 2024/01/25 15:13:01 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:45:51 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	in_rds(t_redirection *rd_i, t_redirection **rd_in, int *xs)
 			*xs = ms_perror(rd_i->str, "Is a directory", NULL, NULL);
 			return ;
 		}
-		if (file_check(rd_i->str, HAS_READ_PERMISSIONS) == TRUE)
+		if (file_check(rd_i->str, R_OK) == TRUE)
 		{
 			if (rd_i->type == REDIRECT_HEREDOC)
 				rd_i->oflag = O_RDONLY;
@@ -57,7 +57,7 @@ static void	out_rds(t_redirection *rd_i, t_redirection **rd_out, int *xs)
 	if (file_check(rd_i->str, F_OK) == TRUE && \
 	file_check(rd_i->str, IS_DIRECTORY) == FALSE)
 	{
-		if (file_check(rd_i->str, HAS_WRITE_PERMISSIONS) == TRUE)
+		if (file_check(rd_i->str, W_OK) == TRUE)
 		{
 			*rd_out = rd_i;
 			return ;

@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 17:37:31 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/22 19:45:53 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:38:12 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,32 +48,6 @@ int	file_check(char *file_path, int check)
 		return (TRUE);
 	return (FALSE);
 }
-
-// Versión 2 con flags, cute
-// /* Devuelve TRUE o FALSE respecto al valor de check */
-// int	file_check(char *file_path, int check)
-// {
-// 	struct stat	file;
-// 	int	result;
-
-// 	result = TRUE;
-// 	if (access(file_path, F_OK) != SUCCESS)
-// 		result = FALSE;
-// 	else if (check & R_OK && access(file_path, R_OK) != SUCCESS)
-// 		result = FALSE;
-// 	else if (check & W_OK && access(file_path, W_OK) != SUCCESS)
-// 		result = FALSE;
-// 	else if (check & X_OK && access(file_path, X_OK) != SUCCESS)
-// 		result = FALSE;
-// 	lstat(file_path, &file);
-// 	if (check & IS_DIRECTORY && !S_ISDIR(file.st_mode))
-// 		result = FALSE;
-// 	else if (check & IS_FILE && !S_ISREG(file.st_mode))
-// 		result = FALSE;
-// 	else if (check & IS_LINK && !S_ISLNK(file.st_mode))
-// 		result = FALSE;
-// 	return (result);
-// }
 
 /* Une un nombre de archivo y el path a su directorio. */
 char	*join_filename(char *filename, char *directory)
