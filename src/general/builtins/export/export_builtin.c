@@ -6,7 +6,7 @@
 /*   By: apresas- <apresas-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:08:42 by apresas-          #+#    #+#             */
-/*   Updated: 2024/01/24 16:38:07 by apresas-         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:50:54 by apresas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	ms_export(t_ms *ms, char **argv)
 
 	i = 1;
 	exit_status = SUCCESS;
-	if (!argv[1])
-		return (export_print(ms->env, NULL, NULL));
-	if (ft_strcmp(argv[1], "--") == 0)
+	if (argv[1] && ft_strcmp(argv[1], "--") == 0)
 		i = 2;
+	if (!argv[i])
+		return (export_print(ms->env, NULL, NULL));
 	while (argv[i])
 	{
 		if (argument_syntax(argv[i]) == FAILURE)
